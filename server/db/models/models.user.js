@@ -2,9 +2,18 @@
 var crypto = require('crypto');
 var mongoose = require('mongoose');
 
+var emailRegex = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
+
 var schema = new mongoose.Schema({
     email: {
-        type: String
+        type: String,
+        unique: true,
+        validate: {
+            validator: function(v){
+                return emailRegex.test(v);
+            },
+            message: '{VALUE} is not a valid email address'
+        }
     },
     password: {
         type: String
@@ -23,6 +32,10 @@ var schema = new mongoose.Schema({
     },
     google: {
         id: String
+    },
+    isAdmin: {
+        type: Boolean,
+        default: false
     }
 });
 
@@ -45,7 +58,6 @@ schema.pre('save', function (next) {
         this.salt = this.constructor.generateSalt();
         this.password = this.constructor.encryptPassword(this.password, this.salt);
     }
-
     next();
 
 });

@@ -1,8 +1,10 @@
 'use strict';
 var router = require('express').Router();
-module.exports = router;
 
-router.use('/members', require('./members'));
+// router.use('/members', require('./members'));
+
+
+
 router.use('/api', require("./api"));
 
 // Make sure this is after all of
@@ -10,3 +12,5 @@ router.use('/api', require("./api"));
 router.use(function (req, res) {
     res.status(404).end();
 });
+
+module.exports = router;
