@@ -3,8 +3,8 @@
 // anywhere the User model needs to be used.
 
 module.exports = {
-  User: require('./models.user'),
+  //User: require('./models.user'),
   Product: require('./models.product'),
   Order: require('./models.order'),
-  Review: require('./models.review')
+  //Review: require('./models.review')
 };
