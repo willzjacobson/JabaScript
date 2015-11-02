@@ -4,9 +4,9 @@ var mongoose = require('mongoose');
 var statuses = ['Created', 'Processing', 'Cancelled', 'Completed'];
 
 var orderSchema = new mongoose.Schema({
-  //FIXME We shouldn't be able to set the type to something that isn't an enum.
     status: {
-      type: String, enum: statuses,
+      type: String,
+      enum: statuses,
       default: 'Created',
       required: true
     },
@@ -25,7 +25,8 @@ var orderSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product'
       },
-      quanitity: Number
+      quantity: Number,
+      priceWhenOrdered: Number
     }]
 
 
