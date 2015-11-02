@@ -6,10 +6,3 @@ require('./models.user');
 require('./models.product');
 require('./models.order');
 require('./models.review');
-
-// module.exports = {
-//   User: require('./models.user'),
-//   Product: require('./models.product'),
-//   Order: require('./models.order'),
-//   Review: require('./models.review')
-// };

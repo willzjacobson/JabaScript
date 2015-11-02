@@ -10,7 +10,7 @@ router.get("/", function (req, res, next) {
 		res.json(users);
 	})
 	.then(null,next);
-})
+});
 
 // Add a user to the db
 router.post("/", function (req, res, next){
@@ -19,7 +19,7 @@ router.post("/", function (req, res, next){
 		res.json(user);
 	})
 	.then(null,next);
-})
+});
 
 // Add middleware to find user by ID and save in req.user
 router.param("userId", function (req, res, next, userId){
