@@ -15,13 +15,23 @@ var productSchema = new mongoose.Schema({
     description: {
         type: String
     },
-    images: {
-      type: [String]
-    },
+    images: [{
+      type: Buffer,
+      extension: String,
+      select: false,
+      url: String
+    }],
     numRemaining: {
       type: Number
     }
+});
 
+schema.pre('save', function (next) {
+    var self = this;
+    this.images.forEach(function(image, idx) {
+        if (!image.url) image.url = 'api/products/' + self._id + "/" + idx + '.image';
+    })
+    next();
 });
 
 mongoose.model('Product', productSchema);
