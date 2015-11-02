@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 
 var minlength = [20, "The length is shorter than the minimum required length"];
 
-var schema = new mongoose.Schema({
+var reviewSchema = new mongoose.Schema({
     product: {
         type: mongoose.Schema.Types.ObjectId, 
         ref: "Product",
@@ -25,3 +25,5 @@ var schema = new mongoose.Schema({
         min: 1
     }
 });
+
+mongoose.model('Review', reviewSchema)
