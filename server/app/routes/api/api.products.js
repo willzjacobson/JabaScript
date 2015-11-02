@@ -8,7 +8,6 @@ Promise.promisifyAll(mongoose);
 module.exports = router;
 
 router.get('/', function(req, res, next) {
-  console.log("Yo");
   Product.find({})
   .then(function(products) {
     res.json(products);
@@ -25,10 +24,10 @@ router.get('/:id', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
-  console.log(req.body);
   Product.create(req.body)
   .then(function(product) {
     res.status(201).json(product);
+    console.info("Post Successful");
   })
   .then(null, next);
 });
@@ -36,7 +35,8 @@ router.post('/', function(req, res, next) {
 router.put('/:id', function(req, res, next) {
   Product.findByIdAndUpdate(req.params.id, req.body, {new: true})
   .then(function(product) {
-    res.status(204).json(product);
+    res.json(product);
+    console.info("We updated");
   })
   .then(null, next);
 });
