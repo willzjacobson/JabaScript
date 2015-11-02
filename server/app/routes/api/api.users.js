@@ -1,9 +1,10 @@
 var router = require('express').Router();
 var mongoose = require("mongoose");
-var User = mongoose.model("User");
+var User = mongoose.model("User"); 
+var Review = mongoose.model("Review"); 
 
+// Get all of the users
 router.get("/", function (req, res, next) {
-	console.log("We are looking for users");
 	User.find({})
 	.then(function (users) {
 		res.json(users);
@@ -11,8 +12,8 @@ router.get("/", function (req, res, next) {
 	.then(null,next);
 });
 
+// Add a user to the db
 router.post("/", function (req, res, next){
-	console.log("We are adding a user");
 	User.create(req.body)
 	.then(function (user){
 		res.json(user);
@@ -20,5 +21,49 @@ router.post("/", function (req, res, next){
 	.then(null,next);
 });
 
+// Add middleware to find user by ID and save in req.user
+router.param("userId", function (req, res, next, userId){
+	User.findById(userId)
+	.then(function(user){
+		req.user = user;
+		next();
+	})
+	.then(null,next);
+})
+
+// Get a given user by ID
+router.get("/:userId", function (req, res, next) {
+	res.json(req.user);
+})
+
+// Update a given user by ID
+
+router.put("/:userId", function (req, res, next){
+	req.user.set(req.body);
+	req.user.save()
+	.then(function(user){
+		res.json(user);
+	})
+	.then(null, next);
+})
+
+
+// Delete a given user by ID
+router.delete("/:userId", function (req, res, next) {
+	User.findByIdAndRemove(req.user._id)
+	.then(function(user){
+		res.json(user);
+	})
+	.then(null,next);
+})
+
+// Get all the reviews that a user has made
+router.get("/:userId/reviews", function (req, res, next){
+	Review.find({user: req.user._id})
+	.then(function (reviews) {
+		res.json(reviews)
+	})
+	.then(null, next);
+})
 
 module.exports = router;
