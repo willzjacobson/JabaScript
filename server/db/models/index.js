@@ -3,9 +3,9 @@
 // anywhere the User model needs to be used.
 
 require('./models.user');
-// require('./models.product');
-// require('./models.order');
-// require('./models.review');
+require('./models.product');
+require('./models.order');
+require('./models.review');
 
 // module.exports = {
 //   User: require('./models.user'),
