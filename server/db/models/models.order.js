@@ -15,11 +15,11 @@ var orderSchema = new mongoose.Schema({
       default: Date.now,
       required: true
     },
-    // user: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: 'User',
-    //   required: false
-    // },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true
+    },
     details: [{
       product: {
         type: mongoose.Schema.Types.ObjectId,
