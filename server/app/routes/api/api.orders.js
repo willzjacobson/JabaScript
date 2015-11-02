@@ -12,7 +12,7 @@ router.get('/', function(req, res, next) {
   .then(function(orders) {
     res.json(orders);
   })
-  .catch(null, next);
+  .then(null, next);
 });
 
 router.get('/:id', function(req, res, next) {
@@ -20,7 +20,7 @@ router.get('/:id', function(req, res, next) {
   .then(function(order) {
     res.json(order);
   })
-  .catch(null, next);
+  .then(null, next);
 });
 
 router.post('/', function(req, res, next) {
@@ -28,7 +28,7 @@ router.post('/', function(req, res, next) {
   .then(function(order) {
     res.status(201).json(order);
   })
-  .catch(null, next);
+  .then(null, next);
 });
 
 router.put('/:id', function(req, res, next) {
@@ -36,7 +36,7 @@ router.put('/:id', function(req, res, next) {
   .then(function(order) {
     res.status(204).json(order);
   })
-  .catch(null, next);
+  .then(null, next);
 });
 
 router.delete('/:id', function(req, res, next) {
@@ -44,5 +44,5 @@ router.delete('/:id', function(req, res, next) {
   .then(function() {
     res.status(204).end();
   })
-  .catch(null, next);
+  .then(null, next);
 });

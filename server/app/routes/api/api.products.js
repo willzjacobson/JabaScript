@@ -8,12 +8,12 @@ Promise.promisifyAll(mongoose);
 module.exports = router;
 
 router.get('/', function(req, res, next) {
-  console.log("Yo")
+  console.log("Yo");
   Product.find({})
   .then(function(products) {
     res.json(products);
   })
-  .catch(null, next);
+  .then(null, next);
 });
 
 router.get('/:id', function(req, res, next) {
@@ -21,16 +21,16 @@ router.get('/:id', function(req, res, next) {
   .then(function(product) {
     res.json(product);
   })
-  .catch(null, next);
+  .then(null, next);
 });
 
 router.post('/', function(req, res, next) {
-  console.log("YO WHAT UP QAT")
+  console.log(req.body);
   Product.create(req.body)
   .then(function(product) {
     res.status(201).json(product);
   })
-  .catch(null, next);
+  .then(null, next);
 });
 
 router.put('/:id', function(req, res, next) {
@@ -38,7 +38,7 @@ router.put('/:id', function(req, res, next) {
   .then(function(product) {
     res.status(204).json(product);
   })
-  .catch(null, next);
+  .then(null, next);
 });
 
 router.delete('/:id', function(req, res, next) {
@@ -46,5 +46,5 @@ router.delete('/:id', function(req, res, next) {
   .then(function() {
     res.status(204).end();
   })
-  .catch(null, next);
+  .then(null, next);
 });
