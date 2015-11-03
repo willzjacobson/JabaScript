@@ -27,7 +27,7 @@ var productSchema = new mongoose.Schema({
     }
 });
 
-schema.pre('save', function (next) {
+productSchema.pre('save', function (next) {
     var self = this;
     this.images.forEach(function(image, idx) {
         if (!image.url) image.url = 'api/products/' + self._id + "/" + idx + '.image';
