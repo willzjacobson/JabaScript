@@ -18,8 +18,7 @@ describe('Order model', function () {
 	// accepts configuration object "options"
 	var createOrder = function (options) {
         return Order.create({
-        	user: options.userId,
-        	details: {$push: options.details}
+        	user: options.userId
         });
 	};
 	// returns promise for a test user
@@ -75,7 +74,7 @@ describe('Order model', function () {
     	});
     });
 
-    it("should be able to assign children to an order", function (done) {
+    it("should be able to assign items to an order", function (done) {
     	var user;
     	var product;
       var item;
