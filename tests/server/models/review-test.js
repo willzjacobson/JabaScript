@@ -129,39 +129,6 @@ xdescribe('Review model', function () {
                 done();
 			})
 		});
-
-
-        xit('should call User.encryptPassword with the given password and generated salt', function (done) {
-            createUser().then(function () {
-                var generatedSalt = saltSpy.getCall(0).returnValue;
-                expect(encryptSpy.calledWith('potus', generatedSalt)).to.be.ok;
-                done();
-            });
-        });
-
-        xit('should set user.salt to the generated salt', function (done) {
-           createUser().then(function (user) {
-               var generatedSalt = saltSpy.getCall(0).returnValue;
-               expect(user.salt).to.be.equal(generatedSalt);
-               done();
-           });
-        });
-
-        xit('should set user.password to the encrypted password', function (done) {
-            createUser().then(function (user) {
-                var createdPassword = encryptSpy.getCall(0).returnValue;
-                expect(user.password).to.be.equal(createdPassword);
-                done();
-            });
-        });
-
-        xit('should set isAdmin is false by default', function (done) {
-        	createUser().then(function (user) {
-        		expect(user.isAdmin).to.be.equal(false);
-        		done();
-        	})
-        })
-
     });
 
 });
