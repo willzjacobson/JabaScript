@@ -18,8 +18,8 @@ describe('Product model', function () {
         	category: 'Weapons',
         	price: 2000,
         	description: 'Be careful! This is a very dangerous but super awesome weapon!'
-        })		
-	}
+        });
+	};
 
     beforeEach('Establish DB connection', function (done) {
         if (mongoose.connection.db) return done();
@@ -27,7 +27,6 @@ describe('Product model', function () {
     });
 
     afterEach('Clear test database', function (done) {
-    	product = null;
         clearDB(done);
     });
 
@@ -47,6 +46,7 @@ describe('Product model', function () {
     	createProduct('Blue Lightsaber')
     	.then(function (product) {
     		createProduct('Blue Lightsaber');
+				done();
     	})
     	.then(null, function (err) {
     		expect(err).to.exist();

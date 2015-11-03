@@ -11,24 +11,24 @@ require('../../../server/db/models');
 var Order = mongoose.model('Order');
 var User = mongoose.model('User');
 var Product = mongoose.model('Product');
+var Item = mongoose.model('Item');
 
 describe('Order model', function () {
 	// returns promise for a test order
 	// accepts configuration object "options"
 	var createOrder = function (options) {
-        console.log('options in createOrder', options);
         return Order.create({
         	user: options.userId,
-        	details: [options.details] || []
-        })		
-	}
+        	details: {$push: options.details}
+        });
+	};
 	// returns promise for a test user
 	var createUser = function () {
 		return User.create({
 			email: 'jane@doe.com',
 			password: 1234
 		});
-	}
+	};
 	// returns promise for a test product
 	var createProduct = function () {
         return Product.create({
@@ -36,8 +36,15 @@ describe('Order model', function () {
         	category: 'Weapons',
         	price: 2000,
         	description: 'Be careful! This is a very dangerous but super awesome weapon!'
-        });	
-	}
+        });
+	};
+
+	var createItem = function (product) {
+		return Item.create({
+			product: product._id,
+			priceWhenOrdered: product.price
+		});
+	};
 
     beforeEach('Establish DB connection', function (done) {
         if (mongoose.connection.db) return done();
@@ -65,37 +72,40 @@ describe('Order model', function () {
     		expect(order).to.have.property('status', 'Created');
     		expect(order).to.have.property('dateIssued');
             done();
-    	})
+    	});
     });
 
-    it("should be able to assign details to an order", function (done) {
+    it("should be able to assign children to an order", function (done) {
     	var user;
     	var product;
+      var item;
+
     	createUser()
-    	.then(function (user) {
-    		user = user;
+    	.then(function (newUser) {
+    		user = newUser;
     		return createProduct();
     	})
-    	.then(function (product) {
-            console.log('right after we get the product')
-    		product = product;
-    		return createOrder({
-    			userId: user._id,
-    			details: {
-    				product: product._id,
-    				quantity: 1,
-    				priceWhenOrdered: product.price
-    			}
-    		});
-    	})
+			.then(function (newProduct) {
+				product = newProduct;
+				return createItem(product);
+			})
+			.then(function (newItem) {
+				item = newItem;
+				return createOrder({
+					userId: user._id,
+				});
+			})
     	.then(function (order) {
-            console.log('right after we get the order')
-    		expect(order.details.length).to.be.equal.to(1);
-    		expect(order.details[0].product).to.be.equal.to(product._id);
-    		expect(order.details[0].quantity).to.be.equal.to(1);
-    		expect(order.details[0].priceWhenOrdered).to.be.equal.to(product.price);
-    		done();
+				order.items.push(item._id);
+				return order.save();
+			})
+			.then(function (order) {
+				console.log('the order', order);
+        expect(order.items.length).to.equal(1);
+				done();
     	})
-    })
-
+			.then(null, function (err) {
+				console.log('An error occurred', err);
+			});
+    });
 });

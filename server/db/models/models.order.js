@@ -20,16 +20,18 @@ var orderSchema = new mongoose.Schema({
       ref: 'User',
       required: true
     },
-    details: [{
-      product: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Product'
-      },
-      quantity: Number,
-      priceWhenOrdered: Number
+    items: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Item'
     }]
-
-
 });
+
+orderSchema.virtual('isParent').get(function () {
+  return !this.parent;
+});
+
+orderSchema.methods.getChildren = function() {
+  return this.model('Order').find({parent: this._id});
+};
 
 mongoose.model('Order', orderSchema);
