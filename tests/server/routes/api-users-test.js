@@ -13,7 +13,7 @@ var clearDB = require('mocha-mongoose')(dbURI);
 var supertest = require('supertest');
 var app = require('../../../server/app');
 
-xdescribe('Users Route', function () {
+describe('Users Route', function () {
 
 	beforeEach('Establish DB connection', function (done) {
 		if (mongoose.connection.db) return done();
@@ -136,7 +136,12 @@ xdescribe('Users Route', function () {
 
 		beforeEach('Create loggedIn user agent and authenticate', function (done) {
 			loggedInAgent = supertest.agent(app);
-			loggedInAgent.post('/login').send(userInfo).end(done);
+			loggedInAgent.post('/login').send(userInfo)
+			.end(function (err, response){
+				if (err) console.log("I have erred");
+				else console.log("We have a response");
+				done()
+			});
 		});
 
 		it('should put with a 200 status', function (done) {
@@ -157,6 +162,39 @@ xdescribe('Users Route', function () {
 			.end(function (err, response) {
 				expect(response.body.email).to.equal("test@gmail.com");
 				done();			
+			})
+		})
+
+		it("it should allow a user to log in with the right password", function (done) {
+			loggedInAgent
+			.post("/login")
+			.send(userInfo)
+			.end(function (err, response){
+				expect(response.status).to.equal(200);
+				if (err) console.log("There was an error!");
+				else {
+					console.log("Our response info is: ", response);
+				}
+				done();
+			})
+		})		
+
+		it("it should allow a user to log in with the right password", function (done) {
+			loggedInAgent
+			.post("/login")
+			.send({
+			email: 'joe@gmail.com',
+			password: 'badPW'
+			})
+			.end(function (err, response){
+				expect(response.status).to.equal(401);
+				if (err) {
+					console.log("There was an error!");
+				}
+				else {
+					console.log("Our response info is: ", response);
+				}
+				done();
 			})
 		})
 
