@@ -20,16 +20,10 @@ var orderSchema = new mongoose.Schema({
       ref: 'User',
       required: true
     },
-    details: [{
-      product: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Product'
-      },
-      quantity: Number,
-      priceWhenOrdered: Number
+    items: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Item'
     }]
-
-
 });
 
 mongoose.model('Order', orderSchema);
