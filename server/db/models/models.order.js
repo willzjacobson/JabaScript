@@ -26,12 +26,4 @@ var orderSchema = new mongoose.Schema({
     }]
 });
 
-orderSchema.virtual('isParent').get(function () {
-  return !this.parent;
-});
-
-orderSchema.methods.getChildren = function() {
-  return this.model('Order').find({parent: this._id});
-};
-
 mongoose.model('Order', orderSchema);
