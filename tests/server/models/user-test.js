@@ -10,7 +10,7 @@ require('../../../server/db/models');
 
 var User = mongoose.model('User');
 
-describe('User model', function () {
+xdescribe('User model', function () {
 
     beforeEach('Establish DB connection', function (done) {
         if (mongoose.connection.db) return done();
@@ -139,6 +139,22 @@ describe('User model', function () {
                     done();
                 });
             });
+
+            it('should set isAdmin is false by default', function (done) {
+                createUser().then(function (user) {
+                    expect(user.isAdmin).to.be.equal(false);
+                    done();
+                })
+            })
+
+            it("should reject an invalid email", function (done) {
+                User.create({ email: 'obamagmail.com', password: 'potus' })
+                .then(null,function(err){
+                    expect(err).to.exist
+                    expect(err.errors.email).to.exist
+                    done();
+                })
+            })
 
         });
 

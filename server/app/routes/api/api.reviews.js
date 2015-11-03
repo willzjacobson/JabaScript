@@ -23,6 +23,7 @@ router.post("/", function (req, res, next){
 // Add middleware to find review by ID and save in req.review
 router.param("reviewId", function (req, res, next, reviewId){
 	Review.findById(reviewId)
+	.populate('user product')
 	.then(function(review){
 		req.review = review;
 		next();

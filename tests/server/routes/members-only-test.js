@@ -22,7 +22,7 @@ describe('Members Route', function () {
 		clearDB(done);
 	});
 
-	describe('Unauthenticated request', function () {
+	xdescribe('Unauthenticated request', function () {
 
 		var guestAgent;
 
@@ -38,7 +38,7 @@ describe('Members Route', function () {
 
 	});
 
-	describe('Authenticated request', function () {
+	xdescribe('Authenticated request', function () {
 
 		var loggedInAgent;
 

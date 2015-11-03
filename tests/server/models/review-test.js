@@ -1,147 +1,134 @@
-// var dbURI = 'mongodb://localhost:27017/testingDB';
-// var clearDB = require('mocha-mongoose')(dbURI);
+var dbURI = 'mongodb://localhost:27017/testingDB';
+var clearDB = require('mocha-mongoose')(dbURI);
 
-// var sinon = require('sinon');
-// var expect = require('chai').expect;
-// var mongoose = require('mongoose');
+var sinon = require('sinon');
+var expect = require('chai').expect;
+var mongoose = require('mongoose');
 
-// // Require in all models.
-// require('../../../server/db/models');
+// Require in all models.
+require('../../../server/db/models');
 
-// var User = mongoose.model('User');
+var Review = mongoose.model('Review');
+var Product = mongoose.model('Product');
+var User = mongoose.model('User');
 
-// describe('User model', function () {
+xdescribe('Review model', function () {
 
-//     beforeEach('Establish DB connection', function (done) {
-//         if (mongoose.connection.db) return done();
-//         mongoose.connect(dbURI, done);
-//     });
+    beforeEach('Establish DB connection', function (done) {
+        if (mongoose.connection.db) return done();
+        mongoose.connect(dbURI, done);
+    });
 
-//     afterEach('Clear test database', function (done) {
-//         clearDB(done);
-//     });
+    afterEach('Clear test database', function (done) {
+        clearDB(done);
+    });
 
-//     it('should exist', function () {
-//         expect(User).to.be.a('function');
-//     });
+    it('should exist', function () {
+        expect(Review).to.be.a('function');
+    });
 
-//     describe('password encryption', function () {
+      
 
-//         describe('generateSalt method', function () {
+    describe('on creation', function () {
 
-//             it('should exist', function () {
-//                 expect(User.generateSalt).to.be.a('function');
-//             });
+        var encryptSpy;
+        var saltSpy;
 
-//             it('should return a random string basically', function () {
-//                 expect(User.generateSalt()).to.be.a('string');
-//             });
+    	var testProduct;
+		beforeEach("Create a product", function (done) {
+			Product.create({name:"testProduct"})
+			.then(function(product){
+				testProduct = product;
+				done();
+			})
+		})			
 
-//         });
+		var testUser;
+		beforeEach("Create a user", function (done) {
+			User.create({
+				email: "user@gmail.com"
+			})
+			.then(function(user){
+				testUser = user;
+				done();
+			}, function(err){
+				done();
+			})
+		})
 
-//         describe('encryptPassword', function () {
+		var testReview1;
+		var testReview2;
+		beforeEach("Creates 2 reviews", function (done) {
+			Review.create({
+				user: testUser._id,
+				product: testProduct._id,
+				content: "I am a review of testProduct written by testUser"
+			}, {
+				user: testUser._id,
+				product: testProduct._id,
+				content: "I am the second review written by the same person on the same thing"
+			})
+			.then(function(reviews){
+				console.log(reviews);
+				testReview1 = reviews[0];
+				testReview2 = reviews[1];
+				done();
+			}, function(err){
+				done();
+			})
+		})
 
-//             var cryptoStub;
-//             var hashUpdateSpy;
-//             var hashDigestStub;
-//             beforeEach(function () {
+		it('is created when we give right params', function (done) {
+			Review.find({})
+			.then(function(reviews) {
+				expect(reviews.length).to.equal(2);
+				done();
+			}, function(err) {
+				done();
+			});
+		});
 
-//                 cryptoStub = sinon.stub(require('crypto'), 'createHash');
+		it('it is not created when we give fake user reference', function() {
+			Review.create({
+				user: 'sdcdscscwe22',
+				product: testProduct._id,
+				content: "I'm about nothing written by nobody; I shouldn't be"
+			})
+			.then(function(review) {
+				done();
+			}, function(err) {
+				expect(err).to.exist;
+                done();
+			})
+		});
 
-//                 hashUpdateSpy = sinon.spy();
-//                 hashDigestStub = sinon.stub();
+		it('it is not created when we give fake product reference', function() {
+			Review.create({
+				user: testUser._id,
+				product: 'sdcdscscwe22',
+				content: "I'm about nothing written by nobody; I shouldn't be"
+			})
+			.then(function(review) {
+				done();
+			}, function(err) {
+				expect(err).to.exist;
+                done();
+			})
+		});
 
-//                 cryptoStub.returns({
-//                     update: hashUpdateSpy,
-//                     digest: hashDigestStub
-//                 });
+		it('it is not created when the content is too short', function() {
+			Review.create({
+				user: testUser._id,
+				product: testProduct._id,
+				content: "I'm too short"
+			})
+			.then(function(review) {
+				done();
+			}, function(err) {
+				expect(err).to.exist;
+                done();
+			})
+		});
+    });
 
-//             });
-
-//             afterEach(function () {
-//                 cryptoStub.restore();
-//             });
-
-//             it('should exist', function () {
-//                 expect(User.encryptPassword).to.be.a('function');
-//             });
-
-//             it('should call crypto.createHash with "sha1"', function () {
-//                 User.encryptPassword('asldkjf', 'asd08uf2j');
-//                 expect(cryptoStub.calledWith('sha1')).to.be.ok;
-//             });
-
-//             it('should call hash.update with the first and second argument', function () {
-
-//                 var pass = 'testing';
-//                 var salt = '1093jf10j23ej===12j';
-
-//                 User.encryptPassword(pass, salt);
-
-//                 expect(hashUpdateSpy.getCall(0).args[0]).to.be.equal(pass);
-//                 expect(hashUpdateSpy.getCall(1).args[0]).to.be.equal(salt);
-
-//             });
-
-//             it('should call hash.digest with hex and return the result', function () {
-
-//                 var x = {};
-//                 hashDigestStub.returns(x);
-
-//                 var e = User.encryptPassword('sdlkfj', 'asldkjflksf');
-
-//                 expect(hashDigestStub.calledWith('hex')).to.be.ok;
-//                 expect(e).to.be.equal(x);
-
-//             });
-
-//         });
-
-//         describe('on creation', function () {
-
-//             var encryptSpy;
-//             var saltSpy;
-
-//             var createUser = function () {
-//                 return User.create({ email: 'obama@gmail.com', password: 'potus' });
-//             };
-
-//             beforeEach(function () {
-//                 encryptSpy = sinon.spy(User, 'encryptPassword');
-//                 saltSpy = sinon.spy(User, 'generateSalt');
-//             });
-
-//             afterEach(function () {
-//                 encryptSpy.restore();
-//                 saltSpy.restore();
-//             });
-
-//             it('should call User.encryptPassword with the given password and generated salt', function (done) {
-//                 createUser().then(function () {
-//                     var generatedSalt = saltSpy.getCall(0).returnValue;
-//                     expect(encryptSpy.calledWith('potus', generatedSalt)).to.be.ok;
-//                     done();
-//                 });
-//             });
-
-//             it('should set user.salt to the generated salt', function (done) {
-//                createUser().then(function (user) {
-//                    var generatedSalt = saltSpy.getCall(0).returnValue;
-//                    expect(user.salt).to.be.equal(generatedSalt);
-//                    done();
-//                });
-//             });
-
-//             it('should set user.password to the encrypted password', function (done) {
-//                 createUser().then(function (user) {
-//                     var createdPassword = encryptSpy.getCall(0).returnValue;
-//                     expect(user.password).to.be.equal(createdPassword);
-//                     done();
-//                 });
-//             });
-
-//         });
-
-//     });
-
-// });
+});
