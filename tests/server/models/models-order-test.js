@@ -16,6 +16,7 @@ describe('Order model', function () {
 	// returns promise for a test order
 	// accepts configuration object "options"
 	var createOrder = function (options) {
+        console.log('options in createOrder', options);
         return Order.create({
         	user: options.userId,
         	details: [options.details] || []
@@ -63,6 +64,7 @@ describe('Order model', function () {
     	.then(function (order) {
     		expect(order).to.have.property('status', 'Created');
     		expect(order).to.have.property('dateIssued');
+            done();
     	})
     });
 
@@ -75,6 +77,7 @@ describe('Order model', function () {
     		return createProduct();
     	})
     	.then(function (product) {
+            console.log('right after we get the product')
     		product = product;
     		return createOrder({
     			userId: user._id,
@@ -86,6 +89,7 @@ describe('Order model', function () {
     		});
     	})
     	.then(function (order) {
+            console.log('right after we get the order')
     		expect(order.details.length).to.be.equal.to(1);
     		expect(order.details[0].product).to.be.equal.to(product._id);
     		expect(order.details[0].quantity).to.be.equal.to(1);
