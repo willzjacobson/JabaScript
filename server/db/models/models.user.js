@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 
 var emailRegex = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/i;
 
-var schema = new mongoose.Schema({
+var userSchema = new mongoose.Schema({
     email: {
         type: String,
         unique: true,
@@ -52,7 +52,7 @@ var encryptPassword = function (plainText, salt) {
     return hash.digest('hex');
 };
 
-schema.pre('save', function (next) {
+userSchema.pre('save', function (next) {
 
     if (this.isModified('password')) {
         this.salt = this.constructor.generateSalt();
@@ -62,11 +62,11 @@ schema.pre('save', function (next) {
 
 });
 
-schema.statics.generateSalt = generateSalt;
-schema.statics.encryptPassword = encryptPassword;
+userSchema.statics.generateSalt = generateSalt;
+userSchema.statics.encryptPassword = encryptPassword;
 
-schema.method('correctPassword', function (candidatePassword) {
+userSchema.method('correctPassword', function (candidatePassword) {
     return encryptPassword(candidatePassword, this.salt) === this.password;
 });
 
-mongoose.model('User', schema);
+mongoose.model('User', userSchema);
