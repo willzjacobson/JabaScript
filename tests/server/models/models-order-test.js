@@ -62,6 +62,7 @@ xdescribe('Order model', function () {
     it("should have the default fields when those fields aren't specified", function (done) {
     	var user;
     	var product;
+        // @OP beforeEach?
     	createUser()
     	.then(function (user) {
     		user = user;
@@ -78,7 +79,8 @@ xdescribe('Order model', function () {
     	var user;
     	var product;
       var item;
-
+        // @OP beforeEach?
+        // Also, what's with the indentation?
     	createUser()
     	.then(function (newUser) {
     		user = newUser;
@@ -105,6 +107,7 @@ xdescribe('Order model', function () {
     	})
 			.then(null, function (err) {
 				console.log('An error occurred', err);
+                // @OP pass along err to done, i.e. done(err)
 			});
     });
 });

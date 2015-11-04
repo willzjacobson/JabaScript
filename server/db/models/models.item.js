@@ -2,6 +2,8 @@
 
 var mongoose = require('mongoose');
 
+// @OP
+// more validations, e.g. required stuff
 var itemSchema = new mongoose.Schema({
   product: {
     type: mongoose.Schema.Types.ObjectId,
@@ -15,5 +17,6 @@ var itemSchema = new mongoose.Schema({
     type: Number
   }
 });
+
 
 mongoose.model('Item', itemSchema);

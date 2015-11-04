@@ -25,8 +25,8 @@ router.post("/", function (req, res, next){
 router.param("userId", function (req, res, next, userId){
 	User.findById(userId)
 	.then(function(user){
-		req.user = user;
-		if (req.ourUser) req.ourUser.hasPermission = req.ourUser.isAdmin || req.ourUser._id.equals(user._id);
+		req.user = user; // @OP bad idea, req.user will be the user that is logged in, consider another name, e.g.req.requestedUser
+		if (req.ourUser) req.ourUser.hasPermission = req.ourUser.isAdmin || req.ourUser._id.equals(user._id); // @OP ????
 		if (req.ourUser) console.log("req.ourUser.hasPermission: ",req.ourUser.hasPermission);
 		next();
 	})

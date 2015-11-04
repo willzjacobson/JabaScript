@@ -19,6 +19,7 @@ router.param("id", function (req, res, next, id){
 
 })
 
+// @OP no :userId in any of these route handlers
 router.param("userId", function (req, res, next, userId){
   User.findById(userId)
   .then(function(user){
@@ -30,6 +31,7 @@ router.param("userId", function (req, res, next, userId){
   .then(null,next);
 })
 
+// @OP consider router.param to load req.order
 router.get('/:id', function(req, res, next) {
   Order.findById(req.params.id).populate("")
   .then(function(order) {
@@ -64,5 +66,5 @@ router.delete('/:id', function(req, res, next) {
 
 router.put("/:orderId/items/:itemId") {
   if hasPermission 
-    Item.put(GFDGDFG)
+    Item.put(GFDGDFG) // @OP ???
 }

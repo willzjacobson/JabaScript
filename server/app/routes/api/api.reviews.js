@@ -26,6 +26,8 @@ router.param("reviewId", function (req, res, next, reviewId){
 	.populate('user product')
 	.then(function(review){
 		req.review = review;
+		// @OP
+		// recommend auth middleware functions instead of setting property hasPermission, hasPermission is too blunt
 		if (req.ourUser) req.ourUser.hasPermission = req.ourUser.isAdmin || req.ourUser._id.equals(review.user._id);
 		if (req.ourUser) console.log("ourUser has hasPermission ", req.ourUser.hasPermission);
 		next();
