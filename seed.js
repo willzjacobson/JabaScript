@@ -22,36 +22,274 @@ var Promise = require('bluebird');
 var chalk = require('chalk');
 var connectToDb = require('./server/db');
 var User = Promise.promisifyAll(mongoose.model('User'));
+var Product = Promise.promisifyAll(mongoose.model('Product'));
+var Item = Promise.promisifyAll(mongoose.model('Item'));
+var Review = Promise.promisifyAll(mongoose.model('Review'));
+var Order = Promise.promisifyAll(mongoose.model('Order'));
+
+// As we create these in mongo, save them here so can reference each other
+var users, products, orders, items, reviews;
 
 var seedUsers = function () {
-
     var users = [
         {
-            email: 'testing@fsa.com',
-            password: 'password'
+            email: 'hillary@fsa.com',
+            password: 'president'
         },
         {
             email: 'obama@gmail.com',
             password: 'potus'
+        },
+        {
+            email: 'biden@gmail.com',
+            password: 'votus'
+        },
+        {
+            email: 'sarahpalin@gmail.com',
+            password: 'doofus'
+        },
+        {
+            email: 'trump@gmail.com',
+            password: 'pompus'
         }
     ];
-
     return User.createAsync(users);
-
 };
 
+var seedProducts = function () {
+    var products = [
+        {
+            name: 'blue lightsaber',
+            category: 'weapon',
+            price: 700000.45,
+            description: 'this is awesome but pretty dangerous',
+            numRemaining: 7
+        },
+        {
+            name: 'Brown Jawa Robe',
+            category: 'Wardrobe',
+            price: 12.98,
+            description: 'stylish as fuck',
+            numRemaining: 10001
+        },
+        {
+            name: 'Death Sticks',
+            category: 'Narcotics',
+            price: 1.99,
+            description: 'these aren\'t good for you, but they\'re fun',
+            numRemaining: 2
+        },
+        {
+            name: 'Blaster',
+            category: 'Weapon',
+            price: 999.99,
+            description: 'great for killing',
+            numRemaining: 11
+        },
+        {
+            name: 'Jedi Robe',
+            category: 'Wardrobe',
+            price: 24.95,
+            description: 'Look like a boss',
+            numRemaining: 14
+        }
+
+    ];
+    return Product.createAsync(products);
+};
+
+var seedReviews = function () {
+    var reviews = [
+        {
+            product: products[0]._id,
+            user: users[0]._id,
+            content: "Don't know what I'm reviewing but i liked it",
+            rating: 5
+        },
+        {
+            product: products[0]._id,
+            user: users[0]._id,
+            content: "I hated this. it made me incredibly unhappy",
+            rating: 1
+        },
+        {
+            product: products[1]._id,
+            user: users[0]._id,
+            content: "hell yeah this thing. it was realler perfect for me",
+            rating: 5
+        },
+        {
+            product: products[2]._id,
+            user: users[2]._id,
+            content: "I bought this and now i'm writing a review",
+            rating: 4
+        },
+        {
+            product: products[3]._id,
+            user: users[3]._id,
+            content: "this is a 20 or more character review",
+            rating: 2
+        },
+        {
+            product: products[4]._id,
+            user: users[4]._id,
+            content: "Don't know what I'm reviewing but i liked it",
+            rating: 5
+        },
+        {
+            product: products[4]._id,
+            user: users[2]._id,
+            content: "blah BLAH blah BLAH blah BLAH blah BLAH ",
+            rating: 5
+        }
+    ];
+    return Review.createAsync(reviews);
+};
+
+var seedItems = function () {
+    var items = [
+        {
+            product: products[0]._id,
+            quantity: 4,
+            priceWhenOrdered: products[0].price
+        },
+        {
+            product: products[1]._id,
+            quantity: 3,
+            priceWhenOrdered: products[1].price
+        },
+        {
+            product: products[2]._id,
+            quantity: 1,
+            priceWhenOrdered: products[2].price
+        },
+        {
+            product: products[0]._id,
+            quantity: 2,
+            priceWhenOrdered: products[0].price
+        },
+        {
+            product: products[1]._id,
+            quantity: 1,
+            priceWhenOrdered: products[1].price
+        },
+        {
+            product: products[2]._id,
+            quantity: 1,
+            priceWhenOrdered: products[2].price
+        },
+        {
+            product: products[3]._id,
+            quantity: 1,
+            priceWhenOrdered: products[3].price
+        },
+        {
+            product: products[0]._id,
+            quantity: 2,
+            priceWhenOrdered: products[0].price
+        }
+    ];
+    return Item.createAsync(items);
+};
+
+var seedOrders = function () {
+    var orders = [
+        {
+            status: 'Completed',
+            dateIssued: new Date(),
+            user: users[0]._id,
+            items: [items[0]._id, items[1]._id, items[2]._id]
+        },
+        {
+            status: 'Processing',
+            dateIssued: new Date(),
+            user: users[1]._id,
+            items: [items[3]._id, items[4]._id]
+        },
+        {
+            status: 'Cancelled',
+            dateIssued: new Date(),
+            user: users[2]._id,
+            items: [items[5]._id]
+        },
+        {
+            status: 'Created',
+            dateIssued: new Date(),
+            user: users[3]._id,
+            items: [items[6]._id, items[7]._id]
+        }
+
+    ];
+    return Order.createAsync(orders);
+};
+
+var users, products, orders, items, reviews;
+
 connectToDb.then(function () {
-    User.findAsync({}).then(function (users) {
+    mongoose.connection.db.dropDatabase()
+    .then(function() {
+        return User.findAsync({})
+    })
+    .then(function (users) {
         if (users.length === 0) {
             return seedUsers();
         } else {
             console.log(chalk.magenta('Seems to already be user data, exiting!'));
             process.kill(0);
         }
-    }).then(function () {
+    })
+    .then(function(usersArr) {
+        users = usersArr;
+        return Product.findAsync({})
+    })
+    .then(function (products) {
+        if (products.length === 0) {
+            return seedProducts();
+        } else {
+            console.log(chalk.magenta('Seems to already be product data, exiting!'));
+            process.kill(0);
+        }
+    })
+    .then(function(productsArr) {
+        products = productsArr;
+        return Review.findAsync({})
+    })
+    .then(function (reviews) {
+        if (reviews.length === 0) {
+            return seedReviews();
+        } else {
+            console.log(chalk.magenta('Seems to already be review data, exiting!'));
+            process.kill(0);
+        }
+    })
+    .then(function() {
+        return Item.findAsync({})
+    })
+    .then(function (items) {
+        if (items.length === 0) {
+            return seedItems();
+        } else {
+            console.log(chalk.magenta('Seems to already be item data, exiting!'));
+            process.kill(0);
+        }
+    })
+    .then(function(itemsArr) {
+        items = itemsArr;
+        return Order.findAsync({})
+    })
+    .then(function (orders) {
+        if (orders.length === 0) {
+            return seedOrders();
+        } else {
+            console.log(chalk.magenta('Seems to already be order data, exiting!'));
+            process.kill(0);
+        }
+    })
+    .then(function () {
         console.log(chalk.green('Seed successful!'));
         process.kill(0);
-    }).catch(function (err) {
+    })
+    .catch(function (err) {
         console.error(err);
         process.kill(1);
     });
