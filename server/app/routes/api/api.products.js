@@ -58,7 +58,7 @@ router.delete('/:id', function(req, res, next) {
     res.status(401).end()
   }
   else {
-    Product.findByIdAndRemove(req.product._id)
+    req.product.remove()
     .then(function(product){
       res.status(204).json(product);
     })
