@@ -49,7 +49,7 @@ router.put('/:orderId', function(req, res, next) {
 });
 
 router.delete('/:orderId', function(req, res, next) {
-  Order.findByIdAndRemove(req.order._id)
+  req.order.remove()
   .then(function(order){
     res.json(order);
   })
@@ -90,7 +90,8 @@ router.param("itemId", function (req, res, next, itemId){
 })
 
 router.put("/:orderId/items/:itemId", function (req, res, next){
-  Item.findByIdAndUpdate(req.item._id, req.body, {new: true})
+  req.item.set(req.body)
+  req.item.save()
   .then(function(item) {
     res.status(200).json(item)
   })
@@ -98,7 +99,7 @@ router.put("/:orderId/items/:itemId", function (req, res, next){
 });
 
 router.delete("/:orderId/items/:itemId", function (req, res, next){
-  Item.findByIdAndRemove(req.item._id)
+  req.item.remove()
   .then(function() {
     res.status(204).send()
   })
