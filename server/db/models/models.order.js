@@ -20,8 +20,6 @@ var orderSchema = new mongoose.Schema({
       ref: 'User',
       required: true
     },
-    // toObject: {virtuals: true },
-    // toJSON: {virtuals: true},
     items: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Item'
