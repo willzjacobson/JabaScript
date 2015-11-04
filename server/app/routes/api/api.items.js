@@ -32,6 +32,7 @@ router.post('/', function(req, res, next) {
 });
 
 router.put('/:id', function(req, res, next) {
+  console.log('req.body', req.body);
   Item.findByIdAndUpdate(req.params.id, req.body, {new: true})
   .then(function(order) {
     res.status(200).json(item);
