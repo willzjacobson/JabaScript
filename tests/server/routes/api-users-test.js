@@ -175,10 +175,10 @@ xdescribe('Users Route', function () {
 			.send(userInfo)
 			.end(function (err, response){
 				expect(response.status).to.equal(200);
-				if (err) console.log("There was an error!");
-				else {
-					// console.log("Our response info is: ", response);
-				}
+				// if (err) console.log("There was an error!");
+				// else {
+				// 	// console.log("Our response info is: ", response);
+				// }
 				done();
 			})
 		})		

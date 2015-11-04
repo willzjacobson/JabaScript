@@ -8,10 +8,10 @@ var mongoose = require('mongoose');
 var UserModel = mongoose.model('User');
 
 var ENABLED_AUTH_STRATEGIES = [
-    'local'
+    'local',
     //'twitter',
     //'facebook',
-    //'google'
+    'google'
 ];
 
 module.exports = function (app) {
@@ -45,7 +45,6 @@ module.exports = function (app) {
     app.use(function (req, res, next) {
         UserModel.findById(req.session.passport.user)
         .then(function(user){
-            req.ourUser = user;
             next();
         })
         .then(null, next);

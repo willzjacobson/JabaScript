@@ -25,9 +25,9 @@ router.post("/", function (req, res, next){
 router.param("userId", function (req, res, next, userId){
 	User.findById(userId)
 	.then(function(user){
-		req.user = user;
-		if (req.ourUser) req.ourUser.hasPermission = req.ourUser.isAdmin || req.ourUser._id.equals(user._id);
-		if (req.ourUser) console.log("req.ourUser.hasPermission: ",req.ourUser.hasPermission);
+		req.requestUser = user;
+		if (req.user) req.user.hasPermission = req.user.isAdmin || req.user._id.equals(user._id);
+		if (req.user) console.log("req.user.hasPermission: ",req.user.hasPermission);
 		next();
 	})
 	.then(null,next);
@@ -35,17 +35,17 @@ router.param("userId", function (req, res, next, userId){
 
 // Get a given user by ID
 router.get("/:userId", function (req, res, next) {
-	res.json(req.user);
+	res.json(req.requestUser);
 })
 
 // Update a given user by ID
 
 router.put("/:userId", function (req, res, next){
-	if (!req.ourUser || !req.ourUser.hasPermission) {
+	if (!req.user || !req.user.hasPermission) {
 		res.status(401).end();
 	} else {
-		req.user.set(req.body);
-		req.user.save()
+		req.requestUser.set(req.body);
+		req.requestUser.save()
 		.then(function(user){
 			res.json(user);
 		})
@@ -56,12 +56,12 @@ router.put("/:userId", function (req, res, next){
 
 // Delete a given user by ID
 router.delete("/:userId", function (req, res, next) {
-	if (!req.ourUser || !req.ourUser.hasPermission) {
+	if (!req.user || !req.user.hasPermission) {
 		res.status(401).end();
 	} else {
-		User.findByIdAndRemove(req.user._id)
-		.then(function(user){
-			res.json(user);
+		req.requestUser.remove()
+		.then(function (user){
+			res.status(401).json(user);
 		})
 		.then(null,next);
 	}
@@ -69,7 +69,7 @@ router.delete("/:userId", function (req, res, next) {
 
 // Get all the reviews that a user has made
 router.get("/:userId/reviews", function (req, res, next){
-	Review.find({user: req.user._id})
+	Review.find({user: req.requestUser._id})
 	.then(function (reviews) {
 		res.json(reviews)
 	})

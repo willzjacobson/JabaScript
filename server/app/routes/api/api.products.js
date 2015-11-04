@@ -24,7 +24,7 @@ router.get('/:id', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
-  if (!req.ourUser || !req.ourUser.isAdmin) {
+  if (!req.user || !req.user.isAdmin) {
     res.status(401).end()
   } else{
     Product.create(req.body)
@@ -37,7 +37,7 @@ router.post('/', function(req, res, next) {
 });
 
 router.put('/:id', function(req, res, next) {
-  if (!req.ourUser || !req.ourUser.isAdmin) {
+  if (!req.user || !req.user.isAdmin) {
     res.status(401).end()
   }
   else {
@@ -51,7 +51,7 @@ router.put('/:id', function(req, res, next) {
 });
 
 router.delete('/:id', function(req, res, next) {
-  if (!req.ourUser || !req.ourUser.isAdmin) {
+  if (!req.user || !req.user.isAdmin) {
     res.status(401).end()
   }
   else {
