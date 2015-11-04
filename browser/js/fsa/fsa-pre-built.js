@@ -96,9 +96,6 @@
 
         this.signup = function (credentials) {
             return $http.post('/api/users', credentials)
-                .then(function (res) {
-                    return res;
-                })
                 .then(onSuccessfulLogin)
                 .catch(function () {
                     return $q.reject({ message: 'I sense a disturbance in the force. Search your entered email and make sure that it is true.' })
