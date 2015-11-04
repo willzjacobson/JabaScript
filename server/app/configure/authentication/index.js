@@ -8,7 +8,7 @@ var mongoose = require('mongoose');
 var UserModel = mongoose.model('User');
 
 var ENABLED_AUTH_STRATEGIES = [
-    'local',
+    'local'
     //'twitter',
     //'facebook',
     //'google'
@@ -41,6 +41,16 @@ module.exports = function (app) {
     passport.deserializeUser(function (id, done) {
         UserModel.findById(id, done);
     });
+
+    app.use(function (req, res, next) {
+        UserModel.findById(req.session.passport.user)
+        .then(function(user){
+            req.ourUser = user;
+            next();
+        })
+        .then(null, next);
+
+    })
 
     // We provide a simple GET /session in order to get session information directly.
     // This is used by the browser application (Angular) to determine if a user is

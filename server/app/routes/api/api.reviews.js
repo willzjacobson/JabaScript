@@ -26,6 +26,8 @@ router.param("reviewId", function (req, res, next, reviewId){
 	.populate('user product')
 	.then(function(review){
 		req.review = review;
+		if (req.ourUser) req.ourUser.hasPermission = req.ourUser.isAdmin || req.ourUser._id.equals(review.user._id);
+		if (req.ourUser) console.log("ourUser has hasPermission ", req.ourUser.hasPermission);
 		next();
 	})
 	.then(null,next);
@@ -39,22 +41,32 @@ router.get("/:reviewId", function (req, res, next) {
 // Update a given review by ID
 
 router.put("/:reviewId", function (req, res, next){
-	req.review.set(req.body);
-	req.review.save()
-	.then(function(review){
-		res.json(review);
-	})
-	.then(null, next);
+	if (!req.ourUser || !req.ourUser.hasPermission){
+		res.status(401).end();
+	}
+	else {
+		req.review.set(req.body);
+		req.review.save()
+		.then(function(review){
+			res.json(review);
+		})
+		.then(null, next);
+	}
 })
 
 
 // Delete a given review by ID
 router.delete("/:reviewId", function (req, res, next) {
-	Review.findByIdAndRemove(req.review._id)
-	.then(function(review){
-		res.json(review);
-	})
-	.then(null,next);
+	if (!req.ourUser || !req.ourUser.hasPermission){
+		res.status(401).end();
+	}
+	else {
+		Review.findByIdAndRemove(req.review._id)
+		.then(function(review){
+			res.json(review);
+		})
+		.then(null,next);
+	}
 })
 
 module.exports = router;

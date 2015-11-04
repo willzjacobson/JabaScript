@@ -15,8 +15,23 @@ router.get('/', function(req, res, next) {
   .then(null, next);
 });
 
+router.param("id", function (req, res, next, id){
+
+})
+
+router.param("userId", function (req, res, next, userId){
+  User.findById(userId)
+  .then(function(user){
+    req.user = user;
+    if (req.ourUser) req.ourUser.hasPermission = req.ourUser.isAdmin || req.ourUser._id.equals(user._id);
+    if (req.ourUser) console.log("req.ourUser.hasPermission: ",req.ourUser.hasPermission);
+    next();
+  })
+  .then(null,next);
+})
+
 router.get('/:id', function(req, res, next) {
-  Order.findById(req.params.id)
+  Order.findById(req.params.id).populate("")
   .then(function(order) {
     res.json(order);
   })
@@ -46,3 +61,8 @@ router.delete('/:id', function(req, res, next) {
   })
   .then(null, next);
 });
+
+router.put("/:orderId/items/:itemId") {
+  if hasPermission 
+    Item.put(GFDGDFG)
+}

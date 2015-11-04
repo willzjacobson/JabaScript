@@ -22,7 +22,7 @@ xdescribe('Users Route', function () {
 
 	var testUser;
 	beforeEach("Create a random user", function (done) {
-		return User.create({email:"test@gmail.com"})
+		User.create({email:"test@gmail.com"})
 		.then(function(user){
 			testUser = user;
 			done();
@@ -127,19 +127,23 @@ xdescribe('Users Route', function () {
 
 		var userInfo = {
 			email: 'joe@gmail.com',
-			password: 'shoopdawoop'
+			password: 'shoopdawoop',
+			isAdmin: true
 		};
-
+		var loggedInUserId;
 		beforeEach('Create a user', function (done) {
-			User.create(userInfo, done);
+			User.create(userInfo, done)
+			.then(function(user){
+				loggedInUserId = user._id;
+			});
 		});
 
 		beforeEach('Create loggedIn user agent and authenticate', function (done) {
 			loggedInAgent = supertest.agent(app);
 			loggedInAgent.post('/login').send(userInfo)
 			.end(function (err, response){
-				if (err) console.log("I have erred");
-				else console.log("We have a response");
+				// if (err) console.log("I have erred");
+				// else console.log("We have a response");
 				done()
 			});
 		});
@@ -173,13 +177,13 @@ xdescribe('Users Route', function () {
 				expect(response.status).to.equal(200);
 				if (err) console.log("There was an error!");
 				else {
-					console.log("Our response info is: ", response);
+					// console.log("Our response info is: ", response);
 				}
 				done();
 			})
 		})		
 
-		it("it should allow a user to log in with the right password", function (done) {
+		xit("it should not allow a user to log in with the wrong password", function (done) {
 			loggedInAgent
 			.post("/login")
 			.send({
@@ -189,10 +193,10 @@ xdescribe('Users Route', function () {
 			.end(function (err, response){
 				expect(response.status).to.equal(401);
 				if (err) {
-					console.log("There was an error!");
+					// console.log("There was an error!");
 				}
 				else {
-					console.log("Our response info is: ", response);
+					// console.log("Our response info is: ", response);
 				}
 				done();
 			})
@@ -205,6 +209,17 @@ xdescribe('Users Route', function () {
 				done();
 			});
 		});
+
+		it("should delete with a 200 status", function (done) {
+			console.log("req.ourUser")
+			loggedInAgent
+			.delete("/api/users/"+ loggedInUserId)
+			.expect(200)
+			.end(function (err, response) {
+				expect(response.body.email).to.equal("joe@gmail.com");
+				done();			
+			})
+		})
 
 	});
 
