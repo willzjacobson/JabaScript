@@ -15,14 +15,6 @@ router.get('/', function(req, res, next) {
   .then(null, next);
 });
 
-router.get('/:id', function(req, res, next) {
-  Product.findById(req.params.id)
-  .then(function(product) {
-    res.json(product);
-  })
-  .then(null, next);
-});
-
 router.post('/', function(req, res, next) {
   Product.create(req.body)
   .then(function(product) {
@@ -32,19 +24,32 @@ router.post('/', function(req, res, next) {
   .then(null, next);
 });
 
-router.put('/:id', function(req, res, next) {
-  Product.findByIdAndUpdate(req.params.id, req.body, {new: true})
+router.param('productId', function(req, res, next, productId) {
+  Product.findById(productId)
   .then(function(product) {
-    res.status(200).json(product);
-    console.info("We updated");
+    req.product = product;
+    next();
+  })
+  .then(null, next);
+})
+
+router.get('/:productId', function(req, res, next) {
+  res.json(req.product);
+});
+
+router.put('/:productId', function(req, res, next) {
+  req.product.set(req.body);
+  req.product.save()
+  .then(function(product){
+    res.json(product);
   })
   .then(null, next);
 });
 
-router.delete('/:id', function(req, res, next) {
-  Product.remove({_id: req.params.id})
-  .then(function() {
-    res.status(204).end();
+router.delete('/:productId', function(req, res, next) {
+  Product.findByIdAndRemove(req.product._id)
+  .then(function(product){
+    res.json(product);
   })
-  .then(null, next);
+  .then(null,next);
 });

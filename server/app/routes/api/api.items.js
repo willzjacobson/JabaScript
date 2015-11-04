@@ -15,14 +15,6 @@ router.get('/', function(req, res, next) {
   .then(null, next);
 });
 
-router.get('/:id', function(req, res, next) {
-  Item.findById(req.params.id)
-  .then(function(item) {
-    res.json(item);
-  })
-  .then(null, next);
-});
-
 router.post('/', function(req, res, next) {
   Item.create(req.body)
   .then(function(item) {
@@ -31,19 +23,28 @@ router.post('/', function(req, res, next) {
   .then(null, next);
 });
 
-router.put('/:id', function(req, res, next) {
-  console.log('req.body', req.body);
-  Item.findByIdAndUpdate(req.params.id, req.body, {new: true})
-  .then(function(order) {
-    res.status(200).json(item);
+router.get('/:itemId', function(req, res, next) {
+  Item.findById(req.params.id)
+  .then(function(item) {
+    res.json(item);
   })
   .then(null, next);
 });
 
-router.delete('/:id', function(req, res, next) {
-  Item.remove({_id: req.params.id})
-  .then(function() {
-    res.status(204).end();
+// MIGHT BE BROKEN
+router.put('/:itemId', function(req, res, next) {
+  req.item.set(req.body);
+  req.item.save()
+  .then(function(item){
+    res.json(item);
   })
   .then(null, next);
+});
+
+router.delete('/:itemId', function(req, res, next) {
+  Item.findByIdAndRemove(req.item._id)
+  .then(function(item){
+    res.json(item);
+  })
+  .then(null,next);
 });

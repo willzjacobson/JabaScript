@@ -5,20 +5,10 @@ var Promise = require('bluebird');
 var Order = mongoose.model('Order');
 Promise.promisifyAll(mongoose);
 
-module.exports = router;
-
 router.get('/', function(req, res, next) {
   Order.find({})
   .then(function(orders) {
     res.json(orders);
-  })
-  .then(null, next);
-});
-
-router.get('/:id', function(req, res, next) {
-  Order.findById(req.params.id)
-  .then(function(order) {
-    res.json(order);
   })
   .then(null, next);
 });
@@ -31,18 +21,44 @@ router.post('/', function(req, res, next) {
   .then(null, next);
 });
 
-router.put('/:id', function(req, res, next) {
-  Order.findByIdAndUpdate(req.params.id, req.body, {new: true})
+router.param('orderId', function(req, res, next, orderId) {
+  Order.findById(orderId)
   .then(function(order) {
-    res.status(200).json(order);
+    req.order = order;
+    next();
+  })
+  .then(null, next);
+})
+
+router.get('/:orderId', function(req, res, next) {
+  res.json(req.order);
+});
+
+router.put('/:orderId', function(req, res, next) {
+  req.order.set(req.body);
+  req.order.save()
+  .then(function(order){
+    res.json(order);
   })
   .then(null, next);
 });
 
-router.delete('/:id', function(req, res, next) {
-  Order.remove({_id: req.params.id})
-  .then(function() {
-    res.status(204).end();
+router.delete('/:orderId', function(req, res, next) {
+  Order.findByIdAndRemove(req.order._id)
+  .then(function(order){
+    res.json(order);
   })
-  .then(null, next);
+  .then(null,next);
 });
+
+//FIXME
+// Get all the items in an order
+// router.get("/:orderId/items", function (req, res, next){
+//   Item.find({order: req.order._id})
+//   .then(function (reviews) {
+//     res.json(reviews)
+//   })
+//   .then(null, next);
+// });
+
+module.exports = router;
