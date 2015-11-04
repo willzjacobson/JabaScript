@@ -3,6 +3,9 @@ var mongoose = require('mongoose');
 var Promise = require('bluebird');
 
 var Order = mongoose.model('Order');
+var Item = mongoose.model('Item');
+var Product = mongoose.model('Product');
+
 Promise.promisifyAll(mongoose);
 
 router.get('/', function(req, res, next) {
@@ -23,6 +26,7 @@ router.post('/', function(req, res, next) {
 
 router.param('orderId', function(req, res, next, orderId) {
   Order.findById(orderId)
+  .populate('items')
   .then(function(order) {
     req.order = order;
     next();
@@ -51,14 +55,15 @@ router.delete('/:orderId', function(req, res, next) {
   .then(null,next);
 });
 
-//FIXME
+
 // Get all the items in an order
-// router.get("/:orderId/items", function (req, res, next){
-//   Item.find({order: req.order._id})
-//   .then(function (reviews) {
-//     res.json(reviews)
-//   })
-//   .then(null, next);
-// });
+router.get("/:orderId/items", function (req, res, next){
+  var items = req.order.items;
+
+  Product.populate(items, {path: 'product'}, function(err, theItems) {
+    res.json(theItems)
+  })
+
+});
 
 module.exports = router;
