@@ -13,7 +13,7 @@ var supertest = require('supertest');
 var app = require('../../../server/app');
 
 
-describe('Items Route', function () {
+xdescribe('Items Route', function () {
   beforeEach('Establish DB connection', function (done) {
     if (mongoose.connection.db) return done();
     mongoose.connect(dbURI, done);

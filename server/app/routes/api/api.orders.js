@@ -9,7 +9,7 @@ var Product = mongoose.model('Product');
 Promise.promisifyAll(mongoose);
 
 router.get('/', function(req, res, next) {
-  Order.find({})
+  Order.find({}).populate("user items")
   .then(function(orders) {
     res.json(orders);
   })
@@ -103,3 +103,4 @@ router.delete("/:orderId/items/:itemId", function (req, res, next){
 
 
 module.exports = router;
+
