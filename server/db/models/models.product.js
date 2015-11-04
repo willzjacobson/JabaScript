@@ -12,7 +12,7 @@ var productSchema = new mongoose.Schema({
         //TODO Add enum: [options]
     },
     price: {
-        type: String
+        type: Number
     },
     description: {
         type: String,
