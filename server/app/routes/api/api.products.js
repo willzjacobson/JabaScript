@@ -35,7 +35,7 @@ router.post('/', function(req, res, next) {
 router.put('/:id', function(req, res, next) {
   Product.findByIdAndUpdate(req.params.id, req.body, {new: true})
   .then(function(product) {
-    res.status(202).json(product);
+    res.status(200).json(product);
     console.info("We updated");
   })
   .then(null, next);
@@ -44,7 +44,7 @@ router.put('/:id', function(req, res, next) {
 router.delete('/:id', function(req, res, next) {
   Product.remove({_id: req.params.id})
   .then(function() {
-    res.status(202).end();
+    res.status(204).end();
   })
   .then(null, next);
 });
