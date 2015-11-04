@@ -69,7 +69,6 @@ xdescribe('Review model', function () {
 				content: "I am the second review written by the same person on the same thing"
 			})
 			.then(function(reviews){
-				console.log(reviews);
 				testReview1 = reviews[0];
 				testReview2 = reviews[1];
 				done();

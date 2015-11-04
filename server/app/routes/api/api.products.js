@@ -24,27 +24,41 @@ router.get('/:id', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
-  Product.create(req.body)
-  .then(function(product) {
-    res.status(201).json(product);
-    console.info("Post Successful");
-  })
-  .then(null, next);
+  if (!req.user || !req.user.isAdmin) {
+    res.status(401).end()
+  } else{
+    Product.create(req.body)
+    .then(function(product) {
+      res.status(201).json(product);
+      console.info("Post Successful");
+    })
+    .then(null, next);
+  }
 });
 
 router.put('/:id', function(req, res, next) {
-  Product.findByIdAndUpdate(req.params.id, req.body, {new: true})
-  .then(function(product) {
-    res.status(200).json(product);
-    console.info("We updated");
-  })
-  .then(null, next);
+  if (!req.user || !req.user.isAdmin) {
+    res.status(401).end()
+  }
+  else {
+    Product.findByIdAndUpdate(req.params.id, req.body, {new: true})
+    .then(function(product) {
+      res.status(200).json(product);
+      console.info("We updated");
+    })
+    .then(null, next);  
+  }
 });
 
 router.delete('/:id', function(req, res, next) {
-  Product.remove({_id: req.params.id})
-  .then(function() {
-    res.status(204).end();
-  })
-  .then(null, next);
+  if (!req.user || !req.user.isAdmin) {
+    res.status(401).end()
+  }
+  else {
+    Product.remove({_id: req.params.id})
+    .then(function() {
+      res.status(204).end();
+    })
+    .then(null, next); 
+  }
 });

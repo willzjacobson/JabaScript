@@ -13,7 +13,7 @@ var clearDB = require('mocha-mongoose')(dbURI);
 var supertest = require('supertest');
 var app = require('../../../server/app');
 
-xdescribe('Reviews Route', function () {
+describe('Reviews Route', function () {
 
 	beforeEach('Establish DB connection', function (done) {
 		if (mongoose.connection.db) return done();
@@ -161,7 +161,8 @@ xdescribe('Reviews Route', function () {
 
 		var userInfo = {
 			email: 'joe@gmail.com',
-			password: 'shoopdawoop'
+			password: 'shoopdawoop',
+			isAdmin: true
 		};
 
 		beforeEach('Create a user', function (done) {

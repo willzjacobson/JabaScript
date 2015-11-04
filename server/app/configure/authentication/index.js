@@ -11,7 +11,7 @@ var ENABLED_AUTH_STRATEGIES = [
     'local',
     //'twitter',
     //'facebook',
-    //'google'
+    'google'
 ];
 
 module.exports = function (app) {
@@ -41,6 +41,15 @@ module.exports = function (app) {
     passport.deserializeUser(function (id, done) {
         UserModel.findById(id, done);
     });
+
+    app.use(function (req, res, next) {
+        UserModel.findById(req.session.passport.user)
+        .then(function(user){
+            next();
+        })
+        .then(null, next);
+
+    })
 
     // We provide a simple GET /session in order to get session information directly.
     // This is used by the browser application (Angular) to determine if a user is

@@ -25,7 +25,9 @@ router.post("/", function (req, res, next){
 router.param("userId", function (req, res, next, userId){
 	User.findById(userId)
 	.then(function(user){
-		req.user = user;
+		req.requestUser = user;
+		if (req.user) req.user.hasPermission = req.user.isAdmin || req.user._id.equals(user._id);
+		if (req.user) console.log("req.user.hasPermission: ",req.user.hasPermission);
 		next();
 	})
 	.then(null,next);
@@ -33,33 +35,41 @@ router.param("userId", function (req, res, next, userId){
 
 // Get a given user by ID
 router.get("/:userId", function (req, res, next) {
-	res.json(req.user);
+	res.json(req.requestUser);
 })
 
 // Update a given user by ID
 
 router.put("/:userId", function (req, res, next){
-	req.user.set(req.body);
-	req.user.save()
-	.then(function(user){
-		res.json(user);
-	})
-	.then(null, next);
+	if (!req.user || !req.user.hasPermission) {
+		res.status(401).end();
+	} else {
+		req.requestUser.set(req.body);
+		req.requestUser.save()
+		.then(function(user){
+			res.json(user);
+		})
+		.then(null, next);
+	}
 })
 
 
 // Delete a given user by ID
 router.delete("/:userId", function (req, res, next) {
-	User.findByIdAndRemove(req.user._id)
-	.then(function(user){
-		res.json(user);
-	})
-	.then(null,next);
+	if (!req.user || !req.user.hasPermission) {
+		res.status(401).end();
+	} else {
+		req.requestUser.remove()
+		.then(function (user){
+			res.status(401).json(user);
+		})
+		.then(null,next);
+	}
 })
 
 // Get all the reviews that a user has made
 router.get("/:userId/reviews", function (req, res, next){
-	Review.find({user: req.user._id})
+	Review.find({user: req.requestUser._id})
 	.then(function (reviews) {
 		res.json(reviews)
 	})
