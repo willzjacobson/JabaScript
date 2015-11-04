@@ -7,13 +7,13 @@ Promise.promisifyAll(mongoose);
 
 module.exports = router;
 
-router.get('/', function(req, res, next) {
-  Item.find({})
-  .then(function(items) {
-    res.json(items);
-  })
-  .then(null, next);
-});
+// router.get('/', function(req, res, next) {
+//   Item.find({})
+//   .then(function(items) {
+//     res.json(items);
+//   })
+//   .then(null, next);
+// });
 
 router.post('/', function(req, res, next) {
   Item.create(req.body)
