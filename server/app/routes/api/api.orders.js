@@ -34,7 +34,7 @@ router.post('/', function(req, res, next) {
 router.put('/:id', function(req, res, next) {
   Order.findByIdAndUpdate(req.params.id, req.body, {new: true})
   .then(function(order) {
-    res.status(202).json(order);
+    res.status(200).json(order);
   })
   .then(null, next);
 });
@@ -42,7 +42,7 @@ router.put('/:id', function(req, res, next) {
 router.delete('/:id', function(req, res, next) {
   Order.remove({_id: req.params.id})
   .then(function() {
-    res.status(202).end();
+    res.status(204).end();
   })
   .then(null, next);
 });

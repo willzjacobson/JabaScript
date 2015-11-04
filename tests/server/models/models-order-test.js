@@ -13,7 +13,7 @@ var User = mongoose.model('User');
 var Product = mongoose.model('Product');
 var Item = mongoose.model('Item');
 
-describe('Order model', function () {
+xdescribe('Order model', function () {
 	// returns promise for a test order
 	// accepts configuration object "options"
 	var createOrder = function (options) {
