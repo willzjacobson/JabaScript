@@ -43,14 +43,29 @@ xdescribe('Product model', function () {
     });
 
     it('should not allow products with duplicate names', function (done) {
-    	createProduct('Blue Lightsaber')
+    	// @OP
+        // maybe put this in a beforEach
+        createProduct('Blue Lightsaber')
     	.then(function (product) {
     		createProduct('Blue Lightsaber');
-				done();
+				done(); // @OP get rid of this
     	})
     	.then(null, function (err) {
     		expect(err).to.exist();
+            // @OP
+            // maybe got deeper about what the error message is expected to contain?
     		done();
     	});
     });
+
+    // @OP
+    // example of promise refactoring
+    // would have to install and use chai-as-promised
+    // it('should not allow products with duplicate names', function () {
+    //     var promise = createProduct('Blue Lightsaber')
+    //     .then(function (product) {
+    //         createProduct('Blue Lightsaber');
+    //     })
+    //     return expect(promise).to.be.rejected;
+    // });
 });

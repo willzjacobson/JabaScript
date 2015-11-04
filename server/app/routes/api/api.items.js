@@ -15,6 +15,7 @@ router.get('/', function(req, res, next) {
   .then(null, next);
 });
 
+// @OP consider param
 router.get('/:id', function(req, res, next) {
   Item.findById(req.params.id)
   .then(function(item) {
@@ -33,7 +34,7 @@ router.post('/', function(req, res, next) {
 
 router.put('/:id', function(req, res, next) {
   console.log('req.body', req.body);
-  Item.findByIdAndUpdate(req.params.id, req.body, {new: true})
+  Item.findByIdAndUpdate(req.params.id, req.body, {new: true}) // @OP pre save hooks won't run
   .then(function(order) {
     res.status(200).json(item);
   })

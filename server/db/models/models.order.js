@@ -26,4 +26,7 @@ var orderSchema = new mongoose.Schema({
     }]
 });
 
+// @OP
+// consider methods like .getTotalPrice or .incrementProduct?
+
 mongoose.model('Order', orderSchema);

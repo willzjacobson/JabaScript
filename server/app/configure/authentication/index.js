@@ -45,7 +45,7 @@ module.exports = function (app) {
     app.use(function (req, res, next) {
         UserModel.findById(req.session.passport.user)
         .then(function(user){
-            req.ourUser = user;
+            req.ourUser = user; // @OP why?
             next();
         })
         .then(null, next);
