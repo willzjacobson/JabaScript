@@ -66,10 +66,14 @@ router.get("/:orderId/items", function (req, res, next){
   .then(null, next)
 });
 
-router.post("/:orderId/items/", function (req, res, next){
+router.put("/:orderId/items/", function (req, res, next){
   Item.create(itemId)
   .then(function(item) {
-    res.status(201).json(item)
+    req.order.items.push(item)
+    return req.order.save()
+  })
+  .then(function(order) {
+    res.status(201).json(order)
   })
   .then(null, next)
 });
