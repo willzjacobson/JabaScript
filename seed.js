@@ -60,7 +60,7 @@ var seedProducts = function () {
     var products = [
         {
             name: 'blue lightsaber',
-            category: 'weapon',
+            category: 'Weapon',
             price: 700000.45,
             description: 'this is awesome but pretty dangerous',
             numRemaining: 7
