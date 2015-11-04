@@ -48,7 +48,7 @@ xdescribe('Product model', function () {
         createProduct('Blue Lightsaber')
     	.then(function (product) {
     		createProduct('Blue Lightsaber');
-				done(); // @OP get rid of this
+				done();
     	})
     	.then(null, function (err) {
     		expect(err).to.exist();
@@ -61,11 +61,11 @@ xdescribe('Product model', function () {
     // @OP
     // example of promise refactoring
     // would have to install and use chai-as-promised
-    // it('should not allow products with duplicate names', function () {
-    //     var promise = createProduct('Blue Lightsaber')
-    //     .then(function (product) {
-    //         createProduct('Blue Lightsaber');
-    //     })
-    //     return expect(promise).to.be.rejected;
-    // });
+    it('should not allow products with duplicate names', function () {
+        var promise = createProduct('Blue Lightsaber')
+        .then(function (product) {
+            createProduct('Blue Lightsaber');
+        })
+        return expect(promise).to.be.rejected;
+    });
 });
