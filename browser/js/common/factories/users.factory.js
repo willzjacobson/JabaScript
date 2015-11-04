@@ -21,6 +21,10 @@ app.factory('UsersFactory', function($http) {
 		},
 		deleteUser: function(id) {
 			return $http.delete('/api/users/' + id);
+		},
+		getUserReviews: function (id) {
+			return $http.get('/api/users/' + id + '/reviews')
+			.then(toData);
 		}
 	}
 	return UsersFactory;

@@ -94,6 +94,14 @@
                 });
         };
 
+        this.signup = function (credentials) {
+            return $http.post('/api/users', credentials)
+                .then(onSuccessfulLogin)
+                .catch(function () {
+                    return $q.reject({ message: 'I sense a disturbance in the force. Search your entered email and make sure that it is true.' })
+                });
+        }
+
         this.logout = function () {
             return $http.get('/logout').then(function () {
                 Session.destroy();

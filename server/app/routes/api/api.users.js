@@ -3,6 +3,8 @@ var mongoose = require("mongoose");
 var User = mongoose.model("User");
 var Review = mongoose.model("Review");
 var Order = mongoose.model("Order");
+var _ = require('lodash');
+var passport = require('passport');
 
 // Get all of the users
 router.get("/", function (req, res, next) {
@@ -17,7 +19,13 @@ router.get("/", function (req, res, next) {
 router.post("/", function (req, res, next){
 	User.create(req.body)
 	.then(function (user){
-		res.status(201).json(user);
+		req.logIn(user, function (loginErr) {
+	        if (loginErr) return next(loginErr);
+	        // We respond with a response object that has user with _id and email.
+	        res.status(201).send({
+	            user: _.omit(user.toJSON(), ['password', 'salt'])
+	        });
+	    });
 	})
 	.then(null,next);
 });

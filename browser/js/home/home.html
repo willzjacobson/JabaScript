@@ -1,4 +1,15 @@
 <section id="home">
     <fullstack-logo></fullstack-logo>
     <rando-greeting></rando-greeting>
+    <h2>Search</h2>
+    <input ng-model="query.name"></input>
+    <h3>Select a Category</h3>
+    <select ng-model="query.category">
+    	<option ng-repeat="product in products">{{ product.category }}</option>
+    </select>
+    <ul>
+    	<li ng-repeat="product in products | filter: query">
+    		<a ui-sref="product({pid: product._id})">{{product.name}}</a>
+    	</li>
+    </ul>
 </section>
