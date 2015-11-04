@@ -13,7 +13,7 @@ var clearDB = require('mocha-mongoose')(dbURI);
 var supertest = require('supertest');
 var app = require('../../../server/app');
 
-xdescribe('Users Route', function () {
+describe('Users Route', function () {
 
 	beforeEach('Establish DB connection', function (done) {
 		if (mongoose.connection.db) return done();
@@ -38,7 +38,7 @@ xdescribe('Users Route', function () {
 		var guestAgent;
 		beforeEach('Create guest agent', function () {
 			guestAgent = supertest.agent(app);
-		}); 
+		});
 
 		describe("core user info", function(){
 
@@ -73,7 +73,7 @@ xdescribe('Users Route', function () {
 				});
 			})
 
-			xit('should get a 401 response', function (done) {
+			it('should get a 401 response', function (done) {
 				guestAgent.get('/api/members/secret-stash')
 					.expect(401)
 					.end(done);
@@ -88,7 +88,7 @@ xdescribe('Users Route', function () {
 					testProduct = product;
 					done();
 				})
-			})			
+			})
 
 			var testReview;
 			beforeEach("Create a review", function (done) {
@@ -165,7 +165,7 @@ xdescribe('Users Route', function () {
 			.expect(200)
 			.end(function (err, response) {
 				expect(response.body.email).to.equal("test@gmail.com");
-				done();			
+				done();
 			})
 		})
 
@@ -181,9 +181,9 @@ xdescribe('Users Route', function () {
 				// }
 				done();
 			})
-		})		
+		})
 
-		xit("it should not allow a user to log in with the wrong password", function (done) {
+		it("it should not allow a user to log in with the wrong password", function (done) {
 			loggedInAgent
 			.post("/login")
 			.send({
@@ -202,7 +202,7 @@ xdescribe('Users Route', function () {
 			})
 		})
 
-		xit('should get with 200 response and with an array as the body', function (done) {
+		it('should get with 200 response and with an array as the body', function (done) {
 			loggedInAgent.get('/api/members/secret-stash').expect(200).end(function (err, response) {
 				if (err) return done(err);
 				expect(response.body).to.be.an('array');
@@ -217,7 +217,7 @@ xdescribe('Users Route', function () {
 			.expect(200)
 			.end(function (err, response) {
 				expect(response.body.email).to.equal("joe@gmail.com");
-				done();			
+				done();
 			})
 		})
 

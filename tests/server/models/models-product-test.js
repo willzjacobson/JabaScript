@@ -10,7 +10,7 @@ require('../../../server/db/models');
 
 var Product = mongoose.model('Product');
 
-xdescribe('Product model', function () {
+describe('Product model', function () {
 	// returns promise for a test product
 	var createProduct = function (name) {
         return Product.create({

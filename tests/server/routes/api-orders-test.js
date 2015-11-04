@@ -1,6 +1,6 @@
 // Instantiate all models
 var mongoose = require('mongoose');
-require('../../../server/db/models');
+//require('../../../server/db/models');
 var Order = mongoose.model('Order');
 var User = mongoose.model('User');
 
@@ -13,7 +13,7 @@ var supertest = require('supertest');
 var app = require('../../../server/app');
 
 
-xdescribe('Orders Route', function () {
+describe('Orders Route', function () {
 
   beforeEach('Establish DB connection', function (done) {
     if (mongoose.connection.db) return done();
@@ -24,7 +24,7 @@ xdescribe('Orders Route', function () {
     var user;
     var orderA;
     var orderB;
-  
+
   beforeEach('Create guest agent', function (done) {
     guestAgent = supertest.agent(app);
     return User.create({
@@ -34,7 +34,7 @@ xdescribe('Orders Route', function () {
     .then(function (newUser) {
       user = newUser;
       return Order.create({
-        user: user._id
+        user: user._id,
       });
     })
     .then(function (order) {
@@ -59,7 +59,11 @@ xdescribe('Orders Route', function () {
       guestAgent.get('/api/orders')
       .expect(200)
       .end(function (err, res) {
-        if (err) return done(err);
+        if (err) {
+          console.error(err)
+          return done(err);
+        }
+        console.log("RES BODY", res.body)
         expect(res.body).to.be.an('array');
         expect(res.body.length).to.equal(2);
         done();

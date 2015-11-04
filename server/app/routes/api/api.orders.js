@@ -9,6 +9,7 @@ var Product = mongoose.model('Product');
 Promise.promisifyAll(mongoose);
 
 router.get('/', function(req, res, next) {
+  console.log("HEY DUDES")
   Order.find({}).populate("user items")
   .then(function(orders) {
     res.json(orders);

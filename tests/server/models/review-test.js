@@ -12,7 +12,7 @@ var Review = mongoose.model('Review');
 var Product = mongoose.model('Product');
 var User = mongoose.model('User');
 
-xdescribe('Review model', function () {
+describe('Review model', function () {
 
     beforeEach('Establish DB connection', function (done) {
         if (mongoose.connection.db) return done();
@@ -27,7 +27,7 @@ xdescribe('Review model', function () {
         expect(Review).to.be.a('function');
     });
 
-      
+
 
     describe('on creation', function () {
 
@@ -41,7 +41,7 @@ xdescribe('Review model', function () {
 				testProduct = product;
 				done();
 			})
-		})			
+		})
 
 		var testUser;
 		beforeEach("Create a user", function (done) {

@@ -69,7 +69,7 @@ var seedProducts = function () {
             name: 'Brown Jawa Robe',
             category: 'Wardrobe',
             price: 12.98,
-            description: 'stylish as fuck',
+            description: 'stylish as fuck, stylish as fuckity fuck',
             numRemaining: 10001
         },
         {
@@ -83,14 +83,14 @@ var seedProducts = function () {
             name: 'Blaster',
             category: 'Weapon',
             price: 999.99,
-            description: 'great for killing',
+            description: 'great for killing little kittens',
             numRemaining: 11
         },
         {
             name: 'Jedi Robe',
             category: 'Wardrobe',
             price: 24.95,
-            description: 'Look like a boss',
+            description: 'Look like a boss, like a motherfucking boss',
             numRemaining: 14
         }
 

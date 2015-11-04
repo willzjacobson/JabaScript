@@ -13,10 +13,12 @@ var userSchema = new mongoose.Schema({
                 return emailRegex.test(v);
             },
             message: '{VALUE} is not a valid email address'
-        }
+        },
+        required: true
     },
     password: {
-        type: String
+        type: String,
+        required: true
     },
     salt: {
         type: String
