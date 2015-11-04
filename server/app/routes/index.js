@@ -5,7 +5,7 @@ var router = require('express').Router();
 
 
 
-router.use('/api', require("./api"));
+router.use('/', require("./api"));
 
 // Make sure this is after all of
 // the registered routes!
