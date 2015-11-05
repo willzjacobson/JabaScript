@@ -1,8 +1,13 @@
 app.config(function ($stateProvider) {
     $stateProvider.state('cart', {
-        url: '/cart',
+        url: '/cart/:uid',
         templateUrl: 'js/cart/cart.html',
-        controller: 'CartCtrl'
+        controller: 'CartCtrl',
+        resolve: {
+        	curOrder: function($stateParams,UsersFactory){
+        		return {};
+        	}
+        }
     });
 });
 

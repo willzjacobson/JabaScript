@@ -9,9 +9,19 @@ var Product = mongoose.model('Product');
 Promise.promisifyAll(mongoose);
 
 router.get('/', function(req, res, next) {
-  console.log("HEY DUDES")
+  var orders;
   Order.find({}).populate("user items")
-  .then(function(orders) {
+  .then(function (theOrders) {
+    var itemsArray = [];
+    theOrders.forEach(function(order){
+      order.items.forEach(function(item) {
+        itemsArray.push(item)
+      })
+    })
+    orders = theOrders
+    return Product.populate(itemsArray, {path: 'product'})
+  })
+  .then(function () {
     res.json(orders);
   })
   .then(null, next);
@@ -26,9 +36,14 @@ router.post('/', function(req, res, next) {
 });
 
 router.param('orderId', function(req, res, next, orderId) {
+  var order;
   Order.findById(orderId)
-  .populate('items')
-  .then(function(order) {
+  .populate('user items')
+  .then(function (theOrder) {
+    order = theOrder;
+    return Product.populate(theOrder.items, {path: 'product'})
+  })
+  .then(function() {
     req.order = order;
     next();
   })
@@ -52,7 +67,7 @@ router.put('/:orderId', function(req, res, next) {
 router.delete('/:orderId', function(req, res, next) {
   req.order.remove()
   .then(function(order){
-    res.json(order);
+    res.status(204).json(order);
   })
   .then(null,next);
 });

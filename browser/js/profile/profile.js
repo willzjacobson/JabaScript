@@ -10,8 +10,8 @@ app.config(function ($stateProvider) {
         	reviews: function ($stateParams, UsersFactory) {
         		return UsersFactory.getUserReviews($stateParams.uid);
         	},
-        	orders: function () {
-        		return {};
+        	orders: function ($stateParams, UsersFactory) {
+        		return UsersFactory.getUserOrders($stateParams.uid);
         	}
         }
     });
