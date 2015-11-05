@@ -17,17 +17,35 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('AdminCtrl', function ($scope, $state, users, orders, products, OrdersFactory) {
+app.controller('AdminCtrl', function ($scope, $state, users, orders, products, OrdersFactory, UsersFactory) {
 	$scope.users = users;
 	$scope.orders = orders;
 	$scope.products = products;
+    $scope._status = '';
 
 	// change order status
-	$scope.changeStatus = function(orderId, orderData) {
+	$scope.changeOrderStatus = function(orderId, orderData) {
 		return OrdersFactory.updateOrder(orderId, orderData)
 			.then(function () {
 				$scope.orders = OrdersFactory.fetchOrderCache();
 			});
 	};
+
+    $scope.deleteUser = function(id) {
+        console.log('deletiong ', id)
+        UsersFactory.deleteUser(id)
+        .then(function() {
+            $scope.users = UsersFactory.fetchUserCache();
+        });
+    };
+
+    $scope.changeAdminStatus = function(user) {
+        console.log('changing status of ', user.email)
+        var newStatus = !user.isAdmin;
+        UsersFactory.updateUser(user._id, {isAdmin: newStatus})
+        .then(function(updatedUser) {
+            $scope.users = UsersFactory.fetchUserCache();
+        });
+    };
 
 });

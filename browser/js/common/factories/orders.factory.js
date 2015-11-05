@@ -27,19 +27,19 @@ app.factory('OrdersFactory', function($http) {
 		updateOrder: function(id, orderData) {
 			return $http.put('/api/orders/' + id, orderData)
 			.then(function(res) {
-				var updateOrder = res.data;
-				orderCache.forEach(function(order) {
-					if (order._id === id) order = updateOrder;
-				});
-				return updateOrder;
+				var updatedOrder = res.data;
+				for (var i = 0; i < orderCache.length; i++)
+					if (orderCache[i]._id.toString() === id.toString()) orderCache[i] = updatedOrder;
+				return updatedOrder;
 			});
 		},
 		deleteOrder: function(id) {
 			return $http.delete('/api/orders/' + id)
 			.then(function() {
-				orderCache.filter(function(order) {
-					return order._id !== id;
+				orderCache = orderCache.filter(function(order) {
+					return order._id.toString() !== id.toString();
 				});
+				return orderCache;
 			});
 		},
 		getOrderItems: function (id) {
