@@ -81,6 +81,7 @@ router.delete("/:userId", function (req, res, next) {
 // Get all the reviews that a user has made
 router.get("/:userId/reviews", function (req, res, next){
 	Review.find({user: req.requestUser._id})
+	.populate("product")
 	.then(function (reviews) {
 		res.json(reviews)
 	})
@@ -103,6 +104,7 @@ router.get("/:userId/orders", function (req, res, next){
 		return Product.populate(itemsArray, {path: 'product'})
 	})
 	.then(function (){
+		console.log(orders);
 		res.json(orders);
 	})
 	.then(null, next);

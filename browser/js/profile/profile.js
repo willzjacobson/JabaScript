@@ -23,3 +23,11 @@ app.controller('ProfileCtrl', function ($scope, $state, user, reviews, orders) {
 	$scope.orders = orders;
 
 });
+
+app.config(function ($stateProvider) {
+    $stateProvider.state('profile.history', {
+        url: '/history',
+        templateUrl: 'js/profile/profile.history.html',
+        controller: 'ProfileCtrl'
+    });
+});

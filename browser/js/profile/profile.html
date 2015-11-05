@@ -1,18 +1,6 @@
 <h1>profile.html</h1>
-<h2>{{ user.email }}</h2>
-<ul>
-	<li ng-repeat="review in reviews">Review for {{ review.product.name }}: {{ review.content }}</li>
-</ul>
-	<li ng-repeat="order in orders">
-		<ul>
-			<li>Order made on {{ order.dateIssued }}</li>
-			<li>Order status is: {{ order.status }}</li>
-			<li ng-repeat="item in order.items"> 
-			 	<div> Product: {{ item.product.name }} </div> 
-			 	<div> Quantity: {{ item.quantity }} </div> 
-			 	<div> Price: {{ item.priceWhenOrdered }} </div>
-			</li>
-			<li> Total Price is: TO BE COMPLETED </li>
-		</ul>
-	</li>
-</ul>
+<h2>{{ user.email }}</h2> <button class="btn btn-primary"> Edit Profile </button>
+
+<l1 ui-sref-active="active"><a ui-sref="profile.history"><h1>Account History</h1></a></li>
+<l1 ui-sref-active="active"><a ui-sref="profile.EDIT"><h1>Edit Account</h1></a></li>
+<ui-view></ui-view>

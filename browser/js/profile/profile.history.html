@@ -1,0 +1,19 @@
+<ul>
+	<h3> Review History </h3>
+	<li class = "well" ng-repeat="review in reviews"> Review for <a ui-sref="product({pid:review.product._id })">{{ review.product.name }} </a>: {{ review.content }}</li>
+	<h3> Order History </h3>
+	<li ng-repeat="order in orders">
+		<div class = "well">
+			<ul>
+				<li>Order made on {{ order.dateIssued }}</li>
+				<li>Order status is: {{ order.status }}</li>
+				<li ng-repeat="item in order.items"> 
+				 	<div> Product: <a ui-sref="product({pid:item.product._id })">{{ item.product.name }}</a> </div> 
+				 	<div> Quantity: {{ item.quantity }} </div> 
+				 	<div> Price: {{ item.priceWhenOrdered }} </div>
+				</li>
+				<li> Total Price is: TO BE COMPLETED </li>
+			</ul>
+		</div>
+	</li>
+</ul>
