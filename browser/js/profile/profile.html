@@ -6,6 +6,7 @@
 	<li ng-repeat="order in orders">
 		<ul>
 			<li>Order made on {{ order.dateIssued }}</li>
+			<li>Order status is: {{ order.status }}</li>
 			<li ng-repeat="item in order.items"> 
 			 	<div> Product: {{ item.product.name }} </div> 
 			 	<div> Quantity: {{ item.quantity }} </div> 

@@ -61,7 +61,7 @@ var seedProducts = function () {
         {
             name: 'Blue Lightsaber',
             category: 'Weapon',
-            price: 700000.45,
+            price: 700000,
             description: 'this is awesome but pretty dangerous',
             numRemaining: 7,
             images: ['https://s3.amazonaws.com/jabbascript/bluelightsaber.png', 'https://s3.amazonaws.com/jabbascript/bluelightsaber2.png']
@@ -69,7 +69,7 @@ var seedProducts = function () {
         {
             name: 'Brown Jawa Robe',
             category: 'Wardrobe',
-            price: 12.98,
+            price: 13,
             description: 'stylish as fuck, stylish as fuckity fuck',
             numRemaining: 10001,
             images: ['https://s3.amazonaws.com/jabbascript/jawarobe.jpg']
@@ -77,7 +77,7 @@ var seedProducts = function () {
         {
             name: 'Death Sticks',
             category: 'Narcotics',
-            price: 1.99,
+            price: 2,
             description: 'these aren\'t good for you, but they\'re fun',
             numRemaining: 2,
             images: ['https://s3.amazonaws.com/jabbascript/deathsticks.jpeg']
@@ -85,7 +85,7 @@ var seedProducts = function () {
         {
             name: 'Blaster',
             category: 'Weapon',
-            price: 999.99,
+            price: 999,
             description: 'great for killing little kittens',
             numRemaining: 11,
             images: ['https://s3.amazonaws.com/jabbascript/blaster.jpg']
@@ -93,7 +93,7 @@ var seedProducts = function () {
         {
             name: 'Jedi Robe',
             category: 'Wardrobe',
-            price: 24.95,
+            price: 25,
             description: 'Look like a boss, like a motherfucking boss',
             numRemaining: 14,
             images: ['https://s3.amazonaws.com/jabbascript/jedirobe.jpg']

@@ -89,7 +89,6 @@ router.get("/:userId/reviews", function (req, res, next){
 
 //Get's all orders for a given user
 router.get("/:userId/orders", function (req, res, next){
-	
 	var orders;
 	Order.find({user: req.user._id})
 	.populate('items user')
@@ -103,7 +102,7 @@ router.get("/:userId/orders", function (req, res, next){
 		orders = theOrders
 		return Product.populate(itemsArray, {path: 'product'})
 	})
-	.then(function (populatedItems){
+	.then(function (){
 		res.json(orders);
 	})
 	.then(null, next);
