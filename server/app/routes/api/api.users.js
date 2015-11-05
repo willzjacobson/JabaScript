@@ -3,6 +3,8 @@ var mongoose = require("mongoose");
 var User = mongoose.model("User");
 var Review = mongoose.model("Review");
 var Order = mongoose.model("Order");
+var Item = mongoose.model("Item");
+var Product = mongoose.model("Product");
 var _ = require('lodash');
 var passport = require('passport');
 
@@ -87,10 +89,22 @@ router.get("/:userId/reviews", function (req, res, next){
 
 //Get's all orders for a given user
 router.get("/:userId/orders", function (req, res, next){
+	
+	var orders;
 	Order.find({user: req.user._id})
-	.populate('items')
-	.then(function (orders) {
-		res.json(orders)
+	.populate('items user')
+	.then(function (theOrders) {
+		var itemsArray = [];
+		theOrders.forEach(function(order){
+			order.items.forEach(function(item) {
+				itemsArray.push(item)
+			})
+		})
+		orders = theOrders
+		return Product.populate(itemsArray, {path: 'product'})
+	})
+	.then(function (populatedItems){
+		res.json(orders);
 	})
 	.then(null, next);
 })

@@ -8,8 +8,8 @@
 			<li>Order made on {{ order.dateIssued }}</li>
 			<li ng-repeat="item in order.items"> 
 			 	<div> Product: {{ item.product.name }} </div> 
-			 	<div> Quantity: {{ item.product.quantity }} </div> 
-			 	<div> Price: {{ item.product.priceWhenOrdered }} </div>
+			 	<div> Quantity: {{ item.quantity }} </div> 
+			 	<div> Price: {{ item.priceWhenOrdered }} </div>
 			</li>
 			<li> Total Price is: TO BE COMPLETED </li>
 		</ul>
