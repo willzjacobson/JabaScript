@@ -7,9 +7,10 @@
 				<ul>
 					<li ng-repeat="user in users" style="list-style-type:none">
 						<h3>{{ user.email }}</h3>
-						<button class="btn btn-success">Make Admin</button>
-						<button class="btn btn-danger">Delete User</button>
+						<button ng-click="changeAdminStatus(user)" class="btn btn-success" ng-show="!user.isAdmin">Make Admin</button>
+						<button ng-click="changeAdminStatus(user)" class="btn btn-warning" ng-show="user.isAdmin">Strip Admin Privileges</button>
 						<button class="btn btn-warning">Trigger Password Reset</button>
+						<button ng-click="deleteUser(user._id)" class="btn btn-danger">Delete User</button>
 					</li>
 				</ul>
 
@@ -45,31 +46,25 @@
 					<ul>
 							<li ng-repeat="product in products" style="list-style-type:none">
 								<div class="well">
-									<h5><span contenteditable>{{ product.name }}</span></h5>
-									<p>Description: <span contenteditable>{{ product.description }}</span><p>
-									<p>Categories: 
-										<span ng-repeat="category in product.category">
-											<span contenteditable> {{ category }}</span>
-											<span class="remove-x">  X  </span>
-										</span>
-									</p>
-									<p>Price: <span contenteditable>{{ product.price }}</span></p>
-									<p>Quantity: <span contenteditable>{{ product.numRemaining }}</span></p>
+									<p>Name: <input ng-model="product.name" /></p>
+									<p>Description: <input ng-model="product.description" /></p>
+									<p>Price: <input ng-model="product.price" /></p>
+									<p>Quantity: <input ng-model="product.numRemaining" /></p>
 									<p>Pictures: 
 										<span ng-repeat="image in product.images">
 											<img src="{{image}}" style="height:100px;width:100px"/>
-											<span class="remove-x">  X  </span>
+											<span class="remove-x">  <button href="#">X</button>  </span>
 										</span>
 									</p>
 									<div class="form-group">
 										<label for="add-new-image">Add New Image Url</label>
-										<input class="form-control" id="add-new-image" />
+										<input ng-model="product.images" class="form-control" id="add-new-image" />
 									</div>
 									<div class="form-group">
-										<label for="add-new-category">Add New Category</label>
-										<input class="form-control" id="add-new-category" />
+										<label for="add-new-category">Categories</label>
+										<input ng-model="product.category" class="form-control" id="add-new-category" />
 									</div>
-									<a class="btn btn-success">Save Changes</a>
+									<a class="btn btn-success" ng-click="changeProductDetails(product._id, product)">Save Changes</a>
 								</div>
 
 							</li>
@@ -78,8 +73,11 @@
 			<!-- Order Management -->
 			<h1>Order Management</h1>
 			<div class='form-group'>
-				<label for="status">Filter orders by status</label>
-				<input ng-model="_status" id="status" class="form-control">
+				<a ng-click="_status=''" class="btn btn-info">View All Orders</a>
+				<a ng-click="_status='Created'" class="btn btn-info">View Created Orders</a>
+				<a ng-click="_status='Processing'" class="btn btn-info">View Processing Orders</a>
+				<a ng-click="_status='Completed'" class="btn btn-info">View Completed Orders</a>
+				<a ng-click="_status='Cancelled'" class="btn btn-info">View Canceled Orders</a>
 			</div>
 
 			<ul>
@@ -87,16 +85,16 @@
 					<div class="well">
 					<ul>
 						<li style="list-style:none;display:inline">
-							<a ng-click="changeStatus(order._id, {status:'Created'})" class="btn btn-xs btn-info">Created</a>
+							<a ng-click="changeOrderStatus(order._id, {status:'Created'})" class="btn btn-xs btn-info">Created</a>
 						</li>
 						<li style="list-style:none;display:inline">
-							<a ng-click="changeStatus(order._id, {status:'Processing'})" class="btn btn-xs btn-primary">Processing</a>
+							<a ng-click="changeOrderStatus(order._id, {status:'Processing'})" class="btn btn-xs btn-primary">Processing</a>
 						</li>
 						<li style="list-style:none;display:inline">
-							<a ng-click="changeStatus(order._id, {status:'Completed'})" class="btn btn-xs btn-success">Completed</a>
+							<a ng-click="changeOrderStatus(order._id, {status:'Completed'})" class="btn btn-xs btn-success">Completed</a>
 						</li>
 						<li style="list-style:none;display:inline">
-							<a ng-click="changeStatus(order._id, {status:'Canceled'})" class="btn btn-xs btn-danger">Canceled</a>
+							<a ng-click="changeOrderStatus(order._id, {status:'Cancelled'})" class="btn btn-xs btn-danger">Cancelled</a>
 						</li>
 					</ul>
 					<p>User: <span>{{order.user.email}}</span></p>
