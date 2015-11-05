@@ -72,7 +72,7 @@ router.delete("/:userId", function (req, res, next) {
 	} else {
 		req.requestUser.remove()
 		.then(function (user){
-			res.status(401).json(user);
+			res.status(200).json(user);
 		})
 		.then(null,next);
 	}

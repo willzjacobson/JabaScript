@@ -17,7 +17,7 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('AdminCtrl', function ($scope, $state, users, orders, products, OrdersFactory, UsersFactory) {
+app.controller('AdminCtrl', function ($scope, $state, users, orders, products, OrdersFactory, UsersFactory, ProductsFactory) {
 	$scope.users = users;
 	$scope.orders = orders;
 	$scope.products = products;
@@ -32,19 +32,26 @@ app.controller('AdminCtrl', function ($scope, $state, users, orders, products, O
 	};
 
     $scope.deleteUser = function(id) {
-        console.log('deletiong ', id)
         UsersFactory.deleteUser(id)
         .then(function() {
-            $scope.users = UsersFactory.fetchUserCache();
+            $scope.users = UsersFactory.fetchUsersCache();
         });
     };
 
     $scope.changeAdminStatus = function(user) {
-        console.log('changing status of ', user.email)
         var newStatus = !user.isAdmin;
         UsersFactory.updateUser(user._id, {isAdmin: newStatus})
         .then(function(updatedUser) {
-            $scope.users = UsersFactory.fetchUserCache();
+            $scope.users = UsersFactory.fetchUsersCache();
+        });
+    };
+
+    $scope.changeProductDetails = function (id, details) {
+        console.log($scope.edit);
+        console.log(details);
+        ProductsFactory.updateProduct(id, details)
+        .then(function () {
+            $scope.products = ProductsFactory.fetchProductsCache();
         });
     };
 

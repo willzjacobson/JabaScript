@@ -36,7 +36,7 @@ app.factory('UsersFactory', function($http) {
 			return $http.delete('/api/users/' + id)
 			.then(function() {
 				usersCache = usersCache.filter(function(user) {
-					return user._id.toString() === id.toString();
+					return user._id.toString() !== id.toString();
 				})
 				return usersCache;
 			});
@@ -49,8 +49,8 @@ app.factory('UsersFactory', function($http) {
 			return $http.get("/api/users/"+id+"/orders")
 			.then(toData);
 		},
-		fetchUserCache: function () {
-			return userCache;
+		fetchUsersCache: function () {
+			return usersCache;
 		}
 	}
 	return UsersFactory;

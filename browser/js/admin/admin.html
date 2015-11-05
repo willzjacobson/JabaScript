@@ -7,8 +7,8 @@
 				<ul>
 					<li ng-repeat="user in users" style="list-style-type:none">
 						<h3>{{ user.email }}</h3>
-						<button ng-click="changAdminStatus(user)" class="btn btn-success" ng-show="!user.isAdmin">Make Admin</button>
-						<button ng-click="changAdminStatus(user)" class="btn btn-warning" ng-show="user.isAdmin">Strip Admin Privileges</button>
+						<button ng-click="changeAdminStatus(user)" class="btn btn-success" ng-show="!user.isAdmin">Make Admin</button>
+						<button ng-click="changeAdminStatus(user)" class="btn btn-warning" ng-show="user.isAdmin">Strip Admin Privileges</button>
 						<button class="btn btn-warning">Trigger Password Reset</button>
 						<button ng-click="deleteUser(user._id)" class="btn btn-danger">Delete User</button>
 					</li>
@@ -46,31 +46,25 @@
 					<ul>
 							<li ng-repeat="product in products" style="list-style-type:none">
 								<div class="well">
-									<h5><span contenteditable>{{ product.name }}</span></h5>
-									<p>Description: <span contenteditable>{{ product.description }}</span><p>
-									<p>Categories: 
-										<span ng-repeat="category in product.category">
-											<span contenteditable> {{ category }}</span>
-											<span class="remove-x">  <a href="#">X</a>  </span>
-										</span>
-									</p>
-									<p>Price: <span contenteditable>{{ product.price }}</span></p>
-									<p>Quantity: <span contenteditable>{{ product.numRemaining }}</span></p>
+									<p>Name: <input ng-model="product.name" /></p>
+									<p>Description: <input ng-model="product.description" /></p>
+									<p>Price: <input ng-model="product.price" /></p>
+									<p>Quantity: <input ng-model="product.numRemaining" /></p>
 									<p>Pictures: 
 										<span ng-repeat="image in product.images">
 											<img src="{{image}}" style="height:100px;width:100px"/>
-											<span class="remove-x">  <a href="#">X</a>  </span>
+											<span class="remove-x">  <button href="#">X</button>  </span>
 										</span>
 									</p>
 									<div class="form-group">
 										<label for="add-new-image">Add New Image Url</label>
-										<input class="form-control" id="add-new-image" />
+										<input ng-model="product.images" class="form-control" id="add-new-image" />
 									</div>
 									<div class="form-group">
-										<label for="add-new-category">Add New Category</label>
-										<input class="form-control" id="add-new-category" />
+										<label for="add-new-category">Categories</label>
+										<input ng-model="product.category" class="form-control" id="add-new-category" />
 									</div>
-									<a class="btn btn-success">Save Changes</a>
+									<a class="btn btn-success" ng-click="changeProductDetails(product._id, product)">Save Changes</a>
 								</div>
 
 							</li>
