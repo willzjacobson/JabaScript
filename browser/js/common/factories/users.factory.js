@@ -2,10 +2,15 @@ app.factory('UsersFactory', function($http) {
 	function toData(res) {
 		return res.data;
 	}
+	var usersCache = [];
 	var UsersFactory = {
 		getUsers: function() {
 			return $http.get('/api/users')
-			.then(toData);
+			.then(function(res) {
+				var users = res.data;
+				angular.copy(users, usersCache);
+				return usersCache;
+			});
 		},
 		getOneUser: function(id) {
 			return $http.get('/api/users/' + id)
@@ -17,10 +22,24 @@ app.factory('UsersFactory', function($http) {
 		},
 		updateUser: function(id, userData) {
 			return $http.put('/api/users/' + id, userData)
-			.then(toData);
+			.then(function(res) {
+				var updatedUser = res.data;
+				for (var i = 0; i < usersCache.length; i++) {
+					if (usersCache[i]._id.toString() === id.toString()) {
+						usersCache[i] = updatedUser;
+						return updatedUser;
+					}
+				}
+			});
 		},
 		deleteUser: function(id) {
-			return $http.delete('/api/users/' + id);
+			return $http.delete('/api/users/' + id)
+			.then(function() {
+				usersCache = usersCache.filter(function(user) {
+					return user._id.toString() !== id.toString();
+				})
+				return usersCache;
+			});
 		},
 		getUserReviews: function (id) {
 			return $http.get('/api/users/' + id + '/reviews')
@@ -33,6 +52,9 @@ app.factory('UsersFactory', function($http) {
 		getUserCart: function (id) {
 			return $http.get("/api/users/" + id + "/orders/cart")
 			.then(toData);
+		},
+		fetchUsersCache: function () {
+			return usersCache;
 		}
 	}
 	return UsersFactory;

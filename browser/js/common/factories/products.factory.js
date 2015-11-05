@@ -2,10 +2,16 @@ app.factory('ProductsFactory', function($http) {
 	function toData(res) {
 		return res.data;
 	}
+
+	var productsCache = [];
+
 	var ProductsFactory = {
 		getProducts: function() {
 			return $http.get('/api/products')
-			.then(toData);
+			.then(function (res) {
+				angular.copy(res.data, productsCache);
+				return productsCache;
+			});
 		},
 		getOneProduct: function(id) {
 			return $http.get('/api/products/' + id)
@@ -13,15 +19,32 @@ app.factory('ProductsFactory', function($http) {
 		},
 		createProduct: function(productData) {
 			return $http.post('/api/products', productData)
-			.then(toData);
+			.then(function (res) {
+				productsCache.push(res.data);
+				return res.data;
+			});
 		},
 		updateProduct: function(id, productData) {
 			return $http.put('/api/products/' + id, productData)
-			.then(toData);
+			.then(function (res) {
+				for (var i = 0; i < productsCache.length; i++)
+					if (productsCache[i]._id === id) productsCache[i] = res.data;
+				return res.data;
+			});
 		},
 		deleteProduct: function(id) {
-			return $http.delete('/api/products/' + id);
+			return $http.delete('/api/products/' + id)
+			.then(function (res) {
+				productsCache = productsCache.filter(function (product) {
+					return product._id !== id;
+				});
+				return productsCache;
+			});
+		},
+		fetchProductsCache: function () {
+			return productsCache;
 		}
-	}
+		
+	};
 	return ProductsFactory;
-})
+});
