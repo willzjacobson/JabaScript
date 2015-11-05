@@ -2,10 +2,15 @@ app.factory('OrdersFactory', function($http) {
 	function toData(res) {
 		return res.data;
 	}
+	var orderCache = [];
+
 	var OrdersFactory = {
 		getOrders: function() {
 			return $http.get('/api/orders')
-			.then(toData);
+			.then(function(res) {
+				angular.copy(res.data, orderCache);
+				return orderCache;
+			});
 		},
 		getOneOrder: function(id) {
 			return $http.get('/api/orders/' + id)
@@ -13,14 +18,29 @@ app.factory('OrdersFactory', function($http) {
 		},
 		createOrder: function(orderData) {
 			return $http.post('/api/orders', orderData)
-			.then(toData);
+			.then(function(res) {
+				var newOrder = res.data;
+				orderCache.push(newOrder);
+				return newOrder;
+			});
 		},
 		updateOrder: function(id, orderData) {
 			return $http.put('/api/orders/' + id, orderData)
-			.then(toData);
+			.then(function(res) {
+				var updateOrder = res.data;
+				orderCache.forEach(function(order) {
+					if (order._id === id) order = updateOrder;
+				});
+				return updateOrder;
+			});
 		},
 		deleteOrder: function(id) {
-			return $http.delete('/api/orders/' + id);
+			return $http.delete('/api/orders/' + id)
+			.then(function() {
+				orderCache.filter(function(order) {
+					return order._id !== id;
+				});
+			});
 		},
 		getOrderItems: function (id) {
 			return $http.get('/api/orders/' + id + '/items')
@@ -36,6 +56,9 @@ app.factory('OrdersFactory', function($http) {
 		createOrderItem: function(orderId, itemData) {
 			return $http.put('/api/orders/' + orderId + '/items', itemData)
 			.then(toData);
+		},
+		fetchOrderCache: function () {
+			return orderCache;
 		}
 	};
 	return OrdersFactory;
