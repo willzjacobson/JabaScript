@@ -59,6 +59,9 @@ app.factory('OrdersFactory', function($http) {
 		},
 		fetchOrderCache: function () {
 			return orderCache;
+		},
+		emptyOrder: function(id) {
+			return $http.delete("api/orders/" + id)
 		}
 	};
 	return OrdersFactory;

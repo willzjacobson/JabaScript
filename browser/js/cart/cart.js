@@ -18,6 +18,12 @@ app.controller('CartCtrl', function ($scope, $state, cart, OrdersFactory) {
         $scope.cart.items = $scope.cart.items.filter(function(item){
             return item._id !== itemId;
         })
-        $scope.$digest();
+        // $scope.$digest();
     }
+    $scope.emptyCart = function() {
+        OrdersFactory.emptyOrder($scope.cart._id);
+        $scope.cart.items = [];
+    }
+
+
 });
