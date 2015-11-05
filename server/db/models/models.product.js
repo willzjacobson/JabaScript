@@ -40,13 +40,4 @@ productSchema.methods.getAverageRating = function()  {
   })
 }
 
-// Won't work yet
-productSchema.pre('save', function (next) {
-    var self = this;
-    this.images.forEach(function(image, idx) {
-        if (!image.url) image.url = 'api/products/' + self._id + "/" + idx + '.image';
-    })
-    next();
-});
-
 mongoose.model('Product', productSchema);
