@@ -24,7 +24,10 @@ app.controller('AdminCtrl', function ($scope, $state, users, orders, products, O
 
 	// change order status
 	$scope.changeStatus = function(orderId, orderData) {
-		return OrdersFactory.updateOrder(orderId, orderData);
+		return OrdersFactory.updateOrder(orderId, orderData)
+			.then(function () {
+				$scope.orders = OrdersFactory.fetchOrderCache();
+			});
 	};
 
 });

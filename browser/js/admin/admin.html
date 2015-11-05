@@ -90,13 +90,13 @@
 							<a ng-click="changeStatus(order._id, {status:'Created'})" class="btn btn-xs btn-info">Created</a>
 						</li>
 						<li style="list-style:none;display:inline">
-							<a class="btn btn-xs btn-primary">Processing</a>
+							<a ng-click="changeStatus(order._id, {status:'Processing'})" class="btn btn-xs btn-primary">Processing</a>
 						</li>
 						<li style="list-style:none;display:inline">
-							<a class="btn btn-xs btn-success">Completed</a>
+							<a ng-click="changeStatus(order._id, {status:'Completed'})" class="btn btn-xs btn-success">Completed</a>
 						</li>
 						<li style="list-style:none;display:inline">
-							<a class="btn btn-xs btn-danger">Canceled</a>
+							<a ng-click="changeStatus(order._id, {status:'Canceled'})" class="btn btn-xs btn-danger">Canceled</a>
 						</li>
 					</ul>
 					<p>User: <span>{{order.user.email}}</span></p>

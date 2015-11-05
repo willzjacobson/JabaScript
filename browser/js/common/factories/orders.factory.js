@@ -3,11 +3,12 @@ app.factory('OrdersFactory', function($http) {
 		return res.data;
 	}
 	var orderCache = [];
+
 	var OrdersFactory = {
 		getOrders: function() {
 			return $http.get('/api/orders')
 			.then(function(res) {
-				orderCache = res.data;
+				angular.copy(res.data, orderCache);
 				return orderCache;
 			});
 		},
@@ -28,7 +29,7 @@ app.factory('OrdersFactory', function($http) {
 			.then(function(res) {
 				var updateOrder = res.data;
 				orderCache.forEach(function(order) {
-					if (order._id === updateOrder._id) order = updateOrder;
+					if (order._id === id) order = updateOrder;
 				});
 				return updateOrder;
 			});
@@ -55,6 +56,9 @@ app.factory('OrdersFactory', function($http) {
 		createOrderItem: function(orderId, itemData) {
 			return $http.put('/api/orders/' + orderId + '/items', itemData)
 			.then(toData);
+		},
+		fetchOrderCache: function () {
+			return orderCache;
 		}
 	};
 	return OrdersFactory;
