@@ -110,4 +110,18 @@ router.get("/:userId/orders", function (req, res, next){
 	.then(null, next);
 })
 
+router.get("/:userId/orders/cart", function (req, res, next){
+	var order;
+	Order.findOne({user: req.user._id, status: "Created"})
+	.populate('items user')
+	.then(function (theOrder) {
+		order = theOrder
+		return Product.populate(theOrder.items, {path: 'product'})
+	})
+	.then(function (){
+		res.json(order);
+	})
+	.then(null, next);
+})
+
 module.exports = router;
