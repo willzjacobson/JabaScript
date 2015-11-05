@@ -21,7 +21,22 @@ app.factory('OrdersFactory', function($http) {
 		},
 		deleteOrder: function(id) {
 			return $http.delete('/api/orders/' + id);
+		},
+		getOrderItems: function (id) {
+			return $http.get('/api/orders/' + id + '/items')
+			.then(toData);
+		},
+		updateOrderItem: function (orderId, itemId, itemData) {
+			return $http.put('/api/orders/' + orderId + '/items/' + itemId, itemData)
+			.then(toData);
+		},
+		deleteOrderItem: function(orderId, itemId) {
+			return $http.delete('/api/orders/' + orderId + '/items/' + itemId);
+		},
+		createOrderItem: function(orderId, itemData) {
+			return $http.put('/api/orders/' + orderId + '/items', itemData)
+			.then(toData);
 		}
-	}
+	};
 	return OrdersFactory;
-})
+});
