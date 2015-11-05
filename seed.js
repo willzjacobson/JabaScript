@@ -216,6 +216,12 @@ var seedOrders = function () {
             dateIssued: new Date(),
             user: users[2]._id,
             items: [items[5]._id]
+        },       
+        {
+            status: 'Created',
+            dateIssued: new Date(),
+            user: users[2]._id,
+            items: [items[2]._id, items[4]._id]
         },
         {
             status: 'Created',

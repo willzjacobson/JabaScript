@@ -11,7 +11,7 @@ app.config(function ($stateProvider) {
         		return UsersFactory.getUserReviews($stateParams.uid);
         	},
         	orders: function () {
-        		return {};
+        		return UsersFactory.getUserOrders($stateParams.uid);
         	}
         }
     });

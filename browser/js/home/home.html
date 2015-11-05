@@ -17,7 +17,7 @@
                 <input type="text" ng-model="query.name" class="form-control" id="search" />
                 <label for="category-select">Filter By Category:</label>
                 <select class="form-control" ng-model="query.category" id="category-select">
-            	   <option ng-repeat="product in products">{{ product.category }}</option>
+            	   <option ng-repeat="category in categories">{{ category }}</option>
                 </select>
             </div>
         </div>
