@@ -23,9 +23,14 @@ module.exports = function (app) {
                 if (user) {
                     return user;
                 } else {
+                    var email = profile.emails[0].value;
                     return UserModel.create({
+                        email: email,
                         google: {
-                            id: profile.id
+                            id: profile.id,
+                            name: profile.displayName,
+                            email: email,
+                            token: accessToken
                         }
                     });
                 }
