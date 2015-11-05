@@ -67,7 +67,7 @@ router.put('/:orderId', function(req, res, next) {
 router.delete('/:orderId', function(req, res, next) {
   req.order.remove()
   .then(function(order){
-    res.json(order);
+    res.status(204).json(order);
   })
   .then(null,next);
 });
