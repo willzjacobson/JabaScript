@@ -1,2 +1,21 @@
-<h1>cart.html</h1>
-<h2> TESTING! </h2>
+<h1> Here is your current cart </h1>
+<h3> Feel free to browse, edit, or checkout from here </h3>
+<div class = "well">
+	<ul>
+		<li ng-repeat="item in cart.items">
+
+		 	<div> Product:
+		 		<a ui-sref="product({pid:item.product._id })">{{ item.product.name }}</a>
+		 	</div>
+
+		 	<button ng-click="removeItem(item._id)" class = "btn btn-default">
+		 		<span class ="glyphicon glyphicon-remove"> </span>
+		 	</button>
+
+		 	<div> Quantity: {{ item.quantity }} </div> change quantity input
+		 	<div> Price: {{ item.priceWhenOrdered }} </div>
+		</li>
+		<li> Total Price is: TO BE COMPLETED </li>
+	</ul>
+	<button ng-click="emptyCart()" class="btn btn-danger"> Empty Cart </button>
+</div>

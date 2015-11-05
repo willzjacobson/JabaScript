@@ -27,6 +27,7 @@ router.get('/', function(req, res, next) {
   .then(null, next);
 });
 
+//TODO make sure there is only one "Created" (active) order at a time
 router.post('/', function(req, res, next) {
   Order.create(req.body)
   .then(function(order) {
@@ -121,6 +122,14 @@ router.delete("/:orderId/items/:itemId", function (req, res, next){
   })
   .then(null, next)
 });
+
+//Empties a given order
+router.delete("/:orderId/items/", function (req, res, next) {
+  Item.remove(req.order.items)
+  .then(function() {
+    res.status(204).send()
+  })
+})
 
 
 module.exports = router;
