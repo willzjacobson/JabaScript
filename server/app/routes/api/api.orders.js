@@ -3,19 +3,19 @@ var mongoose = require('mongoose');
 var Promise = require('bluebird');
 
 var Order = mongoose.model('Order');
+var Item = mongoose.model('Item');
+var Product = mongoose.model('Product');
+
 Promise.promisifyAll(mongoose);
 
-module.exports = router;
-
 router.get('/', function(req, res, next) {
+  console.log("HEY DUDES")
   Order.find({}).populate("user items")
   .then(function(orders) {
     res.json(orders);
   })
   .then(null, next);
 });
-
-
 
 router.post('/', function(req, res, next) {
   Order.create(req.body)
@@ -25,28 +25,88 @@ router.post('/', function(req, res, next) {
   .then(null, next);
 });
 
-router.get('/:id', function(req, res, next) {
-  Order.findById(req.params.id).populate("user items")
+router.param('orderId', function(req, res, next, orderId) {
+  Order.findById(orderId)
+  .populate('items')
   .then(function(order) {
+    req.order = order;
+    next();
+  })
+  .then(null, next);
+})
+
+router.get('/:orderId', function(req, res, next) {
+  res.json(req.order)
+  .then(null, next)
+});
+
+router.put('/:orderId', function(req, res, next) {
+  req.order.set(req.body);
+  req.order.save()
+  .then(function(order){
     res.json(order);
   })
   .then(null, next);
 });
 
-router.put('/:id', function(req, res, next) {
-  Order.findByIdAndUpdate(req.params.id, req.body, {new: true}).populate("user items")
+router.delete('/:orderId', function(req, res, next) {
+  req.order.remove()
+  .then(function(order){
+    res.json(order);
+  })
+  .then(null,next);
+});
+
+
+// Get all the items in an order
+router.get("/:orderId/items", function (req, res, next){
+  var items = req.order.items;
+  Product.populate(items, {path: 'product'}, function(err, theItems) {
+    res.json(theItems)
+  })
+  .then(null, next)
+});
+
+router.put("/:orderId/items/", function (req, res, next){
+  Item.create(itemId)
+  .then(function(item) {
+    req.order.items.push(item)
+    return req.order.save()
+  })
   .then(function(order) {
-
-    console.log(order.user._id);
-    res.status(200).json(order);
+    res.status(201).json(order)
   })
-  .then(null, next);
+  .then(null, next)
 });
 
-router.delete('/:id', function(req, res, next) {
-  Order.remove({_id: req.params.id}).populate("user items")
+router.param("itemId", function (req, res, next, itemId){
+  Item.findById(itemId)
+  .then(function(item){
+    req.item = item;
+    next();
+  })
+  .then(null,function(err) {
+    console.log(err)
+  });
+})
+
+router.put("/:orderId/items/:itemId", function (req, res, next){
+  req.item.set(req.body)
+  req.item.save()
+  .then(function(item) {
+    res.status(200).json(item)
+  })
+  .then(null, next)
+});
+
+router.delete("/:orderId/items/:itemId", function (req, res, next){
+  req.item.remove()
   .then(function() {
-    res.status(204).end();
+    res.status(204).send()
   })
-  .then(null, next);
+  .then(null, next)
 });
+
+
+module.exports = router;
+

@@ -11,7 +11,7 @@ var clearDB = require('mocha-mongoose')(dbURI);
 var supertest = require('supertest');
 var app = require('../../../server/app');
 
-xdescribe('Members Route', function () {
+describe('Members Route', function () {
 
 	beforeEach('Establish DB connection', function (done) {
 		if (mongoose.connection.db) return done();
@@ -22,7 +22,7 @@ xdescribe('Members Route', function () {
 		clearDB(done);
 	});
 
-	xdescribe('Unauthenticated request', function () {
+	describe('Unauthenticated request', function () {
 
 		var guestAgent;
 
@@ -38,7 +38,7 @@ xdescribe('Members Route', function () {
 
 	});
 
-	xdescribe('Authenticated request', function () {
+	describe('Authenticated request', function () {
 
 		var loggedInAgent;
 

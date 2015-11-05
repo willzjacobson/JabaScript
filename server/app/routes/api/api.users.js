@@ -1,7 +1,8 @@
 var router = require('express').Router();
 var mongoose = require("mongoose");
-var User = mongoose.model("User"); 
+var User = mongoose.model("User");
 var Review = mongoose.model("Review");
+var Order = mongoose.model("Order");
 var _ = require('lodash');
 var passport = require('passport');
 
@@ -80,6 +81,16 @@ router.get("/:userId/reviews", function (req, res, next){
 	Review.find({user: req.requestUser._id})
 	.then(function (reviews) {
 		res.json(reviews)
+	})
+	.then(null, next);
+})
+
+//Get's all orders for a given user
+router.get("/:userId/orders", function (req, res, next){
+	Order.find({user: req.user._id})
+	.populate('items')
+	.then(function (orders) {
+		res.json(orders)
 	})
 	.then(null, next);
 })

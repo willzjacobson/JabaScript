@@ -36,7 +36,7 @@ describe('Reviews Route', function () {
 			testProduct = product;
 			done();
 		})
-	})			
+	})
 
 	var testUser;
 	beforeEach("Create a user", function (done) {
@@ -84,7 +84,7 @@ describe('Reviews Route', function () {
 		var guestAgent;
 		beforeEach('Create guest agent', function () {
 			guestAgent = supertest.agent(app);
-		}); 
+		});
 
 		describe("core review info", function(){
 
@@ -146,7 +146,7 @@ describe('Reviews Route', function () {
 				});
 			})
 
-			xit('should get a 401 response', function (done) {
+			it('should get a 401 response', function (done) {
 				guestAgent.get('/api/members/secret-stash')
 					.expect(401)
 					.end(done);
@@ -194,13 +194,13 @@ describe('Reviews Route', function () {
 				return Review.findById(testReview1._id)
 				.then(function(review) {
 					expect(review).to.not.exist;
-					done();	
+					done();
 				})
-				.then(null, done);		
+				.then(null, done);
 			})
 		})
 
-		xit('should get with 200 response and with an array as the body', function (done) {
+		it('should get with 200 response and with an array as the body', function (done) {
 			loggedInAgent.get('/api/members/secret-stash').expect(200).end(function (err, response) {
 				if (err) return done(err);
 				expect(response.body).to.be.an('array');

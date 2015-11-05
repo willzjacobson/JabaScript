@@ -59,38 +59,38 @@ var seedUsers = function () {
 var seedProducts = function () {
     var products = [
         {
-            name: 'Blue Lightsaber',
-            category: 'Weapon',
-            price: 700000,
+            name: 'blue lightsaber',
+            category: 'weapon',
+            price: 700000.45,
             description: 'this is awesome but pretty dangerous',
             numRemaining: 7
         },
         {
             name: 'Brown Jawa Robe',
             category: 'Wardrobe',
-            price: 13,
-            description: 'stylish as fuck',
+            price: 12.98,
+            description: 'stylish as fuck, stylish as fuckity fuck',
             numRemaining: 10001
         },
         {
             name: 'Death Sticks',
             category: 'Narcotics',
-            price: 2,
+            price: 1.99,
             description: 'these aren\'t good for you, but they\'re fun',
             numRemaining: 2
         },
         {
             name: 'Blaster',
             category: 'Weapon',
-            price: 999,
-            description: 'great for killing',
+            price: 999.99,
+            description: 'great for killing little kittens',
             numRemaining: 11
         },
         {
             name: 'Jedi Robe',
             category: 'Wardrobe',
-            price: 25,
-            description: 'Look like a boss',
+            price: 24.95,
+            description: 'Look like a boss, like a motherfucking boss',
             numRemaining: 14
         }
 
