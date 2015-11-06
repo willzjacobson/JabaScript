@@ -38,6 +38,12 @@ module.exports = function (app) {
                 return next(error);
             }
 
+            // if (user.resetRequired) {
+            //     res.send({
+            //         user: _.omit(user.toJSON(), ['password', 'salt'])
+            //     });
+            // }
+
             // req.logIn will establish our session.
             req.logIn(user, function (loginErr) {
                 if (loginErr) return next(loginErr);

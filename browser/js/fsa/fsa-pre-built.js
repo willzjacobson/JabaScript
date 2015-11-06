@@ -52,12 +52,6 @@
 
         function onSuccessfulLogin(response) {
             var data = response.data;
-
-            if (data.user.resetRequired) {
-                $state.go('reset', {uid: data.user._id});
-                return;
-            }
-
             Session.create(data.id, data.user);
             $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
             return data.user;
