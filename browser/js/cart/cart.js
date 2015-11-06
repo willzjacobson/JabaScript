@@ -25,5 +25,12 @@ app.controller('CartCtrl', function ($scope, $state, cart, OrdersFactory) {
         $scope.cart.items = [];
     }
 
+    $scope.saveQuantity = function(item) {
+        OrdersFactory.updateOrderItem(cart._id,item._id, {quantity: item.quantity});
+        $scope.cartForm[item._id].$setPristine();
+    }
+
+
+
 
 });
