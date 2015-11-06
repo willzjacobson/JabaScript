@@ -128,10 +128,8 @@ router.delete("/:orderId/items/:itemId", function (req, res, next){
 //Empties a given order
 router.delete("/:orderId/items/", function (req, res, next) {
   var removingItems = [];
-  console.log("Items id", req.order.items);
 
   req.order.items.forEach(function(item){
-    console.log("Item id", item._id);
     removingItems.push(Item.findByIdAndRemove(item._id));
   })
   Promise.all(removingItems)
