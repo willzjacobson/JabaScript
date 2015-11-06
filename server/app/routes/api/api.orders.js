@@ -46,6 +46,10 @@ router.param('orderId', function(req, res, next, orderId) {
   })
   .then(function() {
     req.order = order;
+    var orderSum = order.items.reduce(function(sum,item){
+      return sum + item.quantity * item.priceWhenOrdered;
+    },0)
+    req.order.totalPrice = orderSum;    
     next();
   })
   .then(null, next);

@@ -38,7 +38,6 @@ router.param("userId", function (req, res, next, userId){
 	.then(function(user){
 		req.requestUser = user;
 		if (req.user) req.user.hasPermission = req.user.isAdmin || req.user._id.equals(user._id);
-		if (req.user) console.log("req.user.hasPermission: ",req.user.hasPermission);
 		next();
 	})
 	.then(null,next);
@@ -117,7 +116,6 @@ router.get("/:userId/orders", function (req, res, next){
 		return Product.populate(itemsArray, {path: 'product'})
 	})
 	.then(function (){
-		console.log(orders);
 		res.json(orders);
 	})
 	.then(null, next);
