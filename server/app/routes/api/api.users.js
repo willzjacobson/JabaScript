@@ -62,7 +62,20 @@ router.put("/:userId", function (req, res, next){
 		})
 		.then(null, next);
 	}
-})
+});
+
+router.put('/:userId/reset', function (req, res, next) {
+	if (!req.user || !req.user.hasPermission) {
+		res.status(401).end();
+	} else {
+		req.requestUser.resetRequired = true;
+		req.requestUser.save()
+		.then(function (user) {
+			res.status(200).json(user);
+		})
+		.then(null, next);
+	}
+});
 
 
 // Delete a given user by ID

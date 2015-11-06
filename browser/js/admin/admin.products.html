@@ -1,0 +1,60 @@
+<!-- Product Management -->
+<h1>Product Management</h1>
+<div class="well">
+	<h3>Add New Product</h3>
+	<form ng-submit="createProduct(newProduct)" >
+		<div class="form-group">
+			<label for="add-name">Product Name</label>
+			<input ng-model="newProduct.name" class="form-control" id="add-name" />
+		</div>
+		<div class="form-group">
+			<label for="add-desc">Product Description</label>
+			<input ng-model="newProduct.description" class="form-control" id="add-desc" />
+		</div>
+		<div class="form-group">
+			<label for="add-category">Product Category</label>
+			<input ng-model="newProduct.category" class="form-control" id="add-category" />
+		</div>
+		<div class="form-group">
+			<label for="add-price">Product Price</label>
+			<input ng-model="newProduct.price" class="form-control" id="add-price" />
+		</div>
+		<div class="form-group">
+			<label for="add-quantity">Product Quantity</label>
+			<input ng-model="newProduct.numRemaining" class="form-control" id="add-quantity" />
+		</div>
+		<div class="form-group">
+			<label for="add-image">Product Images</label>
+			<input ng-model="newProduct.images" class="form-control" id="add-image" />
+		</div>
+		<button type="submit" class="btn btn-success">Submit</button>
+	</form>
+</div>
+	<h3>Edit Existing Products</h3>
+		<ul>
+				<li ng-repeat="product in products" style="list-style-type:none">
+					<div class="well">
+						<p>Name: <input ng-model="product.name" /></p>
+						<p>Description: <textarea ng-model="product.description"></textarea></p>
+						<p>Price: <input ng-model="product.price" /></p>
+						<p>Quantity: <input ng-model="product.numRemaining" /></p>
+						<p>Pictures: 
+							<span ng-repeat="image in product.images">
+								<img src="{{image}}" style="height:100px;width:100px"/>
+								<span ng-click="deleteImage(product._id, $index)" class="remove-x">  <button href="#">X</button>  </span>
+							</span>
+							<span><button ng-click="toggle()">+</button></span>
+						</p>
+						<div ng-show="showInput" class="form-group">
+							<label for="add-new-image">Add New Image Url</label>
+							<input ng-model="product.newImage" class="form-control" id="add-new-image" />
+						</div>
+						<div class="form-group">
+							<label for="add-new-category">Categories</label>
+							<input ng-model="product.category" class="form-control" id="add-new-category" />
+						</div>
+						<a class="btn btn-success" ng-click="changeProductDetails(product._id, product)">Save Changes</a>
+					</div>
+
+				</li>
+		</ul>

@@ -18,11 +18,25 @@ var productSchema = new mongoose.Schema({
         type: String,
         minlength: 20
     },
-    images: [String],
+    images: {
+      type: [String],
+      default: ['https://s3.amazonaws.com/jabbascript/deathstar.png']
+    },
     numRemaining: {
       type: Number,
       default: 0
     }
+});
+
+productSchema.pre('save', function (next) {
+  if (this.images.length === 0) this.images = ['https://s3.amazonaws.com/jabbascript/deathstar.png'];
+  next();
+})
+
+productSchema.pre('save', function(next) {
+  this.price = Number(this.price);
+  this.quantity = Number(this.quantity);
+  next();
 });
 
 //TODO Test this once we have a front end to test it on.
