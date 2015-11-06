@@ -4,6 +4,7 @@ var Promise = require('bluebird');
 var _ = require('lodash');
 
 var Product = mongoose.model('Product');
+var Review = mongoose.model('Review');
 Promise.promisifyAll(mongoose);
 
 
@@ -40,6 +41,14 @@ router.param('productId', function(req, res, next, productId) {
 router.get('/:productId', function(req, res, next) {
   res.json(req.product);
 });
+
+router.get('/:productId/reviews', function(req, res, next) {
+  Review.find({product: req.product._id}).populate('user')
+  .then(function(reviews) {
+    res.json(reviews)
+  })
+  .then(null, next)
+})
 
 router.put('/:productId', function(req, res, next) {
   if (!req.user || !req.user.isAdmin) {

@@ -6,14 +6,22 @@ app.config(function ($stateProvider) {
         resolve: {
         	product: function ($stateParams, ProductsFactory) {
         		return ProductsFactory.getOneProduct($stateParams.pid)
+        	},
+        	reviews: function ($stateParams, ProductsFactory) {
+        		return ProductsFactory.getReviews($stateParams.pid)
         	}
-        	// reviews: function ($stateParams, ReviewsFactory) {
-        	// 	return 
-        	// }
         }
     });
 });
 
-app.controller('ProductCtrl', function ($scope, $state, product) {
+app.controller('ProductCtrl', function ($scope, $state, product, reviews) {
 	$scope.product = product;
+    $scope.reviews = reviews
+
+    $scope.averageRating = function() {
+        var total = reviews.reduce(function(current, next) {
+                    return current.rating + next.rating
+        })
+        return total / reviews.length
+    }
 });
