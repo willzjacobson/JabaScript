@@ -12,7 +12,7 @@
 				 	<div> Quantity: {{ item.quantity }} </div> 
 				 	<div> Price: {{ item.priceWhenOrdered }} </div>
 				</li>
-				<li> Total Price is: TO BE COMPLETED </li>
+				<li> Total Price is: {{getTotalOrderCost(order)}} </li>
 			</ul>
 		</div>
 	</li>

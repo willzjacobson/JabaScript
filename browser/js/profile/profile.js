@@ -17,10 +17,14 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('ProfileCtrl', function ($scope, $state, user, reviews, orders) {
+app.controller('ProfileCtrl', function ($scope, $state, user, reviews, orders, OrdersFactory) {
 	$scope.user = user;
 	$scope.reviews = reviews;
 	$scope.orders = orders;
+
+    $scope.getTotalOrderCost = function(order){
+        return OrdersFactory.findOrderCost(order);
+    }
 
 });
 
