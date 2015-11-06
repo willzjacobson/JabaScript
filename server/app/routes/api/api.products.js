@@ -69,8 +69,6 @@ router.put('/:productId', function(req, res, next) {
   }
 });
 
-
-
 router.delete('/:productId', function(req, res, next) {
   if (!req.user || !req.user.isAdmin) {
     res.status(401).end()
