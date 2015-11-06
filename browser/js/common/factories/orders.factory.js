@@ -61,7 +61,7 @@ app.factory('OrdersFactory', function($http) {
 			return orderCache;
 		},
 		emptyOrder: function(id) {
-			return $http.delete("api/orders/" + id)
+			return $http.delete("api/orders/" + id + "/items")
 		}
 	};
 	return OrdersFactory;
