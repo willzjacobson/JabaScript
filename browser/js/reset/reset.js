@@ -11,6 +11,12 @@ app.config(function ($stateProvider) {
 	});
 });
 
-app.controller('ResetCtrl', function ($scope, user) {
+app.controller('ResetCtrl', function ($scope, user, $rootScope) {
 	$scope.user = user;
+
+	$rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
+		if (user && user.resetRequired) {
+			event.preventDefault();
+		}
+	});
 });

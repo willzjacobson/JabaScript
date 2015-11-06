@@ -9,9 +9,6 @@ app.config(function ($urlRouterProvider, $locationProvider) {
     $urlRouterProvider.when('/auth/:provider', function () {
         window.location.reload();
     });
-    $urlRouterProvider.when('/reset/:uid', function () {
-        window.location.reload();
-    });
     $urlRouterProvider.when('/profile/:uid', '/profile/:uid/history');
 
 });
@@ -47,10 +44,7 @@ app.run(function ($rootScope, AuthService, $state) {
             // If a user is retrieved, then renavigate to the destination
             // (the second time, AuthService.isAuthenticated() will work)
             // otherwise, if no user is logged in, go to "login" state.
-            console.log('AuthService.getLoggedInUser', user);
-            if (user.resetRequired) {
-                $state.go('reset');
-            } else if (user) {
+            if (user) {
                 $state.go(toState.name, toParams);
             } else {
                 $state.go('login');
