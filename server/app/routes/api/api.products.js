@@ -46,10 +46,10 @@ router.put('/:productId', function(req, res, next) {
     res.status(401).end()
   }
   else {
-    // todo: figure out why this isn't working; problem seems to be req.body.images.split
-    if (req.body.category) req.body.category = req.body.category.split(',');
-    if (req.body.images) req.body.images = req.body.images.split(',');
-    console.log(req.body.images);
+    if (req.body.category && !Array.isArray(req.body.category)) req.body.category = req.body.category.split(',');
+    req.body.images.push(req.body.newImage);
+    delete req.body.newImage;
+    console.log('1', req.body);
     req.product.set(req.body);
 
     req.product.save()
@@ -58,6 +58,17 @@ router.put('/:productId', function(req, res, next) {
     })
     .then(null, next);
   }
+});
+
+router.put('/:productId/image', function(req, res, next) {
+  if (!req.user || !req.user.isAdmin) {
+    res.status(401).end();
+  }
+  req.product.images.splice(req.body.idx,1);
+  req.product.save()
+  .then(function(updatedProduct) {
+    res.status(200).json(updatedProduct);
+  });
 });
 
 router.delete('/:productId', function(req, res, next) {

@@ -41,6 +41,14 @@ app.factory('ProductsFactory', function($http) {
 				return productsCache;
 			});
 		},
+		deleteProductImage: function (productId, imageIdx) {
+			return $http.put('/api/products/' + productId + '/image', {idx: imageIdx})
+			.then(function(res) {
+				for (var i = 0; i < productsCache.length; i++)
+					if (productsCache[i]._id === productId) productsCache[i] = res.data;
+				return res.data;
+			});
+		},
 		fetchProductsCache: function () {
 			return productsCache;
 		}

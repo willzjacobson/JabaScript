@@ -3,6 +3,18 @@ app.factory('UsersFactory', function($http) {
 		return res.data;
 	}
 	var usersCache = [];
+
+	function updateUserInCache(res) {
+		var updatedUser = res.data;
+		var id = res.data._id;
+		for (var i = 0; i < usersCache.length; i++) {
+			if (usersCache[i]._id.toString() === id.toString()) {
+				usersCache[i] = updatedUser;
+				return updatedUser;
+			}
+		}
+	}
+
 	var UsersFactory = {
 		getUsers: function() {
 			return $http.get('/api/users')
@@ -22,15 +34,7 @@ app.factory('UsersFactory', function($http) {
 		},
 		updateUser: function(id, userData) {
 			return $http.put('/api/users/' + id, userData)
-			.then(function(res) {
-				var updatedUser = res.data;
-				for (var i = 0; i < usersCache.length; i++) {
-					if (usersCache[i]._id.toString() === id.toString()) {
-						usersCache[i] = updatedUser;
-						return updatedUser;
-					}
-				}
-			});
+			.then(updateUserInCache);
 		},
 		deleteUser: function(id) {
 			return $http.delete('/api/users/' + id)
@@ -52,6 +56,10 @@ app.factory('UsersFactory', function($http) {
 		getUserCart: function (id) {
 			return $http.get("/api/users/" + id + "/orders/cart")
 			.then(toData);
+		},
+		triggerReset: function (user) {
+			return $http.put('/api/users/' + user._id + '/reset')
+			.then(updateUserInCache);
 		},
 		fetchUsersCache: function () {
 			return usersCache;

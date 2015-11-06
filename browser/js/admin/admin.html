@@ -1,118 +1,12 @@
 <div class="container">
+	<ul class="nav nav-pills">
+		<li><a ui-sref="admin.users">Users</a></li>
+		<li><a ui-sref="admin.products">Products</a></li>
+		<li><a ui-sref="admin.orders">Orders</a></li>
 	<div class="row">
 		<div class="col-md-12">
 			
-			<!-- User Management -->
-			<h1>User Management</h1>
-				<ul>
-					<li ng-repeat="user in users" style="list-style-type:none">
-						<h3>{{ user.email }}</h3>
-						<button ng-click="changeAdminStatus(user)" class="btn btn-success" ng-show="!user.isAdmin">Make Admin</button>
-						<button ng-click="changeAdminStatus(user)" class="btn btn-warning" ng-show="user.isAdmin">Strip Admin Privileges</button>
-						<button class="btn btn-warning">Trigger Password Reset</button>
-						<button ng-click="deleteUser(user._id)" class="btn btn-danger">Delete User</button>
-					</li>
-				</ul>
-
-			<!-- Product Management -->
-			<h1>Product Management</h1>
-			<div class="well">
-				<h3>Add New Product</h3>
-				<form name="new-product">
-					<div class="form-group">
-						<label for="add-name">Product Name</label>
-						<input class="form-control" id="add-name" />
-					</div>
-					<div class="form-group">
-						<label for="add-desc">Product Description</label>
-						<input class="form-control" id="add-desc" />
-					</div>
-					<div class="form-group">
-						<label for="add-category">Product Category</label>
-						<input class="form-control" id="add-category" />
-					</div>
-					<div class="form-group">
-						<label for="add-quantity">Product Quantity</label>
-						<input class="form-control" id="add-quantity" />
-					</div>
-					<div class="form-group">
-						<label for="add-image">Product Images</label>
-						<input class="form-control" id="add-image" />
-					</div>
-					<button type="submit" class="btn btn-success">Submit</button>
-				</form>
-			</div>
-				<h3>Edit Existing Products</h3>
-					<ul>
-							<li ng-repeat="product in products" style="list-style-type:none">
-								<div class="well">
-									<p>Name: <input ng-model="product.name" /></p>
-									<p>Description: <input ng-model="product.description" /></p>
-									<p>Price: <input ng-model="product.price" /></p>
-									<p>Quantity: <input ng-model="product.numRemaining" /></p>
-									<p>Pictures: 
-										<span ng-repeat="image in product.images">
-											<img src="{{image}}" style="height:100px;width:100px"/>
-											<span class="remove-x">  <button href="#">X</button>  </span>
-										</span>
-									</p>
-									<div class="form-group">
-										<label for="add-new-image">Add New Image Url</label>
-										<input ng-model="product.images" class="form-control" id="add-new-image" />
-									</div>
-									<div class="form-group">
-										<label for="add-new-category">Categories</label>
-										<input ng-model="product.category" class="form-control" id="add-new-category" />
-									</div>
-									<a class="btn btn-success" ng-click="changeProductDetails(product._id, product)">Save Changes</a>
-								</div>
-
-							</li>
-					</ul>
-
-			<!-- Order Management -->
-			<h1>Order Management</h1>
-			<div class='form-group'>
-				<a ng-click="_status=''" class="btn btn-info">View All Orders</a>
-				<a ng-click="_status='Created'" class="btn btn-info">View Created Orders</a>
-				<a ng-click="_status='Processing'" class="btn btn-info">View Processing Orders</a>
-				<a ng-click="_status='Completed'" class="btn btn-info">View Completed Orders</a>
-				<a ng-click="_status='Cancelled'" class="btn btn-info">View Canceled Orders</a>
-			</div>
-
-			<ul>
-				<li ng-repeat="order in orders | filter:{status:_status}" style="list-style:none">
-					<div class="well">
-					<ul>
-						<li style="list-style:none;display:inline">
-							<a ng-click="changeOrderStatus(order._id, {status:'Created'})" class="btn btn-xs btn-info">Created</a>
-						</li>
-						<li style="list-style:none;display:inline">
-							<a ng-click="changeOrderStatus(order._id, {status:'Processing'})" class="btn btn-xs btn-primary">Processing</a>
-						</li>
-						<li style="list-style:none;display:inline">
-							<a ng-click="changeOrderStatus(order._id, {status:'Completed'})" class="btn btn-xs btn-success">Completed</a>
-						</li>
-						<li style="list-style:none;display:inline">
-							<a ng-click="changeOrderStatus(order._id, {status:'Cancelled'})" class="btn btn-xs btn-danger">Cancelled</a>
-						</li>
-					</ul>
-					<p>User: <span>{{order.user.email}}</span></p>
-					<p>Status: <span>{{order.status}}</span></p>
-					<p>Date Issued: <span>{{order.dateIssued}}</span></p>
-					<p>Items: 
-						<span ng-repeat="item in order.items">
-							<span>
-								<p>Product Name: {{item.product.name}}</p>
-								<p>Quantity: {{item.quantity}}</p>
-								<p>Price when ordered: {{item.priceWhenOrdered}}</p>
-							</span>
-						</span>
-					</p>
-					</div>
-				</li>
-			</ul>
-				
+		<ui-view></ui-view>				
 
 		</div>
 	</div>

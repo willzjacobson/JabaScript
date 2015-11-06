@@ -1,0 +1,11 @@
+<!-- User Management -->
+<h1>User Management</h1>
+	<ul>
+		<li ng-repeat="user in users" style="list-style-type:none">
+			<h3>{{ user.email }}</h3>
+			<button ng-click="changeAdminStatus(user)" class="btn btn-success" ng-show="!user.isAdmin">Make Admin</button>
+			<button ng-click="changeAdminStatus(user)" class="btn btn-warning" ng-show="user.isAdmin">Strip Admin Privileges</button>
+			<button class="btn btn-warning" ng-click="triggerReset(user)">Trigger Password Reset</button>
+			<button ng-click="deleteUser(user._id)" class="btn btn-danger">Delete User</button>
+		</li>
+	</ul>
