@@ -14,7 +14,20 @@ app.config(function ($stateProvider) {
         		return ProductsFactory.getProducts();
         	}
         }
+    })
+    .state('admin.users', {
+        url: '/users',
+        templateUrl: 'js/admin/admin.users.html'
+    })
+    .state('admin.products', {
+        url: '/products',
+        templateUrl: 'js/admin/admin.products.html'
+    })
+    .state('admin.orders', {
+        url: '/orders',
+        templateUrl: 'js/admin/admin.orders.html'
     });
+
 });
 
 app.controller('AdminCtrl', function ($scope, $state, users, orders, products, OrdersFactory, UsersFactory, ProductsFactory) {
@@ -22,6 +35,10 @@ app.controller('AdminCtrl', function ($scope, $state, users, orders, products, O
 	$scope.orders = orders;
 	$scope.products = products;
     $scope._status = '';
+    $scope.showInput = false;
+    $scope.toggle = function () {
+        $scope.showInput = !$scope.showInput;
+    }
 
 	// change order status
 	$scope.changeOrderStatus = function(orderId, orderData) {
@@ -47,12 +64,42 @@ app.controller('AdminCtrl', function ($scope, $state, users, orders, products, O
     };
 
     $scope.changeProductDetails = function (id, details) {
-        console.log($scope.edit);
-        console.log(details);
         ProductsFactory.updateProduct(id, details)
         .then(function () {
             $scope.products = ProductsFactory.fetchProductsCache();
         });
     };
 
+    $scope.createProduct = function(productData) {
+        ProductsFactory.createProduct(productData)
+        .then(function(newProduct) {
+            $scope.showInput = false;
+            $scope.products = ProductsFactory.fetchProductsCache();
+        });
+
+    };
+
+    $scope.deleteImage = function (productId, idx) {
+        ProductsFactory.deleteProductImage(productId, idx)
+        .then(function(updateProduct) {
+            $scope.products = ProductsFactory.fetchProductsCache();
+        });
+    };
+
+    $scope.triggerReset = function (user) {
+        UsersFactory.triggerReset(user)
+        .then(function (user) {
+            console.log(user);
+            $scope.users = UsersFactory.fetchUsersCache();
+        })
+    }
+
 });
+
+
+
+
+
+
+
+
