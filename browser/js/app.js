@@ -9,6 +9,9 @@ app.config(function ($urlRouterProvider, $locationProvider) {
     $urlRouterProvider.when('/auth/:provider', function () {
         window.location.reload();
     });
+    $urlRouterProvider.when('/reset/:uid', function () {
+        window.location.reload();
+    });
     $urlRouterProvider.when('/profile/:uid', '/profile/:uid/history');
 
 });

@@ -42,12 +42,12 @@ router.param("userId", function (req, res, next, userId){
 		next();
 	})
 	.then(null,next);
-})
+});
 
 // Get a given user by ID
 router.get("/:userId", function (req, res, next) {
 	res.json(req.requestUser);
-})
+});
 
 // Update a given user by ID
 
