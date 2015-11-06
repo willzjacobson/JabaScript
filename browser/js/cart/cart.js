@@ -30,6 +30,10 @@ app.controller('CartCtrl', function ($scope, $state, cart, OrdersFactory) {
         $scope.cartForm[item._id].$setPristine();
     }
 
+    $scope.getCartCost = function(){
+        return OrdersFactory.findOrderCost($scope.cart);
+    }
+
 
 
 

@@ -22,7 +22,7 @@
 			 	</div> 
 			 	<div> Price: {{ item.priceWhenOrdered }} </div>
 			</li>
-			<li> Total Price is: TO BE COMPLETED </li>
+			<li> Total Price is: {{getCartCost()}} </li>
 		</ul>
 		<button ng-click="emptyCart()" class="btn btn-danger"> Empty Cart </button>
 	</form>

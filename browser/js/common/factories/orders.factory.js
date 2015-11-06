@@ -62,6 +62,11 @@ app.factory('OrdersFactory', function($http) {
 		},
 		emptyOrder: function(id) {
 			return $http.delete("api/orders/" + id + "/items")
+		},
+		findOrderCost: function(order) {
+		  return order.items.reduce(function(sum,item){
+		    return sum + item.quantity * item.priceWhenOrdered;
+		  },0)
 		}
 	};
 	return OrdersFactory;
