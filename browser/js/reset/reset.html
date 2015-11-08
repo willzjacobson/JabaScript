@@ -1,30 +1,65 @@
-<alert type="danger">HEY {{ user.email }}, CHANGE YOUR PASSWORD!</alert>
-<form id="reset-form" name="resetForm" ng-submit="resetForm.$valid && resetLogin(details)">
+<alert type="warning"><b>{{ user.email }}</b>, we sensed a disturbance in the force. Please change your password - it is your destiny.</alert>
+<form id="reset-form" 
+      name="resetForm" 
+      ng-submit="resetForm.$valid && resetLogin(details)">
 
     <alert type="danger" ng-show="error">
         {{ error }}
     </alert>
 
-    <alert type="warning" ng-show="(resetForm.newPasswordConfirm.$viewValue !== resetForm.newPassword.$viewValue) && resetForm.newPasswordConfirm.$dirty">
+    <alert type="danger" ng-show="retryError">
+        A thousand voices cried out in pain and were suddenly silenced. Please double check your password and try again.
+    </alert>
+
+    <alert type="warning" 
+           ng-show="(resetForm.newPasswordConfirm.$viewValue !== resetForm.newPassword.$viewValue) && resetForm.newPasswordConfirm.$dirty">
         Passwords do not match
     </alert>
 
-    <alert type="success" ng-show="(resetForm.newPasswordConfirm.$viewValue === resetForm.newPassword.$viewValue) && resetForm.newPasswordConfirm.$dirty">
+    <alert type="success" 
+           ng-show="resetForm.$valid && (resetForm.newPasswordConfirm.$viewValue === resetForm.newPassword.$viewValue)">
         Good to go!
     </alert>
 
     <div class="form-group">
         <label for="old-password">Old Password</label>
-        <input type="password" ng-model="details.oldPassword" class="form-control" id="old-password" placeholder="Enter email">
+        <input type="password"
+               name="oldPassword"
+               ng-model="details.oldPassword" 
+               ng-minlength="3"
+               ng-maxlength="50"
+               ng-required="true"
+               id="old-password"
+               class="form-control" 
+               placeholder="Enter email" />
     </div>
     <div class="form-group">
-        <label for="reset-password">Password</label>
-        <input type="password" ng-model="details.newPassword" class="form-control" id="reset-password" placeholder="Password" name="newPassword">
+        <label for="reset-password">New Password</label>
+        <input type="password" 
+               ng-model="details.newPassword" 
+               class="form-control" 
+               id="reset-password" 
+               placeholder="Password"
+               ng-minlength="3"
+               ng-maxlength="50"
+               ng-required="true"
+               name="newPassword" />
     </div>
     <div class="form-group">
-        <label for="confirm-password">Password</label>
-        <input type="password" ng-valid="resetForm.newPasswordConfirm.$viewValue === resetForm.newPassword.$viewValue" ng-model="details.newPasswordConfirm" class="form-control" name="newPasswordConfirm" placeholder="Password">
+        <label for="confirm-password">Confirm New Password</label>
+        <input name="newPasswordConfirm"
+               type="password" 
+               ng-model="details.newPasswordConfirm" 
+               ng-minlength="3"
+               ng-maxlength="50"
+               ng-required="true"
+               ng-valid="resetForm.newPasswordConfirm.$viewValue === resetForm.newPassword.$viewValue"
+               class="form-control" 
+               placeholder="Password" />
     </div>
-    <button type="submit" class="btn btn-default" 
-    ng-disabled="((resetForm.newPasswordConfirm.$viewValue !== resetForm.newPassword.$viewValue) && resetForm.newPasswordConfirm.$dirty) || resetForm.newPasswordConfirm.$pristine">Submit</button>
+    <button type="submit" 
+            class="btn btn-default"
+            ng-disabled="resetForm.$invalid || (resetForm.newPasswordConfirm.$viewValue !== resetForm.newPassword.$viewValue)">
+            Submit
+    </button>
 </form>

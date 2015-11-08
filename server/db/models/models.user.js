@@ -16,7 +16,8 @@ var userSchema = new mongoose.Schema({
         }
     },
     password: {
-        type: String
+        type: String,
+        minlength: 3
     },
     salt: {
         type: String

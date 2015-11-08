@@ -63,6 +63,15 @@ app.factory('UsersFactory', function($http) {
 		},
 		fetchUsersCache: function () {
 			return usersCache;
+		},
+		resetPassword: function (id, details) {
+			return $http.put('api/users/' + id + '/resetpwd', details)
+			.then(function (res) {
+				return res.data.user;
+			})
+			.then(null, function (err) {
+				return err;
+			})
 		}
 	}
 	return UsersFactory;

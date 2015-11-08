@@ -11,16 +11,27 @@ app.config(function ($stateProvider) {
 	});
 });
 
-app.controller('ResetCtrl', function ($scope, user, $rootScope, UsersFactory) {
+app.controller('ResetCtrl', function ($scope, user, $rootScope, UsersFactory, AuthService, $state) {
 	$scope.user = user;
+	$scope.retryError = false;
 
 	$scope.resetLogin = function (details) {
-		console.log('resetting')
-		
+		UsersFactory.resetPassword($scope.user._id, details)
+		.then(function (user) {
+		// 	return AuthService.logout()
+		// })
+		// .then(function (user) {
+			$scope.user = user;
+			console.log(user);
+            $state.go('home');
+		})
+		.then(null, function (err) {
+			$scope.retryError = true;
+		})
 	};
 
 	$rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
-		if (user && user.resetRequired) {
+		if ($scope.user && $scope.user.resetRequired) {
 			event.preventDefault();
 		}
 	});
