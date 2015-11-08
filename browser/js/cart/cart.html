@@ -1,33 +1,64 @@
 <h1> Here is your current cart </h1>
 <h3> Feel free to browse, edit, or checkout from here </h3>
-<div class = "well">
-	<form name="cartForm">
-		<ul>
-			<li ng-repeat="item in cart.items">
 
-			 	<div> Product:
-			 		<a ui-sref="product({pid:item.product._id })">{{ item.product.name }}</a>
-			 	</div>
+    <alert type="success" ng-show="shipped">
+        Your order is being shipped at the literal speed of light and will arrive shortly. Thank you for your loyalty!
+    </alert>     
 
-			 	<button ng-click="removeItem(item._id)" class = "btn btn-default">
-			 		<span class ="glyphicon glyphicon-remove"> </span>
-			 	</button>
+    <alert type="warning" ng-show="!cart && !shipped">
+    	It seems you do not have a currently active cart. Go get em and show us your capitalist self. For the empire!
+    </alert> 
 
-			 	<div> 
-			 		<span> Quantity: <input type="number" min= "0" max= "50" name= '{{item._id}}' ng-model="item.quantity"/><span> 
-			 		<button ng-click= "saveQuantity(item)" class = "btn btn-success" ng-show='cartForm[item._id].$dirty'>
-			 			<span class ="glyphicon glyphicon-ok"> </span>
-			 		</button>
+<div ng-show="!shipped && cart">
+	<div class = "well">
+		<form name="cartForm">
+			<ul>
+				<li ng-repeat="item in cart.items">
 
-			 	</div> 
-			 	<div> Price: {{ item.priceWhenOrdered }} </div>
-			</li>
-			<li> Total Price is: {{getCartCost()}} </li>
-		</ul>
-		<button ng-click="emptyCart()" class="btn btn-danger"> Empty Cart </button>
-		<button ng-click="checkOut()" class="btn btn-success"> Checkout Cart </button>
-	</form>
+				 	<div> Product:
+				 		<a ui-sref="product({pid:item.product._id })">{{ item.product.name }}</a>
+				 	</div>
 
-	{{ cartForm }}
+				 	<button ng-click="removeItem(item._id)" class = "btn btn-default">
+				 		<span class ="glyphicon glyphicon-remove"> </span>
+				 	</button>
 
+				 	<div> 
+				 		<span> Quantity: <input type="number" min= "0" max= "50" name= '{{item._id}}' ng-model="item.quantity"/><span> 
+				 		<button ng-click= "saveQuantity(item)" class = "btn btn-success" ng-show='cartForm[item._id].$dirty'>
+				 			<span class ="glyphicon glyphicon-ok"> </span>
+				 		</button>
+
+				 	</div> 
+				 	<div> Price: {{ item.priceWhenOrdered }} </div>
+				</li>
+				<li> Total Price is: {{getCartCost()}} </li>
+			</ul>
+			<button ng-click="emptyCart()" class="btn btn-danger"> Empty Cart </button>
+		</form>
+	</div>
+
+	<div class = "well">
+		<form name="checkoutForm">
+			<div class="form-group">
+				Solar System: <input type="text" min= "3" max= "25" name= 'solarSystem' ng-model="shipping.system" class="form-control" />
+			</div>
+			<div class="form-group">
+				Planet: <input type="text" min= "3" max= "25" name= 'planet' ng-model="shipping.planet" class="form-control" />
+			</div>
+			<div class="form-group">
+				City: <input type="text" min= "3" max= "25" name= 'city' ng-model="shipping.city" class="form-control" />
+			</div>
+			<div class="form-group">
+				Street 1: <input type="text" min= "3" max= "50" name= 'street1' ng-model="shipping.street1" class="form-control" />
+			</div>
+			<div class="form-group">
+				Street 2: <input type="text" min= "3" max= "50" name= 'street2' ng-model="shipping.street2" class="form-control" />
+			</div>
+			<div class="form-group">
+				<button type="submit" ng-disable="checkoutForm.$valid" ng-click ="checkout()" class="btn btn-success">Checkout Order
+				</button>
+			</div>
+		</form>
+	</div>
 </div>

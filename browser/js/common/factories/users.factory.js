@@ -3,6 +3,7 @@ app.factory('UsersFactory', function($http) {
 		return res.data;
 	}
 	var usersCache = [];
+	var userCart;
 
 	function updateUserInCache(res) {
 		var updatedUser = res.data;
@@ -54,8 +55,13 @@ app.factory('UsersFactory', function($http) {
 			.then(toData);
 		},
 		getUserCart: function (id) {
+			console.log('1', id);
 			return $http.get("/api/users/" + id + "/orders/cart")
-			.then(toData);
+			.then(toData)
+			.then(function(cart){
+				userCart = cart;
+				return userCart;
+			});
 		},
 		triggerReset: function (user) {
 			return $http.put('/api/users/' + user._id + '/reset')
