@@ -11,8 +11,13 @@ app.config(function ($stateProvider) {
 	});
 });
 
-app.controller('ResetCtrl', function ($scope, user, $rootScope) {
+app.controller('ResetCtrl', function ($scope, user, $rootScope, UsersFactory) {
 	$scope.user = user;
+
+	$scope.resetLogin = function (details) {
+		console.log('resetting')
+		
+	};
 
 	$rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
 		if (user && user.resetRequired) {
