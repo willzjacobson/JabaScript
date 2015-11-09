@@ -76,6 +76,33 @@ router.put('/:userId/reset', function (req, res, next) {
 	}
 });
 
+router.put('/:userId/resetpwd', function (req, res, next) {
+	console.log('1')
+	if (!req.user || !req.user.hasPermission) {
+		console.log('2')
+		res.status(401).end();
+	} else {
+		console.log("req.user.password", req.user.password)
+		console.log("req.body.oldPassword", req.body.oldPassword);
+		if (!req.user.correctPassword(req.body.oldPassword)) {
+			console.log('3')
+			res.status(401)
+			return new Error("There was a problem updating your password");
+		}
+		else {
+			console.log('4')
+			req.user.password = req.body.newPassword;
+			req.user.resetRequired = false;
+			req.user.save()
+			.then(function(updatedUser){
+		        res.status(201).send({
+		            user: _.omit(updatedUser.toJSON(), ['password', 'salt'])
+		        });
+			})
+			.then(null, next);
+		}
+	}
+});
 
 // Delete a given user by ID
 router.delete("/:userId", function (req, res, next) {
@@ -134,5 +161,6 @@ router.get("/:userId/orders/cart", function (req, res, next){
 	})
 	.then(null, next);
 })
+
 
 module.exports = router;
