@@ -7,7 +7,7 @@ app.config(function ($stateProvider) {
         	cart: function(UsersFactory, AuthService){
                 return AuthService.getLoggedInUser()
                 .then(function (user) {
-                    if (!user) return null;
+                    if (!user) return UsersFactory.getAnonCart();
                     return UsersFactory.getUserCart(user._id);
                 });
         	}
@@ -20,6 +20,8 @@ app.controller('CartCtrl', function ($scope, $state, cart, OrdersFactory) {
     var modifiedItems = [];
 
     if (cart) $scope.cart = cart;
+
+
     $scope.shipped = false;
 
     $scope.removeItem = function(itemId){
@@ -27,7 +29,6 @@ app.controller('CartCtrl', function ($scope, $state, cart, OrdersFactory) {
         $scope.cart.items = $scope.cart.items.filter(function(item){
             return item._id !== itemId;
         })
-        // $scope.$digest();
     }
     $scope.emptyCart = function() {
         OrdersFactory.emptyOrder($scope.cart._id);
@@ -46,7 +47,6 @@ app.controller('CartCtrl', function ($scope, $state, cart, OrdersFactory) {
     }
 
     $scope.checkout = function() {
-        console.log("WE ARE CHECKING OUT")
         var addressString = Object.keys($scope.shipping).reduce(function(prev, key){
             return prev += "\n" + $scope.shipping[key];
         }, "")
@@ -75,7 +75,9 @@ app.controller('CartCtrl', function ($scope, $state, cart, OrdersFactory) {
         return !!modifiedItems.length;
     }
 
-
-
+    $scope.isEmpty = function () {
+        if ($scope.cart) return $scope.cart.items.length === 0;
+        else return true;
+    }
 
 });

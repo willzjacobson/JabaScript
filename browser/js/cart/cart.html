@@ -5,11 +5,11 @@
         Your order is being shipped at the literal speed of light and will arrive shortly. Thank you for your loyalty!
     </alert>     
 
-    <alert type="warning" ng-show="!cart && !shipped">
+    <alert type="warning" ng-show="!shipped && isEmpty()">
     	It seems you do not have a currently active cart. Go get em and show us your capitalist self. For the empire!
     </alert> 
 
-<div ng-show="!shipped && cart">
+<div ng-show="!shipped && cart && !isEmpty()">
 	<div class = "well">
 		<form name="cartForm">
 			<ul>

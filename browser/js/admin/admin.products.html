@@ -34,16 +34,16 @@
 		<ul>
 				<li ng-repeat="product in products" style="list-style-type:none">
 					<div class="well">
-						<p>Name: <input ng-model="product.name" /></p>
-						<p>Description: <textarea ng-model="product.description"></textarea></p>
-						<p>Price: <input ng-model="product.price" /></p>
-						<p>Quantity: <input ng-model="product.numRemaining" /></p>
+						<p>Name: <input class="form-control" ng-model="product.name" /></p>
+						<p>Description: <textarea class="form-control" ng-model="product.description"></textarea></p>
+						<p>Price: <input class="form-control" ng-model="product.price" /></p>
+						<p>Quantity: <input class="form-control" ng-model="product.numRemaining" /></p>
 						<p>Pictures: 
 							<span ng-repeat="image in product.images">
 								<img src="{{image}}" style="height:100px;width:100px"/>
-								<span ng-click="deleteImage(product._id, $index)" class="remove-x">  <button href="#">X</button>  </span>
+								<span ng-click="deleteImage(product._id, $index)" class="remove-x">  <button class="btn btn-danger" href="#">X</button>  </span>
 							</span>
-							<span><button ng-click="toggle()">+</button></span>
+							<span><button class="btn btn-info" ng-click="toggle()">+</button></span>
 						</p>
 						<div ng-show="showInput" class="form-group">
 							<label for="add-new-image">Add New Image Url</label>
