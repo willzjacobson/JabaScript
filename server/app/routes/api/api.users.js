@@ -82,6 +82,7 @@ router.put('/:userId/resetpwd', function (req, res, next) {
 	} else {
 		if (!req.user.correctPassword(req.body.oldPassword)) {
 			res.status(401)
+			// @OC/PT throw?
 			return new Error("There was a problem updating your password");
 		}
 		else {
