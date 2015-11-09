@@ -33,7 +33,7 @@ router.post("/", function (req, res, next){
 });
 
 router.get('/anon/orders/cart', function (req, res, next) {
-	console.log(req.session.cart.items);
+	// console.log(req.session.cart.items);
 	// req.session.cart.items.populate('product')
 	// .then(function () {
 		res.json(req.session.cart);

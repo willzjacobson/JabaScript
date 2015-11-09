@@ -89,16 +89,35 @@ router.get("/:orderId/items", function (req, res, next){
   .then(null, next)
 });
 
-router.put("/:orderId/items/", function (req, res, next){
+router.put("/:orderId/items/", function (req, res, next) {
+  var theItem;
+  var theOrder;
   Item.create(req.body)
   .then(function(item) {
+    return Item.findById(item._id).populate('product');
+  })
+  .then(function (item) {
+    theItem = item;
     req.order.items.push(item)
-    console.log('req.order',req.order);
     return req.order.save()
   })
   .then(function(order) {
-    if (!req.user) req.session.cart = order;
-    res.status(201).json(order)
+    theOrder = order;
+    if (!req.user) return theItem.populate('product');
+    else return order;
+  })
+  .then(function () {
+    if (!req.user) {
+      theOrder.items = theOrder.items.map(function (item) {
+        if (!item.product.name) return theItem;
+        else return item;
+      });
+      return theOrder.save()
+    } else return theOrder;
+  })
+  .then(function (order) {
+    req.session.cart = order;
+    res.status(201).json(theOrder)
   })
   .then(null, next)
 });
@@ -107,6 +126,7 @@ router.param("itemId", function (req, res, next, itemId){
   Item.findById(itemId)
   .then(function(item){
     req.item = item;
+    console.log('in param', req.item)
     next();
   })
   .then(null,function(err) {
@@ -124,8 +144,15 @@ router.put("/:orderId/items/:itemId", function (req, res, next){
 });
 
 // deletes one item
-router.delete("/:orderId/items/:itemId", function (req, res, next){
-  req.item.remove()
+router.delete("/:orderId/items/:itemId", function (req, res, next) {
+  if (req.session.cart) {
+    for (var i = 0; i < req.session.cart.items.length; i++) {
+      req.session.cart.items = req.session.cart.items.filter(function (item) {
+        return item._id.toString() !== req.item._id.toString()
+      });
+    }
+  }
+  return req.item.remove()
   .then(function() {
     res.status(204).send()
   })
