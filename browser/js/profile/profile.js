@@ -22,9 +22,7 @@ app.controller('ProfileCtrl', function ($scope, $state, user, reviews, orders, O
 	$scope.reviews = reviews;
 	$scope.orders = orders;
 
-    $scope.getTotalOrderCost = function(order){
-        return OrdersFactory.findOrderCost(order);
-    }
+    $scope.getTotalOrderCost = OrdersFactory.findOrderCost;
 
 });
 

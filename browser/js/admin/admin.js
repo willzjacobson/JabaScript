@@ -48,6 +48,7 @@ app.controller('AdminCtrl', function ($scope, $state, users, orders, products, O
 	$scope.changeOrderStatus = function(orderId, orderData) {
 		return OrdersFactory.updateOrder(orderId, orderData)
 			.then(function () {
+                // @OB/PT is it necessary to set this back to the cache, should already be good to go
 				$scope.orders = OrdersFactory.fetchOrderCache();
 			});
 	};

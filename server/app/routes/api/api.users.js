@@ -90,6 +90,7 @@ router.put('/:userId/resetpwd', function (req, res, next) {
 	} else {
 		if (!req.user.correctPassword(req.body.oldPassword)) {
 			res.status(401)
+			// @OC/PT throw?
 			return new Error("There was a problem updating your password");
 		}
 		else {
@@ -135,6 +136,7 @@ router.get("/:userId/orders", function (req, res, next){
 	Order.find({user: req.user._id})
 	.populate('items user')
 	.then(function (theOrders) {
+		// @OB/PT try populate('items.product') instead of all this jibberjabber (look into deepPopulate)
 		var itemsArray = [];
 		theOrders.forEach(function(order){
 			order.items.forEach(function(item) {

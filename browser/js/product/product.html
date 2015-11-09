@@ -4,6 +4,7 @@
 		<img src="{{ product.images[0] }}" style="height:500px;width:500px"/>
 		<ul>
 			<li ng-repeat="image in product.images" style="list-style-type:none">
+				<!-- @OB/PT beware inline style -->
 				<img src="{{ image }}" style="height:100px;width:100px"/>
 			</li>
 		</ul>
