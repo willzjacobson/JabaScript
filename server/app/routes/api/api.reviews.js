@@ -14,7 +14,6 @@ router.get("/", function (req, res, next) {
 // Add a review to the db
 router.post("/", function (req, res, next){
 	Review.create(req.body)
-	// .populate('user')
 	.then(function (review) {
 		return Review.findById(review._id)
 		.populate('user')
