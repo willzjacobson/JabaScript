@@ -18,7 +18,6 @@ app.factory('ReviewsFactory', function($http) {
 			return $http.post('/api/reviews', reviewData)
 			.then(function(res) {
 				reviewsCache.push(res.data);
-				console.log(reviewsCache);
 				return reviewsCache;
 			});
 		},
