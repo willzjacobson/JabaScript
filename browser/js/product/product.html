@@ -15,13 +15,68 @@
 		<button class="btn btn-default">Add to Cart</button>
 	</div>
 </div>
+<!-- Reviews Row -->
 <div class="row">
 	<div class="col-md-12">
 		<h2>Reviews</h2>
-		<h4>Average Review: {{averageRating()}}</h4>
+		<h4 ng-show="hasReviews()"> Average Review: {{averageRating()}}</h4>
+
+		<button ng-hide="userHasReview()" class="btn btn-default" ng-click="showReviewForm()"> {{buttonText()}} </button>
+		<form ng-show="reviewTime" novalidate name="newReview" style="width: 300px;" ng-submit="createReview()">
+			<div class="form-group">
+				<label for="reviewTitle">Title:</label>
+				<input id="reviewTitle"
+						type="text"
+						name="title"
+						ng-model="newReviewModel.title"
+						class="form-control"
+						required
+				/>
+			</div>
+			<div class="alert alert-warning" ng-show="newReview.content.$dirty && newReview.title.$invalid">Don't forget to title your review!></div>
+
+			<div class="form-group">
+				<select id="reviewRating"
+						type="select"
+						name="rating"
+						ng-model="newReviewModel.rating"
+						class="form-control"
+						required>
+						<option value="">-- Please choose a rating -- </option>
+						<option value="1">1 Star</option>
+						<option value="2">2 Star</option>
+						<option value="3">3 Star</option>
+						<option value="4">4 Star</option>
+						<option value="5">5 Star</option>
+				<select/>
+			</div>
+			<div
+				class="alert alert-warning"
+				ng-show="newReview.content.$dirty && newReview.rating.$invalid">Don't forget to enter a rating!>
+			</div>
+
+			<div class="form-group">
+				<label for="reviewContent">Review:</label>
+				<textarea id="reviewContent",
+						ng-minlength="20"
+						type="area"
+						name="content"
+						ng-model="newReviewModel.content"
+						class="form-control"
+						required>
+				</textarea>
+			</div>
+			<div
+				class="alert alert-warning"
+				ng-show="shouldShowContentError()">Please enter a review of at least 20 characters :)>
+			</div>
+			<button type="submit" ng-disabled="newReview.$invalid" class="btn btn-primary btn-lg">Submit</button>
+		</form>
+
 		<ul>
 			<li ng-repeat="review in reviews">
-				<p>{{review.user.email}} - {{review.rating}} Star</p>
+			<h5>{{review.title}} - {{review.rating}} Star</h5>
+				<p>{{review.user.email}}</p>
 				<p>{{review.content}}</p>
 			</li>
 		</ul>

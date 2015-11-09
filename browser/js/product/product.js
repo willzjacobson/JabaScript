@@ -14,27 +14,51 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('ProductCtrl', function ($scope, $state, product, reviews, Session) {
+app.controller('ProductCtrl', function ($scope, $state, product, reviews, Session, ReviewsFactory) {
 	$scope.product = product;
     $scope.reviews = reviews
     $scope.session = Session
+    $scope.reviewTime = false;
+    $scope.shouldShowContentError = function() {
+        return $scope.newReview.title.$dirty && $scope.newReview.rating.$dirty && $scope.newReview.content.$invalid;
+    }
 
-    console.log("Our session is: ", $scope.session)
+    $scope.buttonText = function() {
+        if ($scope.reviewTime) return "Cancel"
+        else return "Write Review"
+    }
+
+    $scope.createReview = function() {
+        $scope.newReviewModel.product = $scope.product._id;
+        $scope.newReviewModel.user = $scope.session.user._id;
+        console.log('lalala', $scope.newReviewModel)
+        ReviewsFactory.createReview($scope.newReviewModel)
+        .then(function(newReview) {
+            $scope.reviewTime = false;
+            $scope.reviews = ReviewsFactory.fetchReviewsCache();
+        })
+    }
+    $scope.hasReviews = function() {
+        return $scope.reviews.length > 0;
+    }
+
+    $scope.showReviewForm = function() {
+        $scope.reviewTime = !$scope.reviewTime
+    }
+
     $scope.averageRating = function() {
+        if(reviews.length === 1) return reviews[0].rating
         var total = reviews.reduce(function(current, next) {
                     return current.rating + next.rating
         })
         return total / reviews.length
     }
 
-     $scope.userHasReview = function() {
-        console.log("Reviews", $scope.reviews)
-        console.log("Session User", $scope.session.user)
+    $scope.userHasReview = function() {
         if(!$scope.session.user) return -1;
         return (reviews.filter(function(review) {
             return review.user._id === $scope.session.user._id
         })).length;
 
-     }
-    console.log($scope.userHasReview())
+    }
 });

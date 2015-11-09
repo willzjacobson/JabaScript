@@ -114,42 +114,49 @@ var seedReviews = function () {
         {
             product: products[0]._id,
             user: users[0]._id,
+            title: "This is my title and I LOVE IT",
             content: "Don't know what I'm reviewing but i liked it",
             rating: 5
         },
         {
             product: products[0]._id,
             user: users[0]._id,
+            title: "This is my title and I HATE IT",
             content: "I hated this. it made me incredibly unhappy",
             rating: 1
         },
         {
             product: products[1]._id,
             user: users[0]._id,
+            title: "This is my title and I'M INDIFFERENT TO IT",
             content: "hell yeah this thing. it was realler perfect for me",
             rating: 5
         },
         {
             product: products[2]._id,
             user: users[2]._id,
+            title: "This is my title and I'M CONFUSED ABOUT MY FEELINGS TOWARDS IT",
             content: "I bought this and now i'm writing a review",
             rating: 4
         },
         {
             product: products[3]._id,
             user: users[3]._id,
+            title: "This is my title and I LOVED IT HARD",
             content: "this is a 20 or more character review",
             rating: 2
         },
         {
             product: products[4]._id,
             user: users[4]._id,
+            title: "This is my title and I SEEM TO HAVE MISPLACED IT",
             content: "Don't know what I'm reviewing but i liked it",
             rating: 5
         },
         {
             product: products[4]._id,
             user: users[2]._id,
+            title: "This is my title and THAT'S WHAT SHE SAID",
             content: "blah BLAH blah BLAH blah BLAH blah BLAH ",
             rating: 5
         }
@@ -222,7 +229,7 @@ var seedOrders = function () {
             dateIssued: new Date(),
             user: users[2]._id,
             items: [items[5]._id]
-        },       
+        },
         {
             status: 'Created',
             dateIssued: new Date(),
