@@ -54,7 +54,7 @@ app.factory('OrdersFactory', function($http) {
 			return $http.delete('/api/orders/' + orderId + '/items/' + itemId);
 		},
 		createOrderItem: function(orderId, itemData) {
-			return $http.put('/api/orders/' + orderId + '/items', itemData)
+			return $http.put('/api/orders/' + orderId + '/items/', itemData)
 			.then(toData);
 		},
 		fetchOrderCache: function () {

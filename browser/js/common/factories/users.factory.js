@@ -55,7 +55,6 @@ app.factory('UsersFactory', function($http) {
 			.then(toData);
 		},
 		getUserCart: function (id) {
-			console.log('1', id);
 			return $http.get("/api/users/" + id + "/orders/cart")
 			.then(toData)
 			.then(function(cart){

@@ -89,7 +89,7 @@ router.get("/:orderId/items", function (req, res, next){
 });
 
 router.put("/:orderId/items/", function (req, res, next){
-  Item.create(itemId)
+  Item.create(req.body)
   .then(function(item) {
     req.order.items.push(item)
     return req.order.save()
