@@ -20,8 +20,8 @@ app.controller('ProductCtrl', function ($scope, $state, product, reviews) {
 
     $scope.averageRating = function() {
         var total = reviews.reduce(function(current, next) {
-                    return current.rating + next.rating
-        })
+            return current + next.rating
+        }, 0);
         return total / reviews.length
     }
 });

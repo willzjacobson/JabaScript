@@ -21,6 +21,7 @@ app.config(function ($stateProvider) {
                 })
 
                 var ourSet = Array.from(uniqueCategories);
+                ourSet.push('');
                 return ourSet;
             }
         }
