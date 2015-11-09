@@ -47,7 +47,6 @@ app.controller('CartCtrl', function ($scope, $state, cart, OrdersFactory) {
     }
 
     $scope.checkout = function() {
-        console.log("WE ARE CHECKING OUT")
         var addressString = Object.keys($scope.shipping).reduce(function(prev, key){
             return prev += "\n" + $scope.shipping[key];
         }, "")
