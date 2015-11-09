@@ -23,7 +23,21 @@ app.run(function ($rootScope, AuthService, $state, Session) {
 
     // $stateChangeStart is an event fired
     // whenever the process of changing a state begins.
-    $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
+    $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+
+        var anaData = {
+            user: event.targetScope.$$childHead.user || null,
+            isLoggedIn: event.targetScope.$$childHead.product || null,
+            product: toParams.pid || null
+        }
+
+        var anaEvent = new CustomEvent('Analytics', {"detail": anaData})
+
+        window.dispatchEvent(anaEvent)
+
+
+
+
 
         if (!destinationStateRequiresAuth(toState)) {
             // The destination state does not require authentication
