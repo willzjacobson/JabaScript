@@ -128,6 +128,7 @@ router.get("/:userId/orders", function (req, res, next){
 	Order.find({user: req.user._id})
 	.populate('items user')
 	.then(function (theOrders) {
+		// @OB/PT try populate('items.product') instead of all this jibberjabber
 		var itemsArray = [];
 		theOrders.forEach(function(order){
 			order.items.forEach(function(item) {

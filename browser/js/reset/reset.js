@@ -30,6 +30,7 @@ app.controller('ResetCtrl', function ($scope, user, $rootScope, UsersFactory, Au
 		})
 	};
 
+	// @OB/PT why doing this here?
 	$rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
 		if ($scope.user && $scope.user.resetRequired) {
 			event.preventDefault();
