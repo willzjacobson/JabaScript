@@ -77,6 +77,10 @@ app.factory('UsersFactory', function($http) {
 			.then(null, function (err) {
 				return err;
 			})
+		},
+		getAnonCart: function () {
+			return $http.get('api/users/anon/orders/cart')
+			.then(toData);
 		}
 	}
 	return UsersFactory;

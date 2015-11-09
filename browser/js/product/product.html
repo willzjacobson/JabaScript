@@ -13,7 +13,7 @@
 		<p>Price: {{ product.price }}</p>
 		<p>Quantity Remaining: {{ product.numRemaining }}</p>
 		<button class="btn btn-default" ng-disabled="product.numRemaining===0" ng-click="addToCart()">
-			Add to Cart
+			Add to Cart <span class="glyphicon glyphicon-shopping-cart"></span>
 		</button>
 		<span class="alert alert-info" ng-show="product.numRemaining===0">
 			Currently out of stock, this item is. Apologize, we must.

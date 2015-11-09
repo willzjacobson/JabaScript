@@ -31,27 +31,24 @@ app.controller('ProductCtrl', function ($scope, $state, product, reviews, UsersF
         .then(function (user) {
             theUser = user;
             if (!user) {
-                // make fake cart for user with cart.anon = true;
+                return UsersFactory.getAnonCart()
             } else {
                 return UsersFactory.getUserCart(user._id);
             }
         })   
         .then(function (cart){
-            if (!cart) return OrdersFactory.createOrder({user: theUser._id})
-            return cart;
+            if (!cart) 
+                if (theUser) return OrdersFactory.createOrder({user: theUser._id})
+                else return OrdersFactory.createOrder({});
+            else return cart;
         })     
         .then(function (cart) {
-            if( cart.anon){ 
-                // anon
-            } 
-            else {
-                if (hasProductInCart(cart, product._id)) return {};
-                else return OrdersFactory.createOrderItem(cart._id, {
-                    product: product._id,
-                    priceWhenOrdered: $scope.product.price,
-                    quantity: 1
-                })
-            }
+            if (hasProductInCart(cart, product._id)) return {};
+            else return OrdersFactory.createOrderItem(cart._id, {
+                product: product._id,
+                priceWhenOrdered: $scope.product.price,
+                quantity: 1
+            });
         })
         .then(function (item) {
             console.log('Added ', item, ' successfully');

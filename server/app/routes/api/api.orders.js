@@ -31,6 +31,7 @@ router.get('/', function(req, res, next) {
 router.post('/', function(req, res, next) {
   Order.create(req.body)
   .then(function(order) {
+    if (Object.keys(req.body).length === 0) req.session.cart = order;
     res.status(201).json(order);
   })
   .then(null, next);
@@ -92,9 +93,11 @@ router.put("/:orderId/items/", function (req, res, next){
   Item.create(req.body)
   .then(function(item) {
     req.order.items.push(item)
+    console.log('req.order',req.order);
     return req.order.save()
   })
   .then(function(order) {
+    if (!req.user) req.session.cart = order;
     res.status(201).json(order)
   })
   .then(null, next)
@@ -138,6 +141,7 @@ router.delete("/:orderId/items/", function (req, res, next) {
   })
   Promise.all(removingItems)
   .then(function(success){
+    req.session.cart = null;
     res.status(204).send(success)
   })
   .then(null, next);
