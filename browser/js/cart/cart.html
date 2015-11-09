@@ -13,51 +13,68 @@
 	<div class = "well">
 		<form name="cartForm">
 			<ul>
-				<li ng-repeat="item in cart.items">
+				<li ng-repeat="item in cart.items" style="list-style-type:none">
+					<div class="well" style="background-color:white">
+					 	<div>
+					 		<a ui-sref="product({pid:item.product._id })">
+					 			<h3>{{ item.product.name }}</h3>
+					 		</a>
+						 	<a ng-click="removeItem(item._id)"
+						 	   style="float:right"
+						 	   class = "btn btn-default">
+						 		<span class ="glyphicon glyphicon-remove"> </span>
+						 	</a>
+					 	</div>
 
-				 	<div> Product:
-				 		<a ui-sref="product({pid:item.product._id })">{{ item.product.name }}</a>
-				 	</div>
 
-				 	<button ng-click="removeItem(item._id)" class = "btn btn-default">
-				 		<span class ="glyphicon glyphicon-remove"> </span>
-				 	</button>
-
-				 	<div> 
-				 		<span> Quantity: <input type="number" min= "0" max= "50" name= '{{item._id}}' ng-model="item.quantity"/><span> 
-				 		<button ng-click= "saveQuantity(item)" class = "btn btn-success" ng-show='cartForm[item._id].$dirty'>
-				 			<span class ="glyphicon glyphicon-ok"> </span>
-				 		</button>
-
-				 	</div> 
-				 	<div> Price: {{ item.priceWhenOrdered }} </div>
+					 	<div> 
+					 		<span> Quantity: 
+					 			<input type="number" 
+					 			       ng-min="1" 
+					 			       ng-max="item.product.numRemaining" 
+					 			       name='{{item._id}}'
+					 			       ng-change="unconfirm(item._id)"
+					 			       ng-model="item.quantity"/>
+					 		</span> 
+					 		<a ng-click= "saveQuantity(item)" 
+					 		   class = "btn btn-success" 
+					 		   ng-show='cartForm[item._id].$dirty && item.quantity'>
+					 			<span class ="glyphicon glyphicon-ok"> </span>
+					 		</a>
+					 		<alert class="alert alert-warning" ng-show="!item.quantity">
+					 			Have this much item in stock, we do not.
+					 		</alert>
+					 	</div> 
+					 	<div> Price: {{ item.priceWhenOrdered }} </div>
+					</div>
 				</li>
-				<li> Total Price is: {{getCartCost()}} </li>
+				<li style="list-style-type:none"> <b>Total Price is: {{getCartCost()}} </b></li>
 			</ul>
 			<button ng-click="emptyCart()" class="btn btn-danger"> Empty Cart </button>
 		</form>
 	</div>
-
 	<div class = "well">
 		<form name="checkoutForm">
 			<div class="form-group">
-				Solar System: <input type="text" min= "3" max= "25" name= 'solarSystem' ng-model="shipping.system" class="form-control" />
+				Solar System: <input type="text" ng-required = "true" ng-minlength= "3" ng-maxlength= "25" name= 'solarSystem' ng-model="shipping.system" class="form-control" />
 			</div>
 			<div class="form-group">
-				Planet: <input type="text" min= "3" max= "25" name= 'planet' ng-model="shipping.planet" class="form-control" />
+				Planet: <input type="text" ng-required = "true" ng-minlength= "3" ng-maxlength= "25" name= 'planet' ng-model="shipping.planet" class="form-control" />
 			</div>
 			<div class="form-group">
-				City: <input type="text" min= "3" max= "25" name= 'city' ng-model="shipping.city" class="form-control" />
+				City: <input type="text" ng-required = "true" ng-minlength= "3" ng-maxlength= "25" name= 'city' ng-model="shipping.city" class="form-control" />
 			</div>
 			<div class="form-group">
-				Street 1: <input type="text" min= "3" max= "50" name= 'street1' ng-model="shipping.street1" class="form-control" />
+				Street 1: <input type="text" ng-required = "true" ng-minlength= "3" ng-maxlength= "50" name= 'street1' ng-model="shipping.street1" class="form-control" />
 			</div>
 			<div class="form-group">
-				Street 2: <input type="text" min= "3" max= "50" name= 'street2' ng-model="shipping.street2" class="form-control" />
+				Street 2: <input type="text" ng-required = "true" ng-minlength= "3" ng-maxlength= "50" name= 'street2' ng-model="shipping.street2" class="form-control" />
 			</div>
 			<div class="form-group">
-				<button type="submit" ng-disable="checkoutForm.$valid" ng-click ="checkout()" class="btn btn-success">Checkout Order
+				<button type="submit" ng-disabled="!checkoutForm.$valid || formNotConfirmed()" ng-click ="checkout()" class="btn btn-success">Checkout Order
 				</button>
+				<span class="alert alert-info" ng-show="!checkoutForm.$valid">Please fill out your shipping information</span>
+				<span class="alert alert-warning" ng-show="formNotConfirmed()">Please confirm your order item details</span>
 			</div>
 		</form>
 	</div>

@@ -5,7 +5,12 @@ app.config(function ($stateProvider) {
         controller: 'HomeCtrl',
         resolve: {
         	products: function (ProductsFactory) {
-        		return ProductsFactory.getProducts();
+        		return ProductsFactory.getProducts()
+                .then(function (products) {
+                    return products.filter(function (product) {
+                        return product.numRemaining > 0;
+                    })
+                })
         	},
             categories: function (products) {
                 var uniqueCategories = new Set();
