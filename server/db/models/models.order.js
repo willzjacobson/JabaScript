@@ -23,7 +23,10 @@ var orderSchema = new mongoose.Schema({
     items: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Item'
-    }]
+    }],
+    shippingDetails: {
+      type: String
+    }
 });
 
 mongoose.model('Order', orderSchema);
