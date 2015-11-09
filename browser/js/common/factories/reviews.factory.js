@@ -8,10 +8,7 @@ app.factory('ReviewsFactory', function($http) {
 	var ReviewsFactory = {
 		getReviews: function() {
 			return $http.get('/api/reviews')
-			.then(function(res) {
-				angular.copy(res.data, reviewsCache);
-				return reviewsCache;
-			});
+			.then(toData)
 		},
 		getOneReview: function(id) {
 			return $http.get('/api/reviews/' + id)
@@ -21,7 +18,8 @@ app.factory('ReviewsFactory', function($http) {
 			return $http.post('/api/reviews', reviewData)
 			.then(function(res) {
 				reviewsCache.push(res.data);
-				return res.data;
+				console.log(reviewsCache);
+				return reviewsCache;
 			});
 		},
 		updateReview: function(id, reviewData) {
@@ -45,6 +43,16 @@ app.factory('ReviewsFactory', function($http) {
 		},
 		fetchReviewsCache: function() {
 			return reviewsCache;
+		},
+		setReviewsCache: function(cache) {
+			reviewsCache = cache
+		},
+		getReviewsForProduct: function(productId) {
+			return $http.get('/api/products/' + productId + '/reviews')
+			.then(function(res) {
+				angular.copy(res.data, reviewsCache);
+				return reviewsCache;
+			});
 		}
 	}
 	return ReviewsFactory;

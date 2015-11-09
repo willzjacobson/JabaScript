@@ -21,8 +21,16 @@
 		<h2>Reviews</h2>
 		<h4 ng-show="hasReviews()"> Average Review: {{averageRating()}}</h4>
 
-		<button ng-hide="userHasReview()" class="btn btn-default" ng-click="showReviewForm()"> {{buttonText()}} </button>
-		<form ng-show="reviewTime" novalidate name="newReview" style="width: 300px;" ng-submit="createReview()">
+		<button ng-hide="userHasReview()"
+				class="btn btn-default"
+				ng-click="showReviewForm()">
+					{{buttonText()}}
+		</button>
+		<form ng-show="reviewTime"
+				novalidate
+				name="newReview"
+				style="width: 300px;"
+				ng-submit="createReview()">
 			<div class="form-group">
 				<label for="reviewTitle">Title:</label>
 				<input id="reviewTitle"
@@ -33,7 +41,10 @@
 						required
 				/>
 			</div>
-			<div class="alert alert-warning" ng-show="newReview.content.$dirty && newReview.title.$invalid">Don't forget to title your review!></div>
+			<div class="alert alert-warning"
+					ng-show="newReview.content.$dirty && newReview.title.$invalid">
+						Don't forget to title your review!>
+			</div>
 
 			<div class="form-group">
 				<select id="reviewRating"
@@ -75,7 +86,11 @@
 
 		<ul>
 			<li ng-repeat="review in reviews">
-			<h5>{{review.title}} - {{review.rating}} Star</h5>
+			<h5>{{review.title}} - {{review.rating}} Star
+					<button ng-click="removeReview(review)" ng-show="isUserReview(review)" class="btn btn-default btn-xs">
+						<span class="glyphicon glyphicon-remove"></span>
+					</button>
+			</h5>
 				<p>{{review.user.email}}</p>
 				<p>{{review.content}}</p>
 			</li>
