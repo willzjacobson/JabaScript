@@ -7,7 +7,7 @@ app.config(function ($stateProvider) {
         	cart: function(UsersFactory, AuthService){
                 return AuthService.getLoggedInUser()
                 .then(function (user) {
-                    if (!user) return null;
+                    if (!user) return UsersFactory.getAnonCart();
                     return UsersFactory.getUserCart(user._id);
                 });
         	}
@@ -16,7 +16,12 @@ app.config(function ($stateProvider) {
 });
 
 app.controller('CartCtrl', function ($scope, $state, cart, OrdersFactory) {
+
+    var modifiedItems = [];
+
     if (cart) $scope.cart = cart;
+
+
     $scope.shipped = false;
 
     $scope.removeItem = function(itemId){
@@ -24,7 +29,6 @@ app.controller('CartCtrl', function ($scope, $state, cart, OrdersFactory) {
         $scope.cart.items = $scope.cart.items.filter(function(item){
             return item._id !== itemId;
         })
-        // $scope.$digest();
     }
     $scope.emptyCart = function() {
         OrdersFactory.emptyOrder($scope.cart._id);
@@ -34,6 +38,7 @@ app.controller('CartCtrl', function ($scope, $state, cart, OrdersFactory) {
     $scope.saveQuantity = function(item) {
         OrdersFactory.updateOrderItem(cart._id,item._id, {quantity: item.quantity});
         $scope.cartForm[item._id].$setPristine();
+        $scope.confirm(item._id);
     }
 
     $scope.getCartCost = function(){
@@ -42,7 +47,6 @@ app.controller('CartCtrl', function ($scope, $state, cart, OrdersFactory) {
     }
 
     $scope.checkout = function() {
-        
         var addressString = Object.keys($scope.shipping).reduce(function(prev, key){
             return prev += "\n" + $scope.shipping[key];
         }, "")
@@ -54,10 +58,26 @@ app.controller('CartCtrl', function ($scope, $state, cart, OrdersFactory) {
         })
         .then(null, function(err){
             console.log("Erred");
-        })
+        });
     }
 
+    $scope.unconfirm = function (id) {
+        if (modifiedItems.indexOf(id) !== -1) return;
+        else modifiedItems.push(id);
+    }
 
+    $scope.confirm = function (id) {
+        var idx = modifiedItems.indexOf(id);
+        modifiedItems.splice(idx, 1);
+    }
 
+    $scope.formNotConfirmed = function () {
+        return !!modifiedItems.length;
+    }
+
+    $scope.isEmpty = function () {
+        if ($scope.cart) return $scope.cart.items.length === 0;
+        else return true;
+    }
 
 });

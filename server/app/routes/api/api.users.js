@@ -32,6 +32,14 @@ router.post("/", function (req, res, next){
 	.then(null,next);
 });
 
+router.get('/anon/orders/cart', function (req, res, next) {
+	// console.log(req.session.cart.items);
+	// req.session.cart.items.populate('product')
+	// .then(function () {
+		res.json(req.session.cart);
+	// })
+});
+
 // Add middleware to find user by ID and save in req.user
 router.param("userId", function (req, res, next, userId){
 	User.findById(userId)
@@ -155,7 +163,8 @@ router.get("/:userId/orders/cart", function (req, res, next){
 		res.json(order);
 	})
 	.then(null, next);
-})
+});
+
 
 
 module.exports = router;

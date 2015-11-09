@@ -9,34 +9,41 @@
 </div>
 
 <ul>
-	<li ng-repeat="order in orders | filter:{status:_status}" style="list-style:none">
-		<div class="well">
-		<ul>
-			<li style="list-style:none;display:inline">
-				<a ng-click="changeOrderStatus(order._id, {status:'Created'})" class="btn btn-xs btn-info">Created</a>
-			</li>
-			<li style="list-style:none;display:inline">
-				<a ng-click="changeOrderStatus(order._id, {status:'Processing'})" class="btn btn-xs btn-primary">Processing</a>
-			</li>
-			<li style="list-style:none;display:inline">
-				<a ng-click="changeOrderStatus(order._id, {status:'Completed'})" class="btn btn-xs btn-success">Completed</a>
-			</li>
-			<li style="list-style:none;display:inline">
-				<a ng-click="changeOrderStatus(order._id, {status:'Cancelled'})" class="btn btn-xs btn-danger">Cancelled</a>
-			</li>
-		</ul>
-		<p>User: <span>{{order.user.email}}</span></p>
-		<p>Status: <span>{{order.status}}</span></p>
-		<p>Date Issued: <span>{{order.dateIssued}}</span></p>
-		<p>Items: 
-			<span ng-repeat="item in order.items">
-				<span>
-					<p>Product Name: {{item.product.name}}</p>
-					<p>Quantity: {{item.quantity}}</p>
-					<p>Price when ordered: {{item.priceWhenOrdered}}</p>
-				</span>
-			</span>
-		</p>
+	<li ng-repeat="order in orders| filter:{status:_status}" style="list-style:none">
+		<div class = "well">
+			<ul>
+				<p><b>Modify order status:</b></p>
+				<li style="list-style:none;display:inline">
+					<a ng-click="changeOrderStatus(order._id, {status:'Created'})" class="btn btn-xs btn-info">Created</a>
+				</li>
+				<li style="list-style:none;display:inline">
+					<a ng-click="changeOrderStatus(order._id, {status:'Processing'})" class="btn btn-xs btn-primary">Processing</a>
+				</li>
+				<li style="list-style:none;display:inline">
+					<a ng-click="changeOrderStatus(order._id, {status:'Completed'})" class="btn btn-xs btn-success">Completed</a>
+				</li>
+				<li style="list-style:none;display:inline">
+					<a ng-click="changeOrderStatus(order._id, {status:'Cancelled'})" class="btn btn-xs btn-danger">Cancelled</a>
+				</li>
+			</ul>
+
+			<ul style="list-style:none">
+				<li>User : {{ order.user.email }}</li>
+				<li>Order made on : {{ order.dateIssued }}</li>
+				<li>Order status : {{ order.status }}</li>
+				<li>Shipping details : {{ order.shippingDetails }}</li>
+					<ul style="list-style:none">
+						<li ng-repeat="item in order.items">
+							<div class="well">
+							 	<div> Product: <a ui-sref="product({pid:item.product._id })">{{ item.product.name }}</a> </div> 
+							 	<div> Quantity: {{ item.quantity }} </div> 
+							 	<div> Price: {{ item.priceWhenOrdered }} </div>
+							 </div>
+						</li>
+					</ul>
+				<li> Total Price is: {{getTotalOrderCost(order)}} </li>
+			</ul>
 		</div>
 	</li>
 </ul>
+

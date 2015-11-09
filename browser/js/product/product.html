@@ -8,11 +8,16 @@
 			</li>
 		</ul>
 	</div>
-	<div class="col-sm-12 col-md-6">
+	<div class="col-sm-12 col-md-6 well">
 		<h5>{{ product.description }}</h5>
 		<p>Price: {{ product.price }}</p>
 		<p>Quantity Remaining: {{ product.numRemaining }}</p>
-		<button class="btn btn-default">Add to Cart</button>
+		<button class="btn btn-default" ng-disabled="product.numRemaining===0" ng-click="addToCart()">
+			Add to Cart <span class="glyphicon glyphicon-shopping-cart"></span>
+		</button>
+		<span class="alert alert-info" ng-show="product.numRemaining===0">
+			Currently out of stock, this item is. Apologize, we must.
+		</span>
 	</div>
 </div>
 <!-- Reviews Row -->
