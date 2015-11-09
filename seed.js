@@ -103,6 +103,14 @@ var seedProducts = function () {
             description: 'Look like a boss, like a motherfucking boss',
             numRemaining: 14,
             images: ['https://s3.amazonaws.com/jabbascript/jedirobe.jpg']
+        },
+        {
+            name: 'Other Jedi Robe',
+            category: 'Wardrobe',
+            price: 30,
+            description: 'Also a Jedi Robe, and it is pretty cool looking',
+            numRemaining: 0,
+            images: ['https://s3.amazonaws.com/jabbascript/jedirobe.jpg']
         }
 
     ];

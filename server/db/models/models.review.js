@@ -22,7 +22,8 @@ var reviewSchema = new mongoose.Schema({
     rating: {
         type: Number,
         max: 5,
-        min: 1
+        min: 1,
+        required: true
     }
 });
 
