@@ -16,6 +16,9 @@ app.config(function ($stateProvider) {
 });
 
 app.controller('CartCtrl', function ($scope, $state, cart, OrdersFactory) {
+
+    var modifiedItems = [];
+
     if (cart) $scope.cart = cart;
     $scope.shipped = false;
 
@@ -34,6 +37,7 @@ app.controller('CartCtrl', function ($scope, $state, cart, OrdersFactory) {
     $scope.saveQuantity = function(item) {
         OrdersFactory.updateOrderItem(cart._id,item._id, {quantity: item.quantity});
         $scope.cartForm[item._id].$setPristine();
+        $scope.confirm(item._id);
     }
 
     $scope.getCartCost = function(){
@@ -42,7 +46,7 @@ app.controller('CartCtrl', function ($scope, $state, cart, OrdersFactory) {
     }
 
     $scope.checkout = function() {
-        
+        console.log("WE ARE CHECKING OUT")
         var addressString = Object.keys($scope.shipping).reduce(function(prev, key){
             return prev += "\n" + $scope.shipping[key];
         }, "")
@@ -54,7 +58,21 @@ app.controller('CartCtrl', function ($scope, $state, cart, OrdersFactory) {
         })
         .then(null, function(err){
             console.log("Erred");
-        })
+        });
+    }
+
+    $scope.unconfirm = function (id) {
+        if (modifiedItems.indexOf(id) !== -1) return;
+        else modifiedItems.push(id);
+    }
+
+    $scope.confirm = function (id) {
+        var idx = modifiedItems.indexOf(id);
+        modifiedItems.splice(idx, 1);
+    }
+
+    $scope.formNotConfirmed = function () {
+        return !!modifiedItems.length;
     }
 
 

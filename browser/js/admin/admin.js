@@ -40,6 +40,10 @@ app.controller('AdminCtrl', function ($scope, $state, users, orders, products, O
         $scope.showInput = !$scope.showInput;
     }
 
+    $scope.getTotalOrderCost = function(order){
+        return OrdersFactory.findOrderCost(order);
+    }
+
 	// change order status
 	$scope.changeOrderStatus = function(orderId, orderData) {
 		return OrdersFactory.updateOrder(orderId, orderData)
