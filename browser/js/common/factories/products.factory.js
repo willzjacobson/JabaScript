@@ -51,12 +51,7 @@ app.factory('ProductsFactory', function($http) {
 		},
 		fetchProductsCache: function () {
 			return productsCache;
-		},
-		getReviews: function(id) {
-			return $http.get('/api/products/' + id + '/reviews')
-			.then(toData)
 		}
-
 	};
 	return ProductsFactory;
 });

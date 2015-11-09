@@ -1,6 +1,6 @@
 var router = require('express').Router();
 var mongoose = require("mongoose");
-var Review = mongoose.model("Review"); 
+var Review = mongoose.model("Review");
 
 // Get all of the reviews
 router.get("/", function (req, res, next) {
@@ -14,7 +14,11 @@ router.get("/", function (req, res, next) {
 // Add a review to the db
 router.post("/", function (req, res, next){
 	Review.create(req.body)
-	.then(function (review){
+	.then(function (review) {
+		return Review.findById(review._id)
+		.populate('user')
+	})
+	.then(function(review) {
 		res.json(review);
 	})
 	.then(null,next);
