@@ -55,7 +55,6 @@ app.factory('UsersFactory', function($http) {
 			.then(toData);
 		},
 		getUserCart: function (id) {
-			console.log('1', id);
 			return $http.get("/api/users/" + id + "/orders/cart")
 			.then(toData)
 			.then(function(cart){
@@ -78,6 +77,10 @@ app.factory('UsersFactory', function($http) {
 			.then(null, function (err) {
 				return err;
 			})
+		},
+		getAnonCart: function () {
+			return $http.get('api/users/anon/orders/cart')
+			.then(toData);
 		}
 	}
 	return UsersFactory;

@@ -4,22 +4,27 @@ app.config(function ($stateProvider) {
         templateUrl: 'js/product/product.html',
         controller: 'ProductCtrl',
         resolve: {
-        	product: function ($stateParams, ProductsFactory) {
-        		return ProductsFactory.getOneProduct($stateParams.pid)
-        	},
-        	reviews: function ($stateParams, ReviewsFactory) {
-        		return ReviewsFactory.getReviewsForProduct($stateParams.pid)
-        	}
+            product: function ($stateParams, ProductsFactory) {
+                return ProductsFactory.getOneProduct($stateParams.pid)
+            },
+            reviews: function ($stateParams, ReviewsFactory) {
+                return ReviewsFactory.getReviewsForProduct($stateParams.pid)
+            }
         }
     });
 });
 
-app.controller('ProductCtrl', function ($scope, $state, product, reviews, Session, ReviewsFactory) {
-
-	$scope.product = product;
+app.controller('ProductCtrl', function ($scope, $state, product, reviews, UsersFactory, AuthService, Session, ReviewsFactory, OrdersFactory) {
+    $scope.product = product;
     $scope.reviews = reviews
     $scope.session = Session
     $scope.reviewTime = false;
+
+    function hasProductInCart(cart, pid) {
+        return cart.items.some(function (item) {
+            return item.product._id === pid;
+        });
+    }
 
     $scope.isUserReview = function(review) {
         return review.user._id === $scope.session.user._id
@@ -75,6 +80,42 @@ app.controller('ProductCtrl', function ($scope, $state, product, reviews, Sessio
         return ($scope.reviews.filter(function(review) {
             return review.user._id === $scope.session.user._id
         })).length > 0;
-
     }
+
+
+    $scope.addToCart = function () {
+        var theUser;
+
+        AuthService.getLoggedInUser()
+        .then(function (user) {
+            theUser = user;
+            if (!user) {
+                return UsersFactory.getAnonCart()
+            } else {
+                return UsersFactory.getUserCart(user._id);
+            }
+        })
+        .then(function (cart){
+            if (!cart)
+                if (theUser) return OrdersFactory.createOrder({user: theUser._id})
+                else return OrdersFactory.createOrder({});
+            else return cart;
+        })
+        .then(function (cart) {
+            if (hasProductInCart(cart, product._id)) return {};
+            else return OrdersFactory.createOrderItem(cart._id, {
+                product: product._id,
+                priceWhenOrdered: $scope.product.price,
+                quantity: 1
+            });
+        })
+        .then(function (item) {
+            console.log('Added ', item, ' successfully');
+            $state.go('cart');
+        })
+        .catch(function (err) {
+            console.log('An error occurred')
+        });
+    }
+
 });
