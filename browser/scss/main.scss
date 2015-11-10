@@ -4,6 +4,9 @@
 
 body {
   background: #fdfdfd;
+  font-family: 'Roboto Condensed', sans-serif;
+  background-color: #272E33;
+  color: white;
 }
 
 @mixin clearfix {
@@ -19,6 +22,45 @@ body {
   width: 1200px;
   margin: 0 auto;
 }
+
+.well {
+  background-color: rgba(128, 132, 131, 0.4);
+  border-width: 0px;
+}
+
+.well .subwell {
+  background-color: #272E33;
+  opacity: 0.8
+}
+
+.for-sale {
+  background-color: rgba(74, 81, 83, 0.8);
+}
+
+
+
+.login-button {
+  color: black;
+  margin-right: 10px;
+}
+.login-button:hover {
+  color: blue;
+}
+
+.carousel-inner img {
+    // -webkit-filter: grayscale(90%);
+    // filter: grayscale(90%); /* make all photos black and white */ 
+    width: 100%; /* Set width to 100% */
+    margin: auto;
+}
+.carousel-caption h3 {
+    color: #fff !important;
+}
+
+.main-page-item-a:hover {
+  color: red;
+}
+
 
 @import 'directives/main';
 @import 'home/main';
