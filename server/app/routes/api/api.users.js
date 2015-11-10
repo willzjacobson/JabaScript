@@ -8,7 +8,7 @@ var Product = mongoose.model("Product");
 var _ = require('lodash');
 var passport = require('passport');
 
-var clientSite = "http://127.0.0.1:3001";
+var clientSite = "http://localhost:3001";
 
 // Get all of the users
 router.get("/", function (req, res, next) {

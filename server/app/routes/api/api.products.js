@@ -7,7 +7,7 @@ var Product = mongoose.model('Product');
 var Review = mongoose.model('Review');
 Promise.promisifyAll(mongoose);
 
-var clientSite = "http://127.0.0.1:3001";
+var clientSite = "http://localhost:3001";
 
 router.get('/', function(req, res, next) {
   Product.find({})
