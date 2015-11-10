@@ -3,11 +3,11 @@
 
     <alert type="success" ng-show="shipped">
         Your order is making the jump to hyperspace now. Thank you for your loyalty!
-    </alert>     
+    </alert>
 
     <alert type="warning" ng-show="!shipped && isEmpty()">
     	If find your lack of current items disturbing. Why not go shopping for more?
-    </alert> 
+    </alert>
 
 <div ng-show="!shipped && cart && !isEmpty()">
 	<div class = "well">
@@ -25,25 +25,25 @@
 						 		<span class ="glyphicon glyphicon-remove"> </span>
 						 	</a>
 					 	</div>
-					 	<div> 
-					 		<label>Quantity</label> 
+					 	<div>
+					 		<label>Quantity</label>
 					 			<input type="number"
 					 				   class="form-control"
-					 			       ng-min="1" 
-					 			       ng-max="item.product.numRemaining" 
+					 			       ng-min="1"
+					 			       ng-max="item.product.numRemaining"
 					 			       name='{{item._id}}'
 					 			       ng-change="unconfirm(item._id)"
 					 			       ng-model="item.quantity"/>
-					 		
-					 		<a ng-click= "saveQuantity(item)" 
-					 		   class = "btn btn-success" 
+
+					 		<a ng-click= "saveQuantity(item)"
+					 		   class = "btn btn-success"
 					 		   ng-show='cartForm[item._id].$dirty && item.quantity'>
 					 			<span class ="glyphicon glyphicon-ok"> </span>
 					 		</a>
 					 		<alert class="alert alert-warning" ng-show="!item.quantity">
 					 			Have this much item in stock, we do not.
 					 		</alert>
-					 	</div> 
+					 	</div>
 					 	<div> Price: {{ item.priceWhenOrdered }} </div>
 					</div>
 				</li>

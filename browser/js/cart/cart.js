@@ -16,6 +16,14 @@ app.config(function ($stateProvider) {
 });
 
 app.controller('CartCtrl', function ($scope, $state, cart, OrdersFactory) {
+    var analytics = function() {
+        var anaData = {
+            cart: $scope.cart,
+            checkout: true
+        }
+        var anaEvent = new CustomEvent('Analytics', {"detail": anaData});
+        window.dispatchEvent(anaEvent);
+    }
 
     var modifiedItems = [];
 
@@ -47,6 +55,7 @@ app.controller('CartCtrl', function ($scope, $state, cart, OrdersFactory) {
     }
 
     $scope.checkout = function() {
+        analytics()
         var addressString = Object.keys($scope.shipping).reduce(function(prev, key){
             return prev += "\n" + $scope.shipping[key];
         }, "")
