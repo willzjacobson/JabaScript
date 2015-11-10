@@ -2,11 +2,11 @@
 <h3> Feel free to browse, edit, or checkout from here </h3>
 
     <alert type="success" ng-show="shipped">
-        Your order is being shipped at the literal speed of light and will arrive shortly. Thank you for your loyalty!
+        Your order is making the jump to hyperspace now. Thank you for your loyalty!
     </alert>     
 
     <alert type="warning" ng-show="!shipped && isEmpty()">
-    	It seems you do not have a currently active cart. Go get em and show us your capitalist self. For the empire!
+    	If find your lack of current items disturbing. Why not go shopping for more?
     </alert> 
 
 <div ng-show="!shipped && cart && !isEmpty()">
@@ -14,10 +14,10 @@
 		<form name="cartForm">
 			<ul>
 				<li ng-repeat="item in cart.items" style="list-style-type:none">
-					<div class="well" style="background-color:white">
+					<div class="well subwell">
 					 	<div>
-					 		<a ui-sref="product({pid:item.product._id })">
-					 			<h3>{{ item.product.name }}</h3>
+					 		<a ui-sref="product({pid:item.product._id })" style="text-decoration:none">
+					 			<span style="font-size:35px">{{ item.product.name }}</span>
 					 		</a>
 						 	<a ng-click="removeItem(item._id)"
 						 	   style="float:right"
@@ -25,17 +25,16 @@
 						 		<span class ="glyphicon glyphicon-remove"> </span>
 						 	</a>
 					 	</div>
-
-
 					 	<div> 
-					 		<span> Quantity: 
-					 			<input type="number" 
+					 		<label>Quantity</label> 
+					 			<input type="number"
+					 				   class="form-control"
 					 			       ng-min="1" 
 					 			       ng-max="item.product.numRemaining" 
 					 			       name='{{item._id}}'
 					 			       ng-change="unconfirm(item._id)"
 					 			       ng-model="item.quantity"/>
-					 		</span> 
+					 		
 					 		<a ng-click= "saveQuantity(item)" 
 					 		   class = "btn btn-success" 
 					 		   ng-show='cartForm[item._id].$dirty && item.quantity'>
@@ -71,7 +70,7 @@
 				Street 2: <input type="text" ng-required = "true" ng-minlength= "3" ng-maxlength= "50" name= 'street2' ng-model="shipping.street2" class="form-control" />
 			</div>
 			<div class="form-group">
-				<button type="submit" ng-disabled="!checkoutForm.$valid || formNotConfirmed()" ng-click ="checkout()" class="btn btn-success">Checkout Order
+				<button type="submit" ng-disabled="!checkoutForm.$valid || formNotConfirmed()" ng-click ="checkout()" class="btn btn-success btn-lg">Checkout Order
 				</button>
 				<span class="alert alert-info" ng-show="!checkoutForm.$valid">Please fill out your shipping information</span>
 				<span class="alert alert-warning" ng-show="formNotConfirmed()">Please confirm your order item details</span>

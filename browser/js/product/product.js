@@ -16,8 +16,8 @@ app.config(function ($stateProvider) {
 
 app.controller('ProductCtrl', function ($scope, $state, product, reviews, UsersFactory, AuthService, Session, ReviewsFactory, OrdersFactory) {
     $scope.product = product;
-    $scope.reviews = reviews
-    $scope.session = Session
+    $scope.reviews = reviews;
+    $scope.session = Session;
     $scope.reviewTime = false;
 
     function hasProductInCart(cart, pid) {
@@ -27,7 +27,9 @@ app.controller('ProductCtrl', function ($scope, $state, product, reviews, UsersF
     }
 
     $scope.isUserReview = function(review) {
-        return review.user._id === $scope.session.user._id
+        console.log()
+        if (!Session.user) return false;
+        return review.user._id === $scope.session.user._id;
     }
 
     $scope.removeReview = function(review) {
@@ -116,6 +118,13 @@ app.controller('ProductCtrl', function ($scope, $state, product, reviews, UsersF
         .catch(function (err) {
             console.log('An error occurred')
         });
+    }
+
+    $scope.stars = function (n) {
+        var arr = [];
+        for (var i = 0; i < n; i++)
+            arr.push(i);
+        return arr;
     }
 
 });

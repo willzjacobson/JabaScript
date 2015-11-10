@@ -32,16 +32,17 @@
 				<li>Order made on : {{ order.dateIssued }}</li>
 				<li>Order status : {{ order.status }}</li>
 				<li>Shipping details : {{ order.shippingDetails }}</li>
+					<br />
 					<ul style="list-style:none">
 						<li ng-repeat="item in order.items">
 							<div class="well">
-							 	<div> Product: <a ui-sref="product({pid:item.product._id })">{{ item.product.name }}</a> </div> 
+							 	<div> Product: <a ui-sref="product({pid:item.product._id })" style="text-decoration:none">{{ item.product.name }}</a> </div> 
 							 	<div> Quantity: {{ item.quantity }} </div> 
 							 	<div> Price: {{ item.priceWhenOrdered }} </div>
 							 </div>
 						</li>
 					</ul>
-				<li> Total Price is: {{getTotalOrderCost(order)}} </li>
+				<li> Total Price is: <span style="font-size:35px"><b>{{getTotalOrderCost(order)}}</span></b> </li>
 			</ul>
 		</div>
 	</li>
