@@ -18,7 +18,8 @@ app.config(function ($stateProvider) {
 app.controller('CartCtrl', function ($scope, $state, cart, OrdersFactory) {
     var analytics = function() {
         var anaData = {
-            cart: $scope.cart,
+            items: $scope.cart.items || null,
+            user: $scope.cart.user._id.toString() || null,
             checkout: true
         }
         var anaEvent = new CustomEvent('Analytics', {"detail": anaData});
