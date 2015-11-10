@@ -30,7 +30,7 @@ app.config(function ($stateProvider) {
 
 });
 
-app.controller('AdminCtrl', function ($scope, $state, users, orders, products, OrdersFactory, UsersFactory, ProductsFactory) {
+app.controller('AdminCtrl', function ($scope, $state, users, orders, products, OrdersFactory, UsersFactory, ProductsFactory, EmailFactory) {
 	$scope.users = users;
 	$scope.orders = orders;
 	$scope.products = products;
@@ -47,7 +47,15 @@ app.controller('AdminCtrl', function ($scope, $state, users, orders, products, O
 	// change order status
 	$scope.changeOrderStatus = function(orderId, orderData) {
 		return OrdersFactory.updateOrder(orderId, orderData)
-			.then(function () {
+			.then(function (order) {
+                EmailFactory.sendEmail({
+                    to_name: order.orderEmail,
+                    to_email: order.orderEmail,
+                    from_name: 'The StarStore',
+                    from_email: 'willjacobson1@gmail.com',
+                    subject: 'Order status change!',
+                    message_html: 'Your order id ' + order._id + ' now has a status of ' + order.status
+                })
 				$scope.orders = OrdersFactory.fetchOrderCache();
 			});
 	};
@@ -101,7 +109,14 @@ app.controller('AdminCtrl', function ($scope, $state, users, orders, products, O
 });
 
 
-
+/*EmailFactory.sendEmail({
+                to_name: $scope.shipping.email,
+                to_email: $scope.shipping.email,
+                from_name: 'The StarStore',
+                from_email: 'willjacobson1@gmail.com',
+                subject: 'Your package is on its way!',
+                message_html: 'Your order id is ' + order._id
+            })*/
 
 
 

@@ -1,10 +1,7 @@
 'use strict';
 var router = require('express').Router();
 
-// router.use('/members', require('./members'));
-
-
-
+router.use('/email', require('./email'));
 router.use('/', require("./api"));
 
 // Make sure this is after all of

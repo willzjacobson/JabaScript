@@ -6,7 +6,7 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('SignupCtrl', function ($scope, AuthService, $state) {
+app.controller('SignupCtrl', function ($scope, AuthService, $state, UsersFactory) {
 
     $scope.signup = {};
     $scope.error = null;
@@ -20,6 +20,8 @@ app.controller('SignupCtrl', function ($scope, AuthService, $state) {
         }).catch(function () {
             $scope.error = 'Invalid signup credentials.';
         });
+
+
 
     };
 });
