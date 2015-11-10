@@ -54,8 +54,8 @@
     <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
     <span class="sr-only">Next</span>
   </a>
-</div> -->
-
+</div>
+ -->
 
 
 
@@ -74,11 +74,11 @@
 
     <div class="row">
         <ul>
-        	<li ng-repeat="product in products | filter: query" style="list-style-type:none;float:left;padding:5%">
-        		<a ui-sref="product({pid: product._id})" style="text-decoration:none">
+        	<li ng-repeat="product in products | filter: query" style="list-style-type:none;float:left;padding:1%">
+        		<a ui-sref="product({pid: product._id})" style="text-decoration:none" class="main-page-item-a">
               <div class="well for-sale">
                 <h5>{{product.name}}</h5>
-                <img src="{{ product.images[0] }}" style="height:200px;width:200px"/>
+                <img src="{{ product.images[0] }}" style="height:200px;width:200px;border-style:solid;border-color:black;border-radius:1%;border-width:1px"/>
               </div>
             </a>
         	</li>
