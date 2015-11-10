@@ -35,7 +35,6 @@ router.post("/", function (req, res, next) {
 		else return null;
 	})
 	.then(function(cart) {
-		console.log("Our cart", cart);
 		if (!cart) return;
 		else {
 			cart.set({user: theUser._id})
@@ -71,7 +70,6 @@ router.get("/:userId", function (req, res, next) {
 });
 
 // Update a given user by ID
-
 router.put("/:userId", function (req, res, next){
 	if (!req.user || !req.user.hasPermission) {
 		res.status(401).end();

@@ -101,24 +101,8 @@ app.controller('AdminCtrl', function ($scope, $state, users, orders, products, O
     $scope.triggerReset = function (user) {
         UsersFactory.triggerReset(user)
         .then(function (user) {
-            console.log(user);
             $scope.users = UsersFactory.fetchUsersCache();
         })
     }
 
 });
-
-
-/*EmailFactory.sendEmail({
-                to_name: $scope.shipping.email,
-                to_email: $scope.shipping.email,
-                from_name: 'The StarStore',
-                from_email: 'willjacobson1@gmail.com',
-                subject: 'Your package is on its way!',
-                message_html: 'Your order id is ' + order._id
-            })*/
-
-
-
-
-

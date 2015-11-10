@@ -74,12 +74,6 @@ app.controller('CartCtrl', function ($scope, $state, cart, OrdersFactory, EmailF
             })
             return Promise.all(productsToUpdate);
         })
-        .then(function(success) {
-            console.log("We successfully checked out and updated product quantity")
-        })
-        .then(null, function(err){
-            console.log("Erred");
-        });
     }
 
     $scope.unconfirm = function (id) {

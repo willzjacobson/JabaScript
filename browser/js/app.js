@@ -10,6 +10,7 @@ app.config(function ($urlRouterProvider, $locationProvider) {
         window.location.reload();
     });
     $urlRouterProvider.when('/profile/:uid', '/profile/:uid/history');
+    $urlRouterProvider.when('/admin', '/admin/users');
 
 });
 

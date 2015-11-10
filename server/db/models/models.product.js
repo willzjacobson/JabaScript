@@ -9,7 +9,6 @@ var productSchema = new mongoose.Schema({
     },
     category: {
         type: [String]
-        //TODO Add enum: [options]
     },
     price: {
         type: Number
@@ -39,7 +38,6 @@ productSchema.pre('save', function(next) {
   next();
 });
 
-//TODO Test this once we have a front end to test it on.
 productSchema.methods.getAverageRating = function()  {
   var numReviews;
   mongoose.model('Review').find({product: this._id})

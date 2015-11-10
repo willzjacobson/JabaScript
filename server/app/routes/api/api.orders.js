@@ -27,7 +27,6 @@ router.get('/', function(req, res, next) {
   .then(null, next);
 });
 
-//TODO make sure there is only one "Created" (active) order at a time
 router.post('/', function(req, res, next) {
   Order.create(req.body)
   .then(function(order) {
@@ -126,11 +125,9 @@ router.param("itemId", function (req, res, next, itemId){
   Item.findById(itemId)
   .then(function(item){
     req.item = item;
-    console.log('in param', req.item)
     next();
   })
   .then(null,function(err) {
-    console.log(err)
   });
 })
 

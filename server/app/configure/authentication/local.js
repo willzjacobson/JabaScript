@@ -44,9 +44,9 @@ module.exports = function (app) {
             // req.logIn will establish our session.
             return new Promise(function(resolve, reject) {
                 return req.logIn(user, function (loginErr) {
-                if (loginErr) return reject(loginErr);
-                resolve(user);
-                })
+                    if (loginErr) return reject(loginErr);
+                    resolve(user);
+                });
             })
             .then(function(user){
                 theUser = user;
@@ -54,18 +54,20 @@ module.exports = function (app) {
             })
             .then(function(prevCart){
                 thePrevCart = prevCart;
-                if (!prevCart){
-                    return Order.findById(req.session.cart._id);
-                }
-                else {
-                    return;
-                }
+                if (!prevCart) {
+                    if (req.session.cart) return Order.findById(req.session.cart._id)
+                    else return;
+                } else return;
             })
             .then(function(sessionCart){
                 if (sessionCart){
                     sessionCart.set({user: theUser._id})
                     return sessionCart.save();
-
+                } else return;
+            })
+            .then(function(sessionCart){
+                if (sessionCart && thePrevCart){
+                    return thePrevCart.remove()
                 }
                 return;
             })
@@ -75,10 +77,8 @@ module.exports = function (app) {
                 });
             })
             .then(null, function(err){
-                console.log("I am a sinner");
                 res.status(401).send(err);
             })
-
         };
 
         passport.authenticate('local', authCb)(req, res, next);
