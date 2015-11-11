@@ -15,7 +15,16 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('CartCtrl', function ($scope, $state, cart, OrdersFactory, EmailFactory, ProductsFactory) {
+app.controller('CartCtrl', function ($scope, $state, cart, OrdersFactory) {
+    var analytics = function() {
+        var anaData = {
+            items: $scope.cart.items || null,
+            user: $scope.cart.user._id.toString() || null,
+            checkout: true
+        }
+        var anaEvent = new CustomEvent('Analytics', {"detail": anaData});
+        window.dispatchEvent(anaEvent);
+    }
 
     var modifiedItems = [];
 
@@ -47,6 +56,7 @@ app.controller('CartCtrl', function ($scope, $state, cart, OrdersFactory, EmailF
     }
 
     $scope.checkout = function() {
+        analytics()
         var addressString = Object.keys($scope.shipping).reduce(function(prev, key){
             return prev += "\n" + $scope.shipping[key];
         }, "")
