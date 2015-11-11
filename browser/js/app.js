@@ -22,7 +22,6 @@ app.run(function ($rootScope, AuthService, $state, Session) {
         return state.data && state.data.authenticate;
     };
 
-
     // $stateChangeStart is an event fired
     // whenever the process of changing a state begins.
     $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
@@ -31,8 +30,6 @@ app.run(function ($rootScope, AuthService, $state, Session) {
             user: event.targetScope.$$childHead.user || null,
             product: toParams.pid || null
         };
-
-        console.log('here!')
 
         var anaEvent = new CustomEvent('Analytics', {"detail": anaData});
         window.dispatchEvent(anaEvent);
