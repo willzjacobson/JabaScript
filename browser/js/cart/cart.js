@@ -15,7 +15,7 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('CartCtrl', function ($scope, $state, cart, OrdersFactory) {
+app.controller('CartCtrl', function ($scope, $state, cart, OrdersFactory, EmailFactory, ProductsFactory) {
     var analytics = function() {
         var anaData = {
             items: $scope.cart.items || null,
@@ -56,12 +56,16 @@ app.controller('CartCtrl', function ($scope, $state, cart, OrdersFactory) {
     }
 
     $scope.checkout = function() {
+        var theOrder;
         analytics()
         var addressString = Object.keys($scope.shipping).reduce(function(prev, key){
             return prev += "\n" + $scope.shipping[key];
         }, "")
+        console.log("I am here");
         OrdersFactory.updateOrder($scope.cart._id, {status: "Processing", shippingDetails: addressString, orderEmail: $scope.shipping.email})
         .then(function(order) {
+
+            console.log("order 1", order);
 
             $scope.cart = null;
             $scope.shipped = true;
@@ -77,13 +81,22 @@ app.controller('CartCtrl', function ($scope, $state, cart, OrdersFactory) {
 
             return order;
         })
-        .then(function (order) {
-            var productsToUpdate = [];
-            order.items.forEach(function (item){
-                productsToUpdate.push(ProductsFactory.updateProduct(item.product._id, {numRemaining: item.product.numRemaining - item.quantity}));
-            })
-            return Promise.all(productsToUpdate);
+        .then(function (resolved){
+            console.log("resolved");
+            return; 
         })
+        // .then(function (order) {
+        //     theOrder = order;
+        //     console.log("order 2", order);
+
+        //     var productsToUpdate = [];
+        //     order.items.forEach(function (item){
+        //         productsToUpdate.push(ProductsFactory.updateProduct(item.product._id, {numRemaining: item.product.numRemaining - item.quantity}));
+        //     })
+        //     console.log("We did our forEach");
+        //     console.log("Promise", Promise)
+        //     return Promise.all(productsToUpdate);
+        // })
     }
 
     $scope.unconfirm = function (id) {
