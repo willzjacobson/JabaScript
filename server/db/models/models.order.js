@@ -25,6 +25,9 @@ var orderSchema = new mongoose.Schema({
     }],
     shippingDetails: {
       type: String
+    },
+    orderEmail: {
+      type: String
     }
 });
 

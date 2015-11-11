@@ -21,30 +21,43 @@ router.get("/", function (req, res, next) {
 });
 
 // Add a user to the db
-router.post("/", function (req, res, next){
+router.post("/", function (req, res, next) {
+	var theUser;
 	User.create(req.body)
 	.then(function (user){
-		req.logIn(user, function (loginErr) {
-	        if (loginErr) return next(loginErr);
-	        // We respond with a response object that has user with _id and email.
-	        res.status(201).send({
-	            user: _.omit(user.toJSON(), ['password', 'salt'])
-	        });
-	    });
+		return new Promise(function (resolve, reject) {
+			return req.logIn(user, function (loginErr) {
+				if (loginErr) reject(loginErr);
+				theUser = user;
+				resolve(user);
+			});
+		});
+	})
+	.then(function (user) {
+		if (req.session.cart) return Order.findById(req.session.cart._id).exec()
+		else return null;
+	})
+	.then(function(cart) {
+		if (!cart) return;
+		else {
+			cart.set({user: theUser._id})
+			return cart.save()
+		}
+	})
+	.then(function(cart) {
+        res.status(201).send({
+            user: _.omit(theUser.toJSON(), ['password', 'salt'])
+        });
 	})
 	.then(null,next);
 });
 
 router.get('/anon/orders/cart', function (req, res, next) {
-	// console.log(req.session.cart.items);
-	// req.session.cart.items.populate('product')
-	// .then(function () {
-		res.json(req.session.cart);
-	// })
+	res.json(req.session.cart);
 });
 
 // Add middleware to find user by ID and save in req.user
-router.param("userId", function (req, res, next, userId){
+router.param("userId", function (req, res, next, userId) {
 	User.findById(userId)
 	.then(function(user){
 		req.requestUser = user;
@@ -60,7 +73,6 @@ router.get("/:userId", function (req, res, next) {
 });
 
 // Update a given user by ID
-
 router.put("/:userId", function (req, res, next){
 	if (!req.user || !req.user.hasPermission) {
 		res.status(401).end();
@@ -123,7 +135,7 @@ router.delete("/:userId", function (req, res, next) {
 })
 
 // Get all the reviews that a user has made
-router.get("/:userId/reviews", function (req, res, next){
+router.get("/:userId/reviews", function (req, res, next) {
 	Review.find({user: req.requestUser._id})
 	.populate("product")
 	.then(function (reviews) {
@@ -133,7 +145,7 @@ router.get("/:userId/reviews", function (req, res, next){
 })
 
 //Get's all orders for a given user
-router.get("/:userId/orders", function (req, res, next){
+router.get("/:userId/orders", function (req, res, next) {
 	var orders;
 	Order.find({user: req.user._id})
 	.populate('items user')
@@ -153,7 +165,7 @@ router.get("/:userId/orders", function (req, res, next){
 	.then(null, next);
 })
 
-router.get("/:userId/orders/cart", function (req, res, next){
+router.get("/:userId/orders/cart", function (req, res, next) {
 	var order;
 	Order.findOne({user: req.user._id, status: "Created"})
 	.populate('items user')

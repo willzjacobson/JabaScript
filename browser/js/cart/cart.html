@@ -55,6 +55,9 @@
 	<div class = "well">
 		<form name="checkoutForm">
 			<div class="form-group">
+				Email: <input type="email" ng-required = "true" ng-minlength= "3" ng-maxlength= "25" name= 'solarSystem' ng-model="shipping.email" class="form-control" />
+			</div>
+			<div class="form-group">
 				Solar System: <input type="text" ng-required = "true" ng-minlength= "3" ng-maxlength= "25" name= 'solarSystem' ng-model="shipping.system" class="form-control" />
 			</div>
 			<div class="form-group">

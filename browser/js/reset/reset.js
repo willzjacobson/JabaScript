@@ -18,11 +18,7 @@ app.controller('ResetCtrl', function ($scope, user, $rootScope, UsersFactory, Au
 	$scope.resetLogin = function (details) {
 		UsersFactory.resetPassword($scope.user._id, details)
 		.then(function (user) {
-		// 	return AuthService.logout()
-		// })
-		// .then(function (user) {
 			$scope.user = user;
-			console.log(user);
             $state.go('home');
 		})
 		.then(null, function (err) {
