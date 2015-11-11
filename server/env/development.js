@@ -15,5 +15,6 @@ module.exports = {
     "clientID": "508095245990-m9r5h6747oc48fmgukcq8jhn4jmqiu1t.apps.googleusercontent.com",
     "clientSecret": "TeNxIFNvxlsTw8Swf6z7nngO",
     "callbackURL": "http://127.0.0.1:1337/auth/google/callback"
-  }
+  },
+  "MANDRILL_CLIENT": '3bOJs35aZKoJ7kXO03GOSA'
 };

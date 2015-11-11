@@ -1,10 +1,19 @@
-<ul>
-	<h3> Review History </h3>
-	<li class = "well" ng-repeat="review in reviews"> Review for <a ui-sref="product({pid:review.product._id })">{{ review.product.name }} </a>: {{ review.content }}</li>
-	<h3> Order History </h3>
+<alert class="alert alert-info" ng-show="reviews.length === 0 && orders.length === 0">No account history, you have. Shopping, you must go.</alert>
+<div ng-hide="reviews.length === 0">
+<h3> Review History </h3>
+	<ul style="list-style-type:none">
+		<li class = "well" ng-repeat="review in reviews"> Review for 
+			<a ui-sref="product({pid:review.product._id })">{{ review.product.name }} </a>: {{ review.content }}
+		</li>
+	</ul>
+</div>
+
+<div ng-hide="orders.length === 0">
+<h3> Order History </h3>
+<ul style="list-style-type:none">
 	<li ng-repeat="order in orders">
 		<div class = "well">
-			<ul>
+			<ul style="list-style-type:none">
 				<li>Order made on {{ order.dateIssued }}</li>
 				<li>Order status is: {{ order.status }}</li>
 				<li ng-repeat="item in order.items"> 
@@ -17,3 +26,4 @@
 		</div>
 	</li>
 </ul>
+</div>

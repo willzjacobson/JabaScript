@@ -25,7 +25,6 @@ router.post('/', function(req, res, next) {
     Product.create(req.body)
     .then(function(product) {
       res.status(201).json(product);
-      console.info("Post Successful");
     })
     .then(null, next);
   }
@@ -57,10 +56,8 @@ router.put('/:productId', function(req, res, next) {
     res.status(401).end()
   }
   else {
-    // todo: figure out why this isn't working; problem seems to be req.body.images.split
     if (req.body.category) req.body.category = req.body.category.split(',');
     if (req.body.images) req.body.images = req.body.images.split(',');
-    console.log(req.body.images);
     req.product.set(req.body);
 
     req.product.save()

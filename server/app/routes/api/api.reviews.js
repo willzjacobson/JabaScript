@@ -31,7 +31,6 @@ router.param("reviewId", function (req, res, next, reviewId){
 	.then(function(review){
 		req.review = review;
 		if (req.user) req.user.hasPermission = req.user.isAdmin || req.user._id.equals(review.user._id);
-		if (req.user) console.log("user has hasPermission ", req.user.hasPermission);
 		next();
 	})
 	.then(null,next);

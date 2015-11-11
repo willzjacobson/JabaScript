@@ -15,7 +15,7 @@ app.config(function ($stateProvider) {
     });
 });
 
-app.controller('CartCtrl', function ($scope, $state, cart, OrdersFactory) {
+app.controller('CartCtrl', function ($scope, $state, cart, OrdersFactory, EmailFactory, ProductsFactory) {
 
     var modifiedItems = [];
 
@@ -50,15 +50,30 @@ app.controller('CartCtrl', function ($scope, $state, cart, OrdersFactory) {
         var addressString = Object.keys($scope.shipping).reduce(function(prev, key){
             return prev += "\n" + $scope.shipping[key];
         }, "")
-        OrdersFactory.updateOrder($scope.cart._id, {status: "Processing", shippingDetails: addressString})
-        .then(function(success){
+        OrdersFactory.updateOrder($scope.cart._id, {status: "Processing", shippingDetails: addressString, orderEmail: $scope.shipping.email})
+        .then(function(order) {
+
             $scope.cart = null;
             $scope.shipped = true;
-            console.log("We succesfully checked out");
+
+            EmailFactory.sendEmail({
+                to_name: $scope.shipping.email,
+                to_email: $scope.shipping.email,
+                from_name: 'The StarStore',
+                from_email: 'willjacobson1@gmail.com',
+                subject: 'Your package is on its way!',
+                message_html: 'Your order id is ' + order._id
+            });
+
+            return order;
         })
-        .then(null, function(err){
-            console.log("Erred");
-        });
+        .then(function (order) {
+            var productsToUpdate = [];
+            order.items.forEach(function (item){
+                productsToUpdate.push(ProductsFactory.updateProduct(item.product._id, {numRemaining: item.product.numRemaining - item.quantity}));
+            })
+            return Promise.all(productsToUpdate);
+        })
     }
 
     $scope.unconfirm = function (id) {

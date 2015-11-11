@@ -27,7 +27,6 @@ app.controller('ProductCtrl', function ($scope, $state, product, reviews, UsersF
     }
 
     $scope.isUserReview = function(review) {
-        console.log()
         if (!Session.user) return false;
         return review.user._id === $scope.session.user._id;
     }
@@ -112,12 +111,8 @@ app.controller('ProductCtrl', function ($scope, $state, product, reviews, UsersF
             });
         })
         .then(function (item) {
-            console.log('Added ', item, ' successfully');
             $state.go('cart');
         })
-        .catch(function (err) {
-            console.log('An error occurred')
-        });
     }
 
     $scope.stars = function (n) {
